@@ -1,0 +1,188 @@
+#intro {
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.hover-shadow {
+    transition: all 0.2s ease-in-out
+}
+
+.hover-shadow:hover {
+    /* outline: 1px solid black; */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.261)
+}
+
+.loginSection {
+    /* border: 1px solid rgba(0, 0, 0, 0.254); */
+    margin: auto 36px;
+    border-radius: 5px;
+}
+
+#loginFormContainer {
+    /* padding: 5vh; */
+    width: 1280px;
+}
+
+.buttonRounded {
+    background-color: black;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 2em
+}
+
+.buttonRounded-outlined {
+    border: 2px solid white;
+    background-color: black;
+    color: white;
+    outline: none;
+    border-radius: 2em;
+    transition: all 0.2s ease-in-out;
+}
+
+.buttonRounded-outlined:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+}
+
+.login-form-group {
+    width: 30vw;
+}
+
+#loginHeading {
+    background-color: black;
+    color: white;
+}
+
+#loginRight {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+#searchSection {
+    height: 50vh;
+}
+
+#category-typing-text {
+    height: 9vh;
+}
+
+#takeBusinessOnline {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#takeBusinessOnlineSection {
+    margin: 10vh auto;
+    height: 50vh;
+}
+
+#takeBusinessOnline:hover {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    /* text-decoration: underline; */
+    /* text-decoration-color: rgb(252, 84, 84); */
+}
+
+#questionMark {
+    font-size: 5em;
+    transition: all 2s ease-in-out;
+    /* text-decoration-color: black; */
+}
+
+#questionMark:hover {
+    text-decoration: none;
+    animation: growAndShrinkQuestionMark 20s;
+}
+
+@keyframes growAndShrinkQuestionMark {
+    0% {
+        font-size: 5em;
+    }
+    50% {
+        font-size: 6em;
+    }
+    100% {
+        font-size: 5em;
+    }
+}
+
+#category-typing-text {
+    z-index: 100;
+}
+
+
+/* create organization form */
+
+#introOrg {
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 15vh;
+    height: 130vh;
+}
+
+#organization-form-container {
+    background-color: rgba(0, 0, 0, 0.234);
+    color: rgba(255, 255, 255, 0.707);
+    border-radius: 5px;
+    /* backdrop-filter: blur(5px); */
+    transition: backdrop-filter 5s ease-in-out;
+    backdrop-filter: blur(1px);
+}
+
+#organization-form-container:hover {
+    backdrop-filter: blur(30px);
+}
+
+#organization-form-container input,
+#organization-form-container textarea,
+#organization-form-container select {
+    background-color: rgba(0, 0, 0, 0.474);
+    border: none;
+    color: rgba(255, 255, 255, 0.549);
+}
+
+#organization-form-container input:focus,
+#organization-form-container textarea:focus,
+#organization-form-container select:focus {
+    box-shadow: none;
+}
+
+#organization-form-container label {
+    color: rgba(255, 255, 255, 0.748);
+}
+
+#organization-form-container textarea {
+    height: 20vh;
+}
+
+.small-note {
+    width: 450px;
+}
+
+.buttonRounded-organization {
+    background-color: rgba(0, 0, 0, 0.631);
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 2em
+}
+
+.buttonRounded-organization:hover {
+    background-color: black;
+}
+
+
+/* create service page */
+
+#introServiceCreate {
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 10vh;
+    height: 170vh;
+}
