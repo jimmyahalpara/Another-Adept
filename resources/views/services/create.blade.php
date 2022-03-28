@@ -11,6 +11,13 @@
             <div id="organization-form-container"
                 class="p-5 mx-5 d-flex justify-content-center align-items-center flex-column">
                 <h1>Create New Service</h1>
+                @if (!$errors->isEmpty())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <span>{{ $error }}</span><br>
+                        @endforeach
+                    </div>
+                @endif
                 <form action="{{ route('services.store') }}" method="post" id="create-organization-form"
                     enctype="multipart/form-data">
                     @csrf
@@ -55,6 +62,7 @@
                         <select name="price_type_id" id="price_type_id"
                             class="w-100 form-control @error('price_type_id') is-invalid @enderror"
                             @error('price_type_id') autofocus @enderror>
+                            <option value="">Select Price Type</option>
                             @foreach ($price_types as $type)
                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
                             @endforeach
@@ -66,36 +74,66 @@
                             </span>
                         @enderror
                     </div>
+                    <div id="area_container">
+                        <div class="login-form-group form-floating my-4" id="area_container_1">
+                            <select name="area[]" id="area_id_1"
+                                class="w-100 form-control @error('area_id_1') is-invalid @enderror"
+                                @error('area_id_1') autofocus @enderror>
+                                @foreach ($areas as $area)
+                                    <option value="{{ $area->id }}" @if (old('area_id_1') == $area->id) selected @endif>
+                                        {{ $area->city->name }} - {{ $area->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="w-100 d-flex justify-content-end align-items-center">
+                                <button onclick="$('#area_container_1').remove()" type="button"
+                                    class="buttonRounded-organization float-right mt-1 p-2 px-4">
+                                    Remove
+                                </button>
+                            </div>
+                            <label for="area_id_1">Area</label>
+                            @error('area_id_1')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
 
-                    <div class="login-form-group form-floating my-4">
-                        <select name="area_id" id="area_id"
-                            class="w-100 form-control @error('area_id') is-invalid @enderror"
-                            @error('area_id') autofocus @enderror>
-                            @foreach ($areas as $area)
-                                <option value="{{ $area->id }}" @if (old('area_id') == $area->id) selected @endif>
-                                    {{ $area->city->name }} - {{ $area->name }}</option>
-                            @endforeach
-                        </select>
-                        <label for="area_id">Area</label>
-                        @error('area_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+
                     </div>
+
+                    <button onclick="addArea()" type="button" class="buttonRounded-organization p-2 px-4">
+                        Add Area
+                    </button>
+
+
+
+                    {{-- <div class="my-4">
+                        <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+                            <option value="AL">Alabama</option>
+                            <option value="WY">Wyoming</option>
+                        </select>
+                    </div> --}}
+
+
+
+
+
                     <div class="login-form-group form-floating my-4">
                         <select name="service_category_id" id="service_category_id"
                             class="w-100 form-control @error('service_category_id') is-invalid @enderror"
                             @error('service_category_id') autofocus @enderror>
+                            <option value="">Select Service Category</option>
                             @foreach ($service_categories as $category)
                                 <option value="{{ $category->id }}" @if (old('service_category_id') == $category->id) selected @endif>
-                                    {{ $category -> name }}</option>
+                                    {{ $category->name }}</option>
                             @endforeach
                         </select>
                         <label for="service_category_id">Service Category</label>
                         <p class="small-note"><small>
-                            Note: If the service that you provide does not lie in the above mentioned categories, then send us a request theough help center. We would love to include more service types to our platform.
-                        </small></p>
+                                Note: If the service that you provide does not lie in the above mentioned categories, then
+                                send us a request theough help center. We would love to include more service types to our
+                                platform.
+                            </small></p>
                         @error('service_category_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -118,7 +156,6 @@
                         @enderror
                     </div>
 
-
                     <div class="d-flex justify-content-center align-items-center m-3">
                         <button type="submit" class="buttonRounded-organization p-2 px-4">
                             Submit
@@ -128,10 +165,48 @@
 
             </div>
             <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-            {!! JsValidator::formRequest('App\Http\Requests\CreateOrganizatinRequest', '#create-organization-form') !!}
+            {!! JsValidator::formRequest('App\Http\Requests\CreateServiceRequest', '#create-organization-form') !!}
 
 
         </div>
         </div>
     </section>
+    <script>
+        var num_area = 1;
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+
+
+
+        function addArea() {
+            num_area += 1;
+
+            $area_container = $('#area_container');
+            area_html = `<div class="login-form-group form-floating my-4" id="area_container_` + num_area + `">
+                            <select name="area[]" id="area_id_` + num_area + `"
+                                class="w-100 form-control @error('area_id_`+num_area+`') is-invalid @enderror"
+                                @error('area_id_`+num_area+`') autofocus @enderror>
+                                @foreach ($areas as $area)
+                                    <option value="{{ $area->id }}">
+                                        {{ $area->city->name }} - {{ $area->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="w-100 d-flex justify-content-end align-items-center">
+                                <button onclick="$('#area_container_` + num_area + `').remove()" type="button"
+                                    class="buttonRounded-organization float-right mt-1 p-2 px-4">
+                                    Remove
+                                </button>
+                            </div>
+                            <label for="area_id_` + num_area + `">Area</label>
+                            @error('area_id_`+num_area+`')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>`;
+            console.log($area_container);
+            $area_container.append(area_html);
+        }
+    </script>
 @endsection

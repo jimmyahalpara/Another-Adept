@@ -101,7 +101,7 @@
                                 <h1>Service Adept</h1>
                             </div>
                             <p class="login-card-description">Sign into your account</p>
-                            <form action="{{ route('login') }}" method="POST" >
+                            <form id="register-form" action="{{ route('login') }}" method="POST" >
                                 @csrf
                                 <div class="form-group">
                                     <label for="email" class="sr-only">Email</label>

@@ -2,22 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateServiceRequest;
 use App\Models\Area;
+use App\Models\Image;
 use App\Models\PriceType;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this -> middleware('organization.role:manager');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $num_rows = $request -> input('num_rows', 10);
+        $services = Service::where('organization_id', organization_id()) -> sortable('id') -> paginate($num_rows) -> withQueryString() ;
+        return view('services.index', compact(
+            'services',
+            'num_rows'
+        ));
     }
 
     /**
@@ -44,9 +59,31 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateServiceRequest $request)
     {
-        //
+        $data = $request -> validated();
+
+        $service = new Service();
+        $service -> name = $data['name'];
+        $service -> description = $data['description'];
+        $service -> price = $data['price'];
+        $service -> price_type_id = $data['price_type_id'];
+        $service -> service_category_id = $data['service_category_id'];
+        $service -> organization_id = Auth::user() -> user_organization_memberships[0] -> organization_id;
+        
+        $service -> save();
+
+
+        $fileName = time() . '.' . $request->service_image->extension();
+        $path = public_path('images') . "/" . $fileName;
+        $request->service_image->move(public_path('images'), $fileName);
+
+        $document = new Image();
+        $document->image_path = $path;
+
+        $service->images()->save($document);
+
+        return redirect() -> route('home') -> with('message', 'Service Created Successfully');
     }
 
     /**

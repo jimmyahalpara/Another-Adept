@@ -19,7 +19,7 @@ class CreateServicesTable extends Migration
             $table -> text('description');
             $table -> bigInteger('price');
             $table -> bigInteger('price_type_id');
-            $table -> bigInteger('area_id');
+            // $table -> bigInteger('area_id');
             $table -> bigInteger('organization_id');
             $table -> bigInteger('service_category_id') -> nullable();
 

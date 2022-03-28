@@ -183,6 +183,16 @@
 #introServiceCreate {
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 10vh;
-    height: 170vh;
+    height: fit-content;
+    padding: 10vh;
+}
+
+
+/* service index page */
+
+#introServiceIndex {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: fit-content;
+    padding: 20vh;
 }

@@ -49,15 +49,30 @@ class User extends Authenticatable
 
 
 
-    public function user_state(){
-        return $this -> belongsTo(UserState::class);
+    public function user_state()
+    {
+        return $this->belongsTo(UserState::class);
     }
 
-    public function area(){
-        return $this -> belongsTo(Area::class);
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
     }
 
-    public function user_organization_memberships(){
-        return $this -> hasMany(UserOrganizationMembership::class);
+    public function get_organization()
+    {
+
+
+        $mem = $this->user_organization_memberships;
+        if (!$mem) {
+            return true;
+        }
+
+        return $mem-> first() ->organization;
+    }
+
+    public function user_organization_memberships()
+    {
+        return $this->hasMany(UserOrganizationMembership::class);
     }
 }

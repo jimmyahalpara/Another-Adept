@@ -36,7 +36,7 @@
                         </a>
                         <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @organization_role('admin')
-                            <li><a class="dropdown-item" href="#">Services</a></li>
+                            <li><a class="dropdown-item" href="{{ route('services.index') }}">Services</a></li>
                             @endorganization_role
 
                             @organization_role('manager')

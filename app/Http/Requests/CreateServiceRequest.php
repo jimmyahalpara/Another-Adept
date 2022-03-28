@@ -13,7 +13,7 @@ class CreateServiceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class CreateServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'max:255', 'min:3'],
+            'description' => ['required', 'max:1020', 'min:2'],
+            'price' => ['required', 'numeric'],
+            'price_type_id' => ['required', 'numeric'],
+            'service_category_id' => ['required', 'numeric'],
+            'service_image' => ['required', 'image']
         ];
     }
 }
