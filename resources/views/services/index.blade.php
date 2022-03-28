@@ -47,7 +47,7 @@
                 <th>Areas</th>
                 <th>Action</th>
             </tr>
-            @foreach ($services as $service)
+            @forelse ($services as $service)
                 <tr>
                     <td>{{ $service->id }}</td>
                     <td>{{ $service->name }}</td>
@@ -78,7 +78,11 @@
                     </td>
 
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td>No Services Available</td>
+                </tr>
+            @endforelse
         </table>
 
     </main>

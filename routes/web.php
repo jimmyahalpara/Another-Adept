@@ -27,6 +27,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware('auth') -> group(function (){
     Route::resource('organizations',OrganizationController::class) -> only(['create', 'store']);
+
+    Route::post('services/{service}/new_image', [ServiceController::class, 'changeImage']) -> name('services.image.change');
     Route::resource('services', ServiceController::class);
 });
 

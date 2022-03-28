@@ -98,7 +98,7 @@
                             </a>
                         </li>
                     @endauth
-                    <li class="nav-item me-3 me-lg-0">
+                    {{-- <li class="nav-item me-3 me-lg-0">
                         <a class="nav-link" href="#!">
                             <i class="fab fa-twitter"></i>
                         </a>
@@ -107,7 +107,7 @@
                         <a class="nav-link" href="#!">
                             <i class="fab fa-instagram"></i>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

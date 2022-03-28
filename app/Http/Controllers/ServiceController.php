@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateServiceRequest;
+use App\Http\Requests\ImageUploadRequest;
 use App\Models\Area;
 use App\Models\Image;
 use App\Models\PriceType;
@@ -106,6 +107,9 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
+        if (organization_id(true) != $service -> organization_id){
+            return redirect() -> route('services.index') -> with('message', 'Unauthorized Action');
+        }
         return view('services.show', compact(
             'service'
         ));
@@ -144,4 +148,33 @@ class ServiceController extends Controller
     {
         //
     }
+
+    /**
+     * Change profile image for specified service 
+     */
+    public function changeImage(ImageUploadRequest $request, Service $service) 
+    {
+        if (organization_id(true) != $service -> organization_id){
+            return redirect() -> route('services.index') -> with('message', 'UnAuthorized Action');
+        }
+
+        $old_image = $service -> images -> first();
+        $old_file_path = public_path('images').'\\'.basename($old_image -> image_path);
+        unlink($old_file_path);
+        $old_image -> delete();
+
+
+        
+        $fileName = time() . '.' . $request->image->extension();
+        $path = asset('images') . "/" . $fileName;
+        $request->image->move(public_path('images'), $fileName);
+
+        $document = new Image();
+        $document->image_path = $path;
+
+        $service->images()->save($document);
+        return redirect() -> route('services.show', ['service' => $service -> id]) -> with('message', 'Image Updated Successfully');
+
+    }
+
 }
