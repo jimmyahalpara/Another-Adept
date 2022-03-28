@@ -42,4 +42,8 @@ class Service extends Model
     public function service_category(){
         return $this -> belongsTo(ServiceCategory::class);
     }
+
+    public function areas(){
+        return $this -> belongsToMany(Area::class, 'service_area_availablities');
+    }
 }

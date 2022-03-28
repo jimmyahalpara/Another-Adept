@@ -7,6 +7,7 @@ use App\Models\Area;
 use App\Models\Image;
 use App\Models\PriceType;
 use App\Models\Service;
+use App\Models\ServiceAreaAvailablity;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +62,10 @@ class ServiceController extends Controller
      */
     public function store(CreateServiceRequest $request)
     {
+
+        // dd($request -> validated());
         $data = $request -> validated();
+
 
         $service = new Service();
         $service -> name = $data['name'];
@@ -74,8 +78,16 @@ class ServiceController extends Controller
         $service -> save();
 
 
+        foreach ($data['area'] as $value) {
+            $service_area = new ServiceAreaAvailablity();
+            $service_area -> area_id = $value;
+            $service_area -> service_id = $service -> id;
+            $service_area -> save();
+        }
+
+
         $fileName = time() . '.' . $request->service_image->extension();
-        $path = public_path('images') . "/" . $fileName;
+        $path = asset('images') . "/" . $fileName;
         $request->service_image->move(public_path('images'), $fileName);
 
         $document = new Image();
@@ -83,7 +95,7 @@ class ServiceController extends Controller
 
         $service->images()->save($document);
 
-        return redirect() -> route('home') -> with('message', 'Service Created Successfully');
+        return redirect() -> route('services.index') -> with('message', 'Service Created Successfully');
     }
 
     /**
@@ -94,7 +106,9 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        //
+        return view('services.show', compact(
+            'service'
+        ));
     }
 
     /**

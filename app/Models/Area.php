@@ -13,4 +13,8 @@ class Area extends Model
     public function city(){
         return $this -> belongsTo(City::class);
     }
+
+    public function services(){
+        return $this -> belongsToMany(Service::class, 'service_area_availablities');
+    }
 }

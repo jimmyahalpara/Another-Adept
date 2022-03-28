@@ -66,7 +66,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ Auth::user() -> name }}
+                                {{ Auth::user()->name }}
                             </a>
                             <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#">My Orders</a></li>
@@ -91,11 +91,13 @@
 
                 </ul>
                 <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="#!">
-                            <i class="fas fa-shopping-cart"></i>
-                        </a>
-                    </li>
+                    @auth
+                        <li class="nav-item me-3 me-lg-0">
+                            <a class="nav-link" href="#!">
+                                <i class="fas fa-shopping-cart"></i>
+                            </a>
+                        </li>
+                    @endauth
                     <li class="nav-item me-3 me-lg-0">
                         <a class="nav-link" href="#!">
                             <i class="fab fa-twitter"></i>
@@ -154,9 +156,9 @@
         background-color: rgba(255, 255, 255, 0.301);
         backdrop-filter: blur(10px);
     }
+
     nav {
         font-weight: 600;
     }
 
-    
 </style>
