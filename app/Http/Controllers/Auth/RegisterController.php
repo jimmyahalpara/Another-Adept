@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\City;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -27,9 +28,11 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        $areas = Area::get();
+        // $areas = Area::get();
+        $cities = City::orderBy('name') -> get();
         return view('auth.register', compact(
-            'areas'
+            // 'areas',
+            'cities'
         ));
     }
 

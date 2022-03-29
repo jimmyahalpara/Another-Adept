@@ -28,8 +28,18 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware('auth') -> group(function (){
     Route::resource('organizations',OrganizationController::class) -> only(['create', 'store']);
 
-    Route::post('services/{service}/new_image', [ServiceController::class, 'changeImage']) -> name('services.image.change');
-    Route::resource('services', ServiceController::class);
+
+    Route::prefix('services/{service}') -> name('services.') -> controller(ServiceController::class) -> group(function (){
+        Route::post('new_image', 'changeImage') -> name('image.change');
+        Route::post('name/update', 'updateName') -> name('name.update');
+        Route::post('description/update', 'updateDescription') -> name('description.update');
+        Route::post('price/update', 'updatePrice') -> name('price.update');
+        Route::post('price-type/update', 'updatePriceType') -> name('price.type.update');
+        Route::post('service-category/update', 'updateServiceCategory') -> name('service.category.update');
+        Route::post('area/update', 'updateArea') -> name('area.update');
+    });
+
+    Route::resource('services', ServiceController::class) -> except(['update', 'edit']);
 });
 
 

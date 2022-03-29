@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateServiceRequest;
 use App\Http\Requests\ImageUploadRequest;
 use App\Models\Area;
+use App\Models\City;
 use App\Models\Image;
 use App\Models\PriceType;
 use App\Models\Service;
@@ -19,8 +20,9 @@ class ServiceController extends Controller
 
     public function __construct()
     {
-        $this -> middleware('organization.role:manager');
+        $this->middleware('organization.role:manager');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,11 +31,11 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
 
-        $num_rows = $request -> input('num_rows', 10);
-        $services = Service::where('organization_id', organization_id()) -> sortable('id') -> paginate($num_rows) -> withQueryString() ;
+        $num_rows = $request->input('num_rows', 10);
+        $services = Service::where('organization_id', organization_id())->sortable('id')->paginate($num_rows)->withQueryString();
         return view('services.index', compact(
             'services',
-            'num_rows'
+            'num_rows',
         ));
     }
 
@@ -47,11 +49,12 @@ class ServiceController extends Controller
 
         $price_types = PriceType::get();
         $service_categories = ServiceCategory::get();
-        $areas = Area::get();
+        // $areas = Area::get();
+        $cities = City::orderBy('name')->get();
         return view('services.create', compact(
             'price_types',
             'service_categories',
-            'areas'
+            'cities'
         ));
     }
 
@@ -65,25 +68,30 @@ class ServiceController extends Controller
     {
 
         // dd($request -> validated());
-        $data = $request -> validated();
+        $data = $request->validated();
 
 
         $service = new Service();
-        $service -> name = $data['name'];
-        $service -> description = $data['description'];
-        $service -> price = $data['price'];
-        $service -> price_type_id = $data['price_type_id'];
-        $service -> service_category_id = $data['service_category_id'];
-        $service -> organization_id = Auth::user() -> user_organization_memberships[0] -> organization_id;
-        
-        $service -> save();
+        $service->name = $data['name'];
+        $service->description = $data['description'];
+        $service->price = $data['price'];
+        $service->price_type_id = $data['price_type_id'];
+        $service->service_category_id = $data['service_category_id'];
+        $service->organization_id = Auth::user()->user_organization_memberships[0]->organization_id;
+
+        $service->save();
 
 
         foreach ($data['area'] as $value) {
+
+            $area = ServiceAreaAvailablity::where('area_id', $value)->where('service_id', $service->id)->get();
+            if ($area->count() > 0) {
+                continue;
+            }
             $service_area = new ServiceAreaAvailablity();
-            $service_area -> area_id = $value;
-            $service_area -> service_id = $service -> id;
-            $service_area -> save();
+            $service_area->area_id = $value;
+            $service_area->service_id = $service->id;
+            $service_area->save();
         }
 
 
@@ -96,7 +104,7 @@ class ServiceController extends Controller
 
         $service->images()->save($document);
 
-        return redirect() -> route('services.index') -> with('message', 'Service Created Successfully');
+        return redirect()->route('services.index')->with('message', 'Service Created Successfully');
     }
 
     /**
@@ -107,36 +115,45 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        if (organization_id(true) != $service -> organization_id){
-            return redirect() -> route('services.index') -> with('message', 'Unauthorized Action');
+
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
         }
+
+        $price_types = PriceType::get();
+        $service_categories = ServiceCategory::get();
+        $cities = City::orderBy('name') -> get();
         return view('services.show', compact(
-            'service'
+            'service',
+            'price_types',
+            'service_categories',
+            'cities'
         ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Service $service)
-    {
-        //
-    }
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  *
+    //  * @param  \App\Models\Service  $service
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function edit(Service $service)
+    // {
+    //     //
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Service $service)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  \App\Models\Service  $service
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, Service $service)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -146,25 +163,30 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        //
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'UnAuthorized Action');
+        }
+
+        $service -> delete();
+        return redirect() -> route('services.index') -> with('message', 'Service Deleted Successfully.');
     }
 
     /**
      * Change profile image for specified service 
      */
-    public function changeImage(ImageUploadRequest $request, Service $service) 
+    public function changeImage(ImageUploadRequest $request, Service $service)
     {
-        if (organization_id(true) != $service -> organization_id){
-            return redirect() -> route('services.index') -> with('message', 'UnAuthorized Action');
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'UnAuthorized Action');
         }
 
-        $old_image = $service -> images -> first();
-        $old_file_path = public_path('images').'\\'.basename($old_image -> image_path);
+        $old_image = $service->images->first();
+        $old_file_path = public_path('images') . '\\' . basename($old_image->image_path);
         unlink($old_file_path);
-        $old_image -> delete();
+        $old_image->delete();
 
 
-        
+
         $fileName = time() . '.' . $request->image->extension();
         $path = asset('images') . "/" . $fileName;
         $request->image->move(public_path('images'), $fileName);
@@ -173,8 +195,146 @@ class ServiceController extends Controller
         $document->image_path = $path;
 
         $service->images()->save($document);
-        return redirect() -> route('services.show', ['service' => $service -> id]) -> with('message', 'Image Updated Successfully');
-
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Image Updated Successfully');
     }
 
+
+    /**
+     * Function to update name from post request 
+     */
+    public function updateName(Request $request, Service $service)
+    {
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+
+        $request->validate([
+            'name' => ['required', 'max:255', 'min:3']
+        ]);
+
+        $service->name = $request->name;
+        $service->save();
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Name Updated Successfully!');
+    }
+
+
+    /** 
+     * Function to update service description from post request 
+     */
+    public function updateDescription(Request $request, Service $service)
+    {
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+
+        $request->validate([
+            'description' => ['required', 'max:1020', 'min:3']
+        ]);
+
+        $service->description = $request->description;
+        $service->save();
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Description Updated Successfully!');
+    }
+
+    /**
+     * function to update service price 
+     */
+    public function updatePrice(Request $request, Service $service)
+    {
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+
+        $request->validate([
+            'price' => ['required', 'numeric'],
+        ]);
+
+        $service->price = $request->price;
+        $service->save();
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Price Updated Successfully!');
+    }
+
+
+    /**
+     * Function to update service price type
+     */
+    public function updatePriceType(Request $request, Service $service)
+    {
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+
+        $request->validate([
+            'price_type_id' => ['required', 'numeric'],
+        ]);
+
+        $service->price_type_id = $request->price_type_id;
+        $service->save();
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Price Type Updated Successfully!');
+    }
+
+
+    /**
+     * function to update service category 
+     */
+    public function updateServiceCategory(Request $request, Service $service)
+    {
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+
+        $request->validate([
+            'service_category_id' => ['required', 'numeric'],
+        ]);
+
+        $service->service_category_id = $request->service_category_id;
+        $service->save();
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Service Category Updated Successfully!');
+    }
+
+
+
+    /** 
+     * Function to update service area. It deletes all the available entry for the service in 
+     * service_area_availablity and updatedes it with new recieved data. 
+     */
+    public function updateArea(Request $request, Service $service)
+    {
+
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+
+        $request->validate([
+            'area' => ['required'],
+            'area.*' => ['required', 'numeric', 'min:1']
+        ]);
+
+        ServiceAreaAvailablity::where('service_id', $service -> id) -> delete();
+
+        foreach ($request -> area as $value) {
+
+            $area = ServiceAreaAvailablity::where('area_id', $value)->where('service_id', $service->id)->get();
+            if ($area->count() > 0) {
+                continue;
+            }
+            $service_area = new ServiceAreaAvailablity();
+            $service_area->area_id = $value;
+            $service_area->service_id = $service->id;
+            $service_area->save();
+        }
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Areas Updated Successfully!');
+    }
 }

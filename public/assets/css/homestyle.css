@@ -162,7 +162,7 @@
 }
 
 .small-note {
-    width: 80%;
+    width: 20vw;
 }
 
 .buttonRounded-organization {
@@ -203,10 +203,10 @@ td {
 
 
 /* show service */
+
 .service-image {
     height: 50vh;
 }
-
 
 .modal-content {
     background-color: rgba(255, 255, 255, 0.563);
@@ -218,11 +218,14 @@ td {
     background-color: white;
 }
 
-
 .modal-header {
     border-bottom: none !important;
 }
 
 .modal-footer {
     border-top: none !important;
+}
+
+a {
+    cursor: pointer;
 }

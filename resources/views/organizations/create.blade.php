@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label for="identification">Photo ID</label>
                             <p class="small-note"><small>
-                                    Note: Please Enter Valid Photo ID Card. After its verification from our side, then only
+                                    Note: Please Enter Valid Photo ID Card.Only After its verification from our side,
                                     you'll be able to host your services or register other members.
                                 </small></p>
                             <input type="file" name="identification" id="identification"

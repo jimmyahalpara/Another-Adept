@@ -147,10 +147,12 @@
                                     <label for="area_id" class="sr-only">City - Area</label>
                                     <select class="form-control" name="area_id" id="area_id">
                                         <option value="">Select Area</option>
-                                        @foreach ($areas as $area)
-                                            <option value="{{ $area->id }}"
-                                                @if (old('area_id') == $area->id) selected @endif>
-                                                {{ $area->city->name }} - {{ $area->name }}</option>
+                                        @foreach ($cities as $city)
+                                            <optgroup label="{{ $city -> name }}">
+                                                @foreach ($city->areas->sortBy('name') as $area)
+                                                    <option value="{{ $area -> id }}">{{ $area -> name }}</option>
+                                                @endforeach
+                                            </optgroup>
                                         @endforeach
                                     </select>
                                 </div>

@@ -159,7 +159,8 @@ return [
     */
 
     'attributes' => [
-        'area_id' => 'Area'
+        'area_id' => 'Area',
+        'area.*' => 'Area'
     ],
 
 ];

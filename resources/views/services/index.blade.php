@@ -7,7 +7,7 @@
         <!-- Intro -->
         <div id="introServiceIndex" class="bg-image d-flex justify-content-center align-items-center"
             style="
-                                                                                            background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
+                                                                                                background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0.15);">
                 <h1>All Services</h1>
@@ -50,7 +50,11 @@
             @forelse ($services as $service)
                 <tr>
                     <td>{{ $service->id }}</td>
-                    <td>{{ $service->name }}</td>
+                    <td>
+                        <a href="{{ route('services.show', ['service' => $service->id]) }}">
+                            {{ $service->name }}
+                        </a>
+                    </td>
                     <td>{{ $service->price }}</td>
                     <td>{{ $service->price_type->name }}</td>
                     <td>{{ $service->service_category->name }}</td>
@@ -61,17 +65,20 @@
                         @forelse ($service -> areas as $area)
                             <span class="badge bg-primary">{{ $area->city->name }} - {{ $area->name }}</span>
                         @empty
-                            <span class="badge badge-danger">Available Nowhere</span>
+                            <span class="badge bg-danger">AVAILABLE NOWHERE</span>
                         @endforelse
                     </td>
                     <td>
-                        <a href="" class="m-1">
-                            <i class="fa-solid fa-pen"></i>
-                        </a>
-                        <a href="" class="m-1">
+                        <form method="POST" onsubmit="return confirm('Do you really want to delete {{ $service -> name }} service ?')" action="{{ route('services.destroy', ['service' => $service -> id ]) }}" id="delete-form-{{ $service -> id }}">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        <a onclick="$('#delete-form-{{ $service -> id }}').submit()" class="m-1">
+
+                            
                             <i class="fa-solid fa-trash-can"></i>
                         </a>
-                        <a href="{{ route('services.show', ['service' => $service -> id]) }}" class="m-1">
+                        <a href="{{ route('services.show', ['service' => $service->id]) }}" class="m-1">
                             <i class="fa-solid fa-eye"></i>
                         </a>
 
@@ -88,7 +95,7 @@
     </main>
 
 
-    <div class="modal fade" id="viewModel" tabindex="-1" >
+    <div class="modal fade" id="viewModel" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -96,7 +103,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -116,6 +123,5 @@
             url.searchParams.set('page', 1);
             document.location = url.href;
         });
-
     </script>
 @endsection

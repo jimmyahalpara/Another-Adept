@@ -24,8 +24,7 @@
                     <div class="login-form-group form-floating my-4">
                         <input id="name" type="text" class="w-100 form-control @error('name') is-invalid @enderror"
                             name="name" value="{{ old('name') }}" autocomplete="name"
-                            placeholder="Enter Organization Name" @error('name') autofocus @enderror
-                            value="{{ old('name') }}">
+                            placeholder="Enter Organization Name" @error('name') autofocus @enderror>
                         <label for="name">Service Name</label>
                         @error('name')
                             <span class="invalid-feedback" role="alert">
@@ -49,8 +48,7 @@
                     <div class="login-form-group form-floating my-4">
                         <input id="price" type="number" class="w-100 form-control @error('price') is-invalid @enderror"
                             name="price" value="{{ old('price') }}" autocomplete="price"
-                            placeholder="Enter Organization Name" @error('price') autofocus @enderror
-                            value="{{ old('price') }}">
+                            placeholder="Enter Organization Name" @error('price') autofocus @enderror>
                         <label for="price">Price</label>
                         @error('price')
                             <span class="invalid-feedback" role="alert">
@@ -79,16 +77,20 @@
                             <select name="area[]" id="area_id_1"
                                 class="w-100 form-control @error('area_id_1') is-invalid @enderror"
                                 @error('area_id_1') autofocus @enderror>
-                                @foreach ($areas as $area)
-                                    <option value="{{ $area->id }}" @if (old('area_id_1') == $area->id) selected @endif>
-                                        {{ $area->city->name }} - {{ $area->name }}</option>
+                                <option value="">Select Area</option>
+                                @foreach ($cities as $city)
+                                    <optgroup label="{{ $city->name }}">
+                                        @foreach ($city->areas->sortBy('name') as $area)
+                                            <option value="{{ $area->id }}">{{ $area->name }}</option>
+                                        @endforeach
+                                    </optgroup>
                                 @endforeach
                             </select>
                             <div class="w-100 d-flex justify-content-end align-items-center">
-                                <button onclick="$('#area_container_1').remove()" type="button"
+                                {{-- <button onclick="$('#area_container_1').remove()" type="button"
                                     class="buttonRounded-organization float-right mt-1 p-2 px-4">
                                     Remove
-                                </button>
+                                </button> --}}
                             </div>
                             <label for="area_id_1">Area</label>
                             @error('area_id_1')
@@ -104,19 +106,6 @@
                     <button onclick="addArea()" type="button" class="buttonRounded-organization p-2 px-4">
                         Add Area
                     </button>
-
-
-
-                    {{-- <div class="my-4">
-                        <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-                            <option value="AL">Alabama</option>
-                            <option value="WY">Wyoming</option>
-                        </select>
-                    </div> --}}
-
-
-
-
 
                     <div class="login-form-group form-floating my-4">
                         <select name="service_category_id" id="service_category_id"
@@ -187,9 +176,13 @@
                             <select name="area[]" id="area_id_` + num_area + `"
                                 class="w-100 form-control @error('area_id_`+num_area+`') is-invalid @enderror"
                                 @error('area_id_`+num_area+`') autofocus @enderror>
-                                @foreach ($areas as $area)
-                                    <option value="{{ $area->id }}">
-                                        {{ $area->city->name }} - {{ $area->name }}</option>
+                                <option value="">Select Area</option>
+                                @foreach ($cities as $city)
+                                    <optgroup label="{{ $city->name }}">
+                                        @foreach ($city->areas->sortBy('name') as $area)
+                                            <option value="{{ $area->id }}">{{ $area->name }}</option>
+                                        @endforeach
+                                    </optgroup>
                                 @endforeach
                             </select>
                             <div class="w-100 d-flex justify-content-end align-items-center">

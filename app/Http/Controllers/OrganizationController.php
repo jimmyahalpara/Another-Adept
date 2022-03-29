@@ -74,7 +74,7 @@ class OrganizationController extends Controller
         $document->document_path = $path;
 
         $organization->documents()->save($document);
-        return redirect()->home()->with('message', "Organization Created Successfull! Now you will only have to wait for it to get verified.. ");
+        return redirect()->home()->with('message', "Organization Created Successfully! Now you will only have to wait for it to get verified.. ");
     }
 
     /**

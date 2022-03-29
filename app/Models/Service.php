@@ -27,10 +27,6 @@ class Service extends Model
         return $this -> belongsTo(PriceType::class);
     }
 
-    public function area(){
-        return $this -> belongsTo(Area::class);
-    }
-
     public function organization(){
         return $this -> belongsTo(Organization::class);
     }
@@ -45,5 +41,9 @@ class Service extends Model
 
     public function areas(){
         return $this -> belongsToMany(Area::class, 'service_area_availablities');
+    }
+
+    public function areas_count(){
+        return $this -> belongsToMany(Area::class, 'service_area_availablities') -> count();
     }
 }
