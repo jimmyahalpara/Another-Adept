@@ -28,7 +28,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('organizations', OrganizationController::class)->only(['create', 'store']);
+    Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
 
 
     Route::prefix('services/{service}')->name('services.')->controller(ServiceController::class)->group(function () {

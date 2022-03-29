@@ -48,7 +48,7 @@
                             @endorganization_role
 
                             @organization_role('admin')
-                            <li><a class="dropdown-item" href="#">Edit Detailss</a></li>
+                            <li><a class="dropdown-item" href="{{ route('organizations.show', ['organization' => organization_id()]) }}">Edit Detailss</a></li>
                             @endorganization_role
                         </ul>
                     </li>

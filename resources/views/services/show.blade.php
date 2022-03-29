@@ -6,8 +6,7 @@
     <section>
         <!-- Intro -->
         <div id="introServiceIndex" class="bg-image d-flex justify-content-center align-items-center"
-            style="
-                                                                                                                                                                                        background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
+            style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0.15);">
                 <h1>{{ $service->name }}</h1>
@@ -76,10 +75,16 @@
             <tr>
                 <th>Areas </th>
                 <td>
-                    @foreach ($service->areas as $area)
-                        {{ $area->city->name }} - {{ $area->name }}
-                        <hr>
-                    @endforeach
+                    <table class="table">
+                        @foreach ($service->areas as $area)
+                            <tr>
+                                <td>
+                                    {{ $area->city->name }} - {{ $area->name }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+
                 </td>
                 <td>
                     <a data-bs-toggle="modal" data-bs-target="#editArea" class="m-1">
@@ -90,29 +95,14 @@
             <tr>
                 <th>Created At </th>
                 <td>{{ $service->created_at }}</td>
-                <td>
-                    <a href="" class="m-1">
-                        <i class="fa-solid fa-pen"></i>
-                    </a>
-                </td>
             </tr>
             <tr>
                 <th>Updated At </th>
                 <td>{{ $service->updated_at }}</td>
-                <td>
-                    <a href="" class="m-1">
-                        <i class="fa-solid fa-pen"></i>
-                    </a>
-                </td>
             </tr>
             <tr>
                 <th>Deleted At </th>
                 <td>{{ $service->deleted_at }}</td>
-                <td>
-                    <a href="" class="m-1">
-                        <i class="fa-solid fa-pen"></i>
-                    </a>
-                </td>
             </tr>
 
         </table>

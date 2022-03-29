@@ -99,6 +99,10 @@ function organization_inactive()
 }
 
 
+
+/**
+ * Get organization id of current user
+ */
 function organization_id($validation = false)
 {
     if ($validation){
