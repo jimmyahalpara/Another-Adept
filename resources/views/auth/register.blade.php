@@ -141,7 +141,7 @@
                                 <div class="form-group mb-4">
                                     <label for="address" class="sr-only">Address</label>
                                     <input type="text" name="address" id="address" class="form-control"
-                                        placeholder="Ente Your address" value="{{ old('address') }}">
+                                        placeholder="Enter Your address" value="{{ old('address') }}">
                                 </div>
                                 <div class="form-group mb-4">
                                     <label for="area_id" class="sr-only">City - Area</label>

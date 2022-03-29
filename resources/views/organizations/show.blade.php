@@ -9,17 +9,44 @@
             style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0.15);">
-                <h1>{{ $organization -> name }}</h1>
+                <h1>{{ $organization->name }}</h1>
             </div>
         </div>
     </section>
     <main class="p-3 px-5 d-flex justify-content-center align-items-center flex-column">
+        @if (!$errors->isEmpty())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <span>{{ $error }}</span><br>
+                @endforeach
+            </div>
+        @endif
+        <table class="table w-75">
+            <tr>
+                <th>Name</th>
+                <td>{{ $organization->name }}</td>
+                <td>
+                    <a class="m-1" data-bs-toggle="modal" data-bs-target="#editName">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{!! nl2br(e($organization->description))  !!}</td>
+                <td>
+                    <a class="m-1" data-bs-toggle="modal" data-bs-target="#editDescription">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                </td>
+            </tr>
 
+        </table>
     </main>
 
 
     {{-- EDIT NAME --}}
-    {{-- <div class="modal fade" id="editName" tabindex="-1">
+    <div class="modal fade" id="editName" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -27,7 +54,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="name_form" action="{{ route('services.name.update', ['service' => $service->id]) }}"
+                    <form id="name_form" action="{{ route('organizations.name.update', ['organization' => $organization->id]) }}"
                         method="post">
                         @csrf
 
@@ -35,7 +62,7 @@
                             <input id="name" type="text" class="w-100 form-control @error('name') is-invalid @enderror"
                                 name="name" value="{{ $organization->name }}" autocomplete="name" placeholder="Enter Name"
                                 @error('name') autofocus @enderror">
-                            <label for="name">Service Name</label>
+                            <label for="name">Organization Name</label>
                         </div>
                     </form>
                 </div>
@@ -45,11 +72,11 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 
 
     {{-- EDIT DESCRIPTION --}}
-    {{-- <div class="modal fade" id="editDescription" tabindex="-1">
+    <div class="modal fade" id="editDescription" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -58,7 +85,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="description_form"
-                        action="{{ route('services.description.update', ['service' => $service->id]) }}" method="post">
+                        action="{{ route('organizations.description.update', ['organization' => $organization->id]) }}" method="post">
                         @csrf
 
                         <div class="form-floating">
@@ -66,7 +93,7 @@
                                 placeholder="Enter Description of Your Organizaiton" id="floatingTextarea2"
                                 style="height: 100px" name="description"
                                 @error('description') autofocus @enderror>{{ $organization->description }}</textarea>
-                            <label for="floatingTextarea2">Service Description</label>
+                            <label for="floatingTextarea2">Organization Description</label>
 
                             @error('description')
                                 <span class="invalid-feedback" role="alert">
@@ -83,5 +110,5 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 @endsection

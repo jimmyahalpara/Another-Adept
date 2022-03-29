@@ -122,8 +122,8 @@
 #introOrg {
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 15vh;
-    height: 130vh;
+    padding: 15vh;
+    height:fit-content;
 }
 
 #organization-form-container {
@@ -144,7 +144,7 @@
 #organization-form-container select {
     background-color: rgba(0, 0, 0, 0.474);
     border: none;
-    color: rgba(255, 255, 255, 0.549);
+    color: white;
 }
 
 #organization-form-container input:focus,
@@ -184,7 +184,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     height: fit-content;
-    padding: 10vh;
+    padding: 15vh;
 }
 
 

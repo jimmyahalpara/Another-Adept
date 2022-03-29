@@ -2,7 +2,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top mask-custom shadow-0">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}"><span style="color: #5e9693;">Service Adept</span>
+            <a class="navbar-brand" href="{{ route('home') }}">
+                <img src="{{ asset('assets/images/logo.svg') }}" alt="Service Adept" id="site_logo">
                 {{-- <span style="color: #fff;">logist</span> --}}
             </a>
             <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
@@ -39,16 +40,20 @@
                             <li><a class="dropdown-item" href="{{ route('services.index') }}">Services</a></li>
                             @endorganization_role
 
-                            @organization_role('manager')
+                            @organization_role('admin')
                             <li><a class="dropdown-item" href="#">Members</a></li>
                             @endorganization_role
 
-                            @organization_role('provider')
+                            @organization_role('manager')
                             <li><a class="dropdown-item" href="#">Orders</a></li>
                             @endorganization_role
 
+                            @organization_role('provider')
+                            <li><a href="#" class="dropdown-item">Service Orders</a></li>
+                            @endorganization_role
+
                             @organization_role('admin')
-                            <li><a class="dropdown-item" href="{{ route('organizations.show', ['organization' => organization_id()]) }}">Edit Detailss</a></li>
+                            <li><a class="dropdown-item" href="{{ route('organizations.show', ['organization' => organization_id()]) }}">Edit Details</a></li>
                             @endorganization_role
                         </ul>
                     </li>
@@ -159,6 +164,11 @@
 
     nav {
         font-weight: 600;
+    }
+
+    #site_logo{
+        height: 16vh;
+        margin: -5vh;
     }
 
 </style>

@@ -60,6 +60,7 @@
 
 
     </div>
+    @include('layouts.footer')
     @if (session('message'))
         {{-- {{ displayErrorMessage() }} --}}
         <script>
@@ -70,7 +71,7 @@
         </script>
         {{ session(['message' => '']) }}
     @endif
-
+    
     <style>
         .swal2-modal {
             background-color: rgba(0, 0, 0, 0.323) !important;
@@ -80,5 +81,6 @@
 
     </style>
 </body>
+
 
 </html>

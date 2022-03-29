@@ -28,6 +28,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::prefix('organizations/{organization}') -> name('organizations.') -> controller(OrganizationController::class) -> group(function (){
+        Route::post('name/update', 'updateName') -> name('name.update');
+        Route::post('description/update', 'updateDescription') -> name('description.update');
+    });
     Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
 
 
@@ -40,7 +45,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('service-category/update', 'updateServiceCategory')->name('service.category.update');
         Route::post('area/update', 'updateArea')->name('area.update');
     });
-
     Route::resource('services', ServiceController::class)->except(['update', 'edit']);
 });
 

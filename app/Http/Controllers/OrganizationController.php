@@ -8,11 +8,17 @@ use App\Models\Image;
 use App\Models\Organization;
 use App\Models\UserOrganizationMembership;
 use App\Models\UserOrganizationMembershipRole;
+use Illuminate\Cache\RedisStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('organization.role:admin', ['except' => ['create', 'store']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -85,6 +91,9 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
+        if (organization_id() != $organization->id) {
+            return redirect()->route('home')->with('message', 'Unauthorized Action');
+        }
         return view('organizations.show', compact(
             'organization'
         ));
@@ -121,6 +130,40 @@ class OrganizationController extends Controller
      */
     public function destroy(Organization $organization)
     {
-        //
+        
+    }
+
+
+    public function updateName(Request $request, Organization $organization)
+    {
+        if (organization_id() != $organization->id) {
+            return redirect()->route('home')->with('message', 'Unauthorized Action');
+        }
+
+        $request->validate([
+            'name' => ['required', 'max:255', 'min:3'],
+        ]);
+
+        $organization->name = $request->name;
+        $organization->save();
+
+        return redirect()->route('organizations.show', ['organization' => $organization->id])->with('message', 'Organization Name Updated Successfully!');
+    }
+
+    public function updateDescription(Request $request, Organization $organization)
+    {
+        if (organization_id() != $organization->id) {
+            return redirect()->route('home')->with('message', 'Unauthorized Action');
+        }
+
+        $request->validate([
+            'description' => ['required', 'max:1020', 'min:2'],
+        ]);
+
+        $organization->description = $request->description;
+        $organization->save();
+
+
+        return redirect()->route('organizations.show', ['organization' => $organization->id])->with('message', 'Organization Description Update Successfully');
     }
 }
