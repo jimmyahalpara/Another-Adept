@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ServiceController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,32 +21,49 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
-Route::get('/logout', [LoginController::class, 'logout']) -> name('logout.get');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout.get');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::middleware('auth') -> group(function (){
-    Route::resource('organizations',OrganizationController::class) -> only(['create', 'store']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('organizations', OrganizationController::class)->only(['create', 'store']);
 
 
-    Route::prefix('services/{service}') -> name('services.') -> controller(ServiceController::class) -> group(function (){
-        Route::post('new_image', 'changeImage') -> name('image.change');
-        Route::post('name/update', 'updateName') -> name('name.update');
-        Route::post('description/update', 'updateDescription') -> name('description.update');
-        Route::post('price/update', 'updatePrice') -> name('price.update');
-        Route::post('price-type/update', 'updatePriceType') -> name('price.type.update');
-        Route::post('service-category/update', 'updateServiceCategory') -> name('service.category.update');
-        Route::post('area/update', 'updateArea') -> name('area.update');
+    Route::prefix('services/{service}')->name('services.')->controller(ServiceController::class)->group(function () {
+        Route::post('new_image', 'changeImage')->name('image.change');
+        Route::post('name/update', 'updateName')->name('name.update');
+        Route::post('description/update', 'updateDescription')->name('description.update');
+        Route::post('price/update', 'updatePrice')->name('price.update');
+        Route::post('price-type/update', 'updatePriceType')->name('price.type.update');
+        Route::post('service-category/update', 'updateServiceCategory')->name('service.category.update');
+        Route::post('area/update', 'updateArea')->name('area.update');
     });
 
-    Route::resource('services', ServiceController::class) -> except(['update', 'edit']);
+    Route::resource('services', ServiceController::class)->except(['update', 'edit']);
 });
 
 
 
 
+/**
+ * ----------------------------------
+ * Routes for email verification
+ * ----------------------------------
+ */
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
 
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
 
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
