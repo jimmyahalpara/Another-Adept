@@ -49,7 +49,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('services', ServiceController::class)->except(['update', 'edit']);
 
 
-
+    Route::prefix('members/{member}') -> name('members.') -> controller(MemberController::class)->group(function (){
+        Route::post('name/update', 'updateName') -> name('name.update');
+        Route::post('phone/update', 'updatePhone') -> name('phone.update');
+        Route::post('address/update', 'updateAddress') -> name('address.update');
+        Route::post('area/update', 'updateArea') -> name('area.update');
+        Route::post('state/update', 'updateUserState') -> name('state.update');
+        Route::post('promote', 'promoteMember') -> name('promote');
+        Route::post('demote', 'demoteMember') -> name('demote');
+    });
     Route::resource('members', MemberController::class);
 });
 

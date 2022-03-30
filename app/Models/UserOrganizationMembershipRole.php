@@ -10,8 +10,8 @@ class UserOrganizationMembershipRole extends Model
     use HasFactory;
 
 
-    function organiation_role(){
-        return $this -> belongsTo(OrganizationRole::class);
+    function organization_role(){
+        return $this -> belongsTo(OrganizationRole::class, 'organization_role_id');
     }
 
     function user_organization_membership(){

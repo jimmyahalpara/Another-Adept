@@ -75,15 +75,29 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
         $mem = $this->user_organization_memberships;
-        if (!$mem) {
-            return true;
+        if (!$mem || !($mem -> first())) {
+            return false;
         }
-
-        return $mem-> first() ->organization;
+        return $mem-> first() -> organization;
     }
 
     public function user_organization_memberships()
     {
         return $this->hasMany(UserOrganizationMembership::class);
     }
+
+    public function user_role(){
+        $mem = $this -> user_organization_memberships;
+        if (count($mem) > 0){
+            $mem = $mem -> first();
+            if ($mem){
+                return $mem -> organization_roles -> first();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }

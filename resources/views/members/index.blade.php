@@ -39,11 +39,13 @@
                 <th>@sortablelink('user.id')</th>
                 <th>@sortablelink('user.name')</th>
                 <th>@sortablelink('user.email')</th>
-                <th>@sortablelink('user.email_verified_at')</th>
-                <th>@sortablelink('user.phone_number')</th>
+                <th>@sortablelink('user.email_verified_at', 'Verified At')</th>
+                <th>@sortablelink('user.phone_number', 'Phone Number')</th>
                 <th>@sortablelink('user.address')</th>
-                <th>@sortablelink('user.user_state')</th>
-                <th>@sortablelink('user.area_id')</th>
+                <th>@sortablelink('user.user_state', 'User State')</th>
+                <th>@sortablelink('user.area_id', 'Area')</th>
+                <th>Role</th>
+                <th>Role Action</th>
                 <th>Created at</th>
                 <th>Updated At</th>
                 <th>Action</th>
@@ -68,6 +70,20 @@
                     <td>{{ $user->address }}</td>
                     <td>{{ $user->user_state -> name }}</td>
                     <td>{{ $user->area -> city -> name }} - {{ $user -> area -> name}} </td>
+                    <td>{{ $user -> user_role() -> name }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center align-items-center flex-column">
+
+                            <form action="{{ route('members.promote', ['member' => $member -> id]) }}" method="post">
+                                @csrf
+                                <button class="btn btn-success btn-block m-1 p-1" @if($user -> user_role() -> id <= 1) disabled  @endif>Promote</button>
+                            </form>
+                            <form action="{{ route('members.demote', ['member' => $member -> id]) }}" method="post">
+                                @csrf
+                                <button class="btn btn-danger btn-m-1 p-1 " @if($user -> user_role() -> id >= 3) disabled  @endif>Demote</button>
+                            </form>
+                        </div>
+                    </td>
                     <td>
                         {{ $user -> created_at }}
                     </td>
@@ -118,7 +134,11 @@
             </div>
         </div>
     </div>
-
+    <style>
+        td {
+            font-size: 0.9em;
+        }
+    </style>
 
     <script>
         $("#num_rows").on('change', function(e) {
