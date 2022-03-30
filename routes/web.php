@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -46,6 +47,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('area/update', 'updateArea')->name('area.update');
     });
     Route::resource('services', ServiceController::class)->except(['update', 'edit']);
+
+
+
+    Route::resource('members', MemberController::class);
 });
 
 

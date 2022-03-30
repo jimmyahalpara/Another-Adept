@@ -11,7 +11,7 @@
                 style="">
                 
                     <h1>Sorry But We Cannot find the Page that You are looking for</h1>
-                    <h5>Error: 404</h5>
+                    <h5>ERROR: <span class="text-danger">404</span> </h5>
 
                     <form id="organization-form-container" class="w-75 mt-3 p-5 d-flex justify-content-center align-items-center flex-column" action="" method="get">
                         <h3>Search for Other Services</h3>

@@ -47,11 +47,13 @@
                                 </span>
                             @enderror
                         </div>
-                        <p class="small-note"><small>
+                        <p class="small-note">
+                            <small>
                                 Note: The currently logged-in user will be the admin/head/owner of this organization and all
                                 its contact details will be used for further communications. If you wish against it, then
                                 create a new User specially for this purpose.
-                            </small></p>
+                            </small>
+                        </p>
 
                         <div class="form-group">
                             <label for="identification">Photo ID</label>
