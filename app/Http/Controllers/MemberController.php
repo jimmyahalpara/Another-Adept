@@ -6,6 +6,9 @@ use App\Http\Requests\UserRegisterRequest;
 use App\Models\City;
 use App\Models\OrganizationRole;
 use App\Models\User;
+use App\Models\UserOrganizationMembership;
+use App\Models\UserOrganizationMembershipRole;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,9 +19,17 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
+        $num_rows = $request->input('num_rows', 10);
+        // $services = User::where('organization_id', organization_id())->sortable('id')->paginate($num_rows)->withQueryString();
+        $current_organization_id = organization_id(true);
+
+        $members = UserOrganizationMembership::with('user') -> where('organization_id', $current_organization_id) -> sortable('user.id')->paginate($num_rows)->withQueryString();
+        return view('members.index', compact(
+            'members',
+            'num_rows',
+        ));
     }
 
     /**
@@ -44,20 +55,41 @@ class MemberController extends Controller
      */
     public function store(UserRegisterRequest $request)
     {
-        dd($request -> all());
+        // dd($request -> all());
 
         $current_organization_id = organization_id();
         
 
         $user = new User();
         $user -> name = $request -> name;
-        $user -> email = $request -> password;
+        $user -> email = $request -> email;
         $user -> password = Hash::make($request -> password);
         $user -> phone_number = $request -> phone_number;
         $user -> address = $request -> address;
         $user -> area_id = $request -> area_id;
-
+        $user -> user_state_id = 1;
         $user -> save();
+
+        event(new Registered($user));
+
+
+        $organization_membersip = new UserOrganizationMembership();
+        $organization_membersip -> user_id = $user -> id;
+        $organization_membersip -> organization_id = $current_organization_id;
+        $organization_membersip -> save();
+
+        $role_id = $request -> input('role_id', '3');
+        if (empty($role_id)){
+            $role_id = '3';
+        }
+
+        $membersip_role = new UserOrganizationMembershipRole();
+        $membersip_role -> organization_role_id = $role_id;
+        $membersip_role -> user_organization_membership_id = $organization_membersip -> id;
+        $membersip_role -> save();
+
+
+        return redirect() -> route('members.index') -> with('message', 'Member added successfully');
 
 
     }

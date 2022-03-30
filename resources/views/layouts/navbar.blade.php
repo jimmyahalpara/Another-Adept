@@ -41,7 +41,7 @@
                             @endorganization_role
 
                             @organization_role('admin')
-                            <li><a class="dropdown-item" href="#">Members</a></li>
+                            <li><a class="dropdown-item" href="{{ route('members.index') }}">Members</a></li>
                             @endorganization_role
 
                             @organization_role('manager')
