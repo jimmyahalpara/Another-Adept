@@ -280,5 +280,58 @@ a {
 }
 
 .select2-container .select2-selection {
-    width: 13vw;
+    width: 13.625vw;
+    min-width: 150px;
+}
+
+.service-container {
+    overflow: hidden;
+    border-radius: 2vh;
+    box-shadow: 0px 0px 10px rgba(95, 95, 95, 0.118);
+    transition: all 0.2s ease-in-out;
+}
+
+.service-container:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+.service-image-container {
+    height: 40vh;
+    overflow: hidden;
+    /* outline: 1px solid red; */
+
+}
+
+.service-image {
+    margin: -1vh -1vh;
+}
+
+.link-heading {
+    text-decoration: none;
+    color: black;
+}
+
+.link-heading:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+.area-badge {
+    cursor: pointer;
+}
+
+.area-badge:hover {
+    color: black;
+    background: white !important;
+    outline: 1px solid black;
+}
+
+#cart-button {
+    font-size: 1.5em;
+}
+
+/* utilieis */
+.big-text {
+    font-size: 2em;
+    cursor: pointer;
 }

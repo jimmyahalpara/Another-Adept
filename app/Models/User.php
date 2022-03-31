@@ -86,6 +86,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserOrganizationMembership::class);
     }
 
+
+    public function user_service_ratings(){
+        return $this -> hasMany(UserServiceRating::class);
+    }
+
+    public function services(){
+        return $this -> belongsToMany(Service::class, 'user_service_likes');
+    }
+
     public function user_role(){
         $mem = $this -> user_organization_memberships;
         if (count($mem) > 0){
@@ -99,5 +108,6 @@ class User extends Authenticatable implements MustVerifyEmail
             return false;
         }
     }
+
 
 }

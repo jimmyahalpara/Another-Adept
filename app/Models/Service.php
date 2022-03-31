@@ -43,6 +43,12 @@ class Service extends Model
         return $this -> belongsToMany(Area::class, 'service_area_availablities');
     }
 
+
+
+    public function user_service_ratings(){
+        return $this -> hasMany(UserServiceRating::class);
+    }
+
     public function areas_count(){
         return $this -> belongsToMany(Area::class, 'service_area_availablities') -> count();
     }
