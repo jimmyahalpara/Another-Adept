@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -58,8 +59,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('promote', 'promoteMember') -> name('promote');
         Route::post('demote', 'demoteMember') -> name('demote');
     });
-    Route::resource('members', MemberController::class);
+    Route::resource('members', MemberController::class)->except(['update', 'edit']);
+
+
 });
+
+Route::get('search', [SearchController::class, 'index']) -> name('search');
 
 
 

@@ -95,6 +95,7 @@
 
 
         </table>
+        <button onclick="document.location='{{ route('members.index') }}'" class="buttonRounded-outlined-light px-3 py-2">Back</button>
     </main>
 
 

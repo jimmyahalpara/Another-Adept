@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Hash;
 class MemberController extends Controller
 {
 
+
+    public function __construct()
+    {
+        $this -> middleware('organization.role:admin');
+    }
+
     private function checkOrganization(User $member)
     {
         $member_organization = $member->get_organization();

@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <th>Description </th>
-                <td>{{ $service->description }}</td>
+                <td>{!! nl2br(e($service->description))  !!}</td>
                 <td>
                     <a class="m-1" data-bs-toggle="modal" data-bs-target="#editDescription">
                         <i class="fa-solid fa-pen"></i>
@@ -106,6 +106,7 @@
             </tr>
 
         </table>
+        <button onclick="document.location='{{ route('services.index') }}'" class="buttonRounded-outlined-light px-3 py-2">Back</button>
     </main>
 
     {{-- EDIT IMAGE --}}

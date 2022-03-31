@@ -72,8 +72,11 @@
                             @enderror
                         </div>
                         <div class="d-flex justify-content-center align-items-center m-3">
-                            <button type="submit" class="buttonRounded-organization p-2 px-4">
+                            <button type="submit" class="buttonRounded-organization m-1 p-2 px-4">
                                 Submit
+                            </button>
+                            <button onclick="document.location='{{ route('home') }}'" type="button" class="buttonRounded-organization-outlined m-1 p-2 px-4">
+                                Cancel
                             </button>
                         </div>
                     </form>

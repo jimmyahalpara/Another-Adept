@@ -46,8 +46,8 @@
                 <th>@sortablelink('user.area_id', 'Area')</th>
                 <th>Role</th>
                 <th>Role Action</th>
-                <th>Created at</th>
-                <th>Updated At</th>
+                <th>@sortablelink('user.created_at', 'Created At')</th>
+                <th>@sortablelink('user.updated_at', 'Updated At')</th>
                 <th>Action</th>
             </tr>
             @forelse ($members as $member)
@@ -74,11 +74,11 @@
                     <td>
                         <div class="d-flex justify-content-center align-items-center flex-column">
 
-                            <form action="{{ route('members.promote', ['member' => $member -> id]) }}" method="post">
+                            <form action="{{ route('members.promote', ['member' => $user -> id]) }}" method="post">
                                 @csrf
                                 <button class="btn btn-success btn-block m-1 p-1" @if($user -> user_role() -> id <= 1) disabled  @endif>Promote</button>
                             </form>
-                            <form action="{{ route('members.demote', ['member' => $member -> id]) }}" method="post">
+                            <form action="{{ route('members.demote', ['member' => $user -> id]) }}" method="post">
                                 @csrf
                                 <button class="btn btn-danger btn-m-1 p-1 " @if($user -> user_role() -> id >= 3) disabled  @endif>Demote</button>
                             </form>

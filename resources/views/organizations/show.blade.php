@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{!! nl2br(e($organization->description))  !!}</td>
+                <td>{!! nl2br(e($organization->description)) !!}</td>
                 <td>
                     <a class="m-1" data-bs-toggle="modal" data-bs-target="#editDescription">
                         <i class="fa-solid fa-pen"></i>
@@ -42,6 +42,8 @@
             </tr>
 
         </table>
+        <button onclick="document.location='{{ route('home') }}'"
+            class="buttonRounded-outlined-light px-3 py-2">Back</button>
     </main>
 
 
@@ -54,7 +56,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="name_form" action="{{ route('organizations.name.update', ['organization' => $organization->id]) }}"
+                    <form id="name_form"
+                        action="{{ route('organizations.name.update', ['organization' => $organization->id]) }}"
                         method="post">
                         @csrf
 
@@ -85,7 +88,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="description_form"
-                        action="{{ route('organizations.description.update', ['organization' => $organization->id]) }}" method="post">
+                        action="{{ route('organizations.description.update', ['organization' => $organization->id]) }}"
+                        method="post">
                         @csrf
 
                         <div class="form-floating">

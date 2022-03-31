@@ -43,7 +43,6 @@
                 <th>@sortablelink('service_category.name', 'Service Category')</th>
                 <th>@sortablelink('created_at', 'Created At')</th>
                 <th>@sortablelink('updated_at', 'Updated At')</th>
-                <th>@sortablelink('deleted_at', 'Deleted At')</th>
                 <th>Areas</th>
                 <th>Action</th>
             </tr>
@@ -60,7 +59,6 @@
                     <td>{{ $service->service_category->name }}</td>
                     <td>{{ $service->created_at }}</td>
                     <td>{{ $service->updated_at }}</td>
-                    <td>{{ $service->deleted_at }}</td>
                     <td>
                         @forelse ($service -> areas as $area)
                             <span class="badge bg-primary">{{ $area->city->name }} - {{ $area->name }}</span>
@@ -91,7 +89,7 @@
                 </tr>
             @endforelse
         </table>
-
+        {{-- <button onclick="document.location='{{ route('services.index') }}'" class="buttonRounded-outlined-light px-3 py-2">Back</button> --}}
     </main>
 
 
