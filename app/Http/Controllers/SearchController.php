@@ -28,6 +28,7 @@ class SearchController extends Controller
         $min_price = $request -> input('min_price', '');
         $max_price = $request -> input('max_price', '');
         
+        DB::enableQueryLog();
         $services = Service::select('*');
 
 
@@ -50,15 +51,38 @@ class SearchController extends Controller
         }
 
         if ($min_price != ''){
-            $services -> where('price', '>=', $min_price);
+            $services = $services -> where('price', '>=', $min_price);
         }   
 
         if ($max_price != ''){
-            $services -> where('price', '<=', $max_price);
+            $services = $services -> where('price', '<=', $max_price);
         }
 
 
+
+        if ($search_text != ''){
+            // $search_organization_list = Organization::where('name', 'LIKE', '%'.$search_text.'%') -> get() -> toArray();
+            $search_categories_list = ServiceCategory::select('id') -> where('name', 'LIKE', '%'.$search_text.'%') -> get() -> toArray();
+            dd($search_categories_list);
+            if ($search_categories_list != []){
+                $services = $services -> orWhereIn('service_category_id', $search_categories_list);
+            } 
+    
+            // if ($search_organization_list != []){
+            //     $services = $services -> orWhereIn('organization_id', $search_organization_list);
+            // }
+    
+            $services = $services -> orWhere('name', 'LIKE', '%'.$search_text.'%');
+            $services = $services -> orWhere('description', 'LIKE', '%'.$search_text.'%');
+        }
+
+
+
+        
+        
+        
         $services = $services -> sortable('id')->simplePaginate($num_rows)->withQueryString();
+        dd(DB::getQueryLog());
 
         $cities = City::orderBy('name') -> get();
         $categories = ServiceCategory::orderBy('name') -> get();
