@@ -99,6 +99,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="button-container d-flex justify-content-center align-items-center flex-column">
+                            <button class="btn btn-secondary my-1 w-50" type="submit">Filter</button>
+                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('search') }}" >Reset Filters</a>
+                        </div>
 
                         
 
@@ -107,9 +111,19 @@
                 </div>
             </div>
             <div class="col-lg-10 p-1">
-                @foreach ($services as $service)
+                @forelse ($services as $service)
                     @include('search.partials.service')
-                @endforeach
+                @empty
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
+                        <img id="no-result-image" src="{{ asset('assets/images/noresult.gif') }}" alt="No Result">
+                        <div id="no-result-text" class="d-flex justify-content-center align-items-center flex-column">
+                            <h1>No Results Found</h1>
+                            <a href="{{ route('search') }}" class="link-heading">
+                                Want to try resetting filters ?
+                            </a>
+                        </div>
+                    </div>
+                @endforelse
             </div>
             <div class="m-1 d-flex justify-content-center align-items-center">
                 {{ $services->links() }}

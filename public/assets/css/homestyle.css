@@ -235,6 +235,7 @@ td {
 
 .service-image {
     height: 50vh;
+    padding-bottom: 2vh;
 }
 
 .modal-content {
@@ -299,11 +300,10 @@ a {
     height: 40vh;
     overflow: hidden;
     /* outline: 1px solid red; */
-
 }
 
 .service-image {
-    margin: -1vh -1vh;
+    margin: -1vh -1vw -1vh -5vw;
 }
 
 .link-heading {
@@ -330,8 +330,21 @@ a {
     font-size: 1.5em;
 }
 
-/* utilieis */
+
+/* utilities */
+
 .big-text {
     font-size: 2em;
     cursor: pointer;
+}
+
+#no-result-image {
+    width: 60%;
+}
+
+#no-result-text {
+    padding: 5vh;
+    background-color: rgba(123, 123, 123, 0.252);
+    position: absolute;
+    border-radius: 1vh;
 }

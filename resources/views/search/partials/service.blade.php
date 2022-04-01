@@ -41,7 +41,7 @@
         </div>
         <div class="mt-3">
 
-            @if ($service->areas->contains($user->area_id))
+            @if ($service->areas->contains($user ? $user->area_id : 0))
                 <span class="text-success">
                     <i class="fa-solid fa-location-dot"></i>
                     Available In Your Area -
@@ -51,14 +51,14 @@
             @endif
             @foreach ($service->areas as $area)
                 <span onclick="document.location='{{ route('search', ['areas' => [$area->id]]) }}'"
-                    class="area-badge badge @if ($area->id == $user->area_id) bg-success @else bg-dark @endif ">{{ $area->city->name }}
+                    class="area-badge badge @if ($area->id == ($user ? $user->area_id : 0)) bg-success @else bg-dark @endif ">{{ $area->city->name }}
                     - {{ $area->name }}</span>
             @endforeach
         </div>
 
         <div class="mt-2 py-3 d-flex justify-content-start align-items-center">
             <div class="col-lg-2 d-flex justify-content-start align-items-center">
-                @if ($service->areas->contains($user->area_id))
+                @if ($service->areas->contains($user ? $user->area_id : 0))
                     <button class="btn btn-success">Order</button>
                 @else
                     <button class="btn btn-outline-secondary">Order</button>
