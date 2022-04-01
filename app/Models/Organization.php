@@ -4,11 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Organization extends Model
 {
     use HasFactory;
+    use Sortable;
 
+    protected $sortable = [
+        'name'
+    ];
     protected $fillable = [
         'name',
         'description',

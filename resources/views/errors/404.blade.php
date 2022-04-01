@@ -13,9 +13,9 @@
                     <h1>Sorry But We Cannot find the Page that You are looking for</h1>
                     <h5>ERROR: <span class="text-danger">404</span> </h5>
 
-                    <form id="organization-form-container" class="w-75 mt-3 p-5 d-flex justify-content-center align-items-center flex-column" action="" method="get">
+                    <form id="organization-form-container" class="w-75 mt-3 p-5 d-flex justify-content-center align-items-center flex-column" action="{{ route('search') }}" method="get">
                         <h3>Search for Other Services</h3>
-                        <input type="search" name="query" id="query" class="form-control" placeholder="Search Text ..">
+                        <input type="search" name="search_text" id="query" class="form-control" placeholder="Search Text ..">
                         <button class="m-2 px-4 py-2 buttonRounded-organization" type="submit">Search</button>
                     </form>
             </div>

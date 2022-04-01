@@ -49,6 +49,10 @@ class Service extends Model
         return $this -> hasMany(UserServiceRating::class);
     }
 
+    public function users(){
+        return $this -> belongsToMany(User::class, 'user_service_likes');
+    }
+
     public function areas_count(){
         return $this -> belongsToMany(Area::class, 'service_area_availablities') -> count();
     }

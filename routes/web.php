@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
 
 
+    Route::post('service/like-dislike', [ServiceController::class, 'serviceLikeUnlike']) -> name('services.like-dislike');
     Route::prefix('services/{service}')->name('services.')->controller(ServiceController::class)->group(function () {
         Route::post('new_image', 'changeImage')->name('image.change');
         Route::post('name/update', 'updateName')->name('name.update');

@@ -326,7 +326,7 @@ a {
     outline: 1px solid black;
 }
 
-#cart-button {
+.cart-button {
     font-size: 1.5em;
 }
 
@@ -344,7 +344,12 @@ a {
 
 #no-result-text {
     padding: 5vh;
-    background-color: rgba(123, 123, 123, 0.252);
+    background-color: rgba(255, 255, 255, 0.609);
     position: absolute;
     border-radius: 1vh;
+}
+
+#collapseForm {
+    position: sticky;
+    top: 12vh;
 }

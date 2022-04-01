@@ -11,7 +11,7 @@
                 </a>
             </div>
 
-            <div id="ratin-container" class="text-end col-lg-6 me-md-5">
+            <div class="text-end col-lg-6 me-md-5">
                 @php
                     $rating = 3.5;
                 @endphp
@@ -29,7 +29,11 @@
         </a>
         <div class="row">
             <span class=" col-lg-3">
-                ₹ {{ $service->price }} - {{ $service->price_type->name }}
+                ₹
+                @if ($service->price_type_id != config('appconfig.variable_pricetype_id'))
+                    {{ $service->price }} -
+                @endif
+                {{ $service->price_type->name }}
             </span>
             <span class="col-lg-2">
                 <i class="fa-solid fa-tag"></i>
@@ -63,7 +67,15 @@
                 @else
                     <button class="btn btn-outline-secondary">Order</button>
                 @endif
-                <i id="cart-button" class="ps-3 text-danger fa-regular fa-heart"></i>
+
+
+                @if ($user->services->contains($service->id))
+                    <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-solid fa-heart"
+                        onclick="like_clicked({{ $service->id }})"></i>
+                @else
+                    <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-regular fa-heart"
+                        onclick="like_clicked({{ $service->id }})"></i>
+                @endif
             </div>
         </div>
     </div>

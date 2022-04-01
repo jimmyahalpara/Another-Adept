@@ -299,10 +299,10 @@
                     </div>
                 </div>
                 <div id="loginRight" class="col-md-6 p-4 d-flex justify-content-center align-items-center">
-                    <form action="" method="" id="login-form"
+                    <form action="{{ route('search') }}" method="get" id="login-form"
                         class="m-2 d-flex justify-content-center align-items-center flex-column">
                         <div class="login-form-group form-floating d-flex justify-content-center align-items-center">
-                            <input id="search" type="search" class="w-100 form-control" name="search"
+                            <input id="search" type="search" class="w-100 form-control" name="search_text"
                                 value="{{ old('search') }}" autocomplete="search" placeholder="search Id">
                             <label for="search">Tell Us what you want.</label>
                             <button type="submit" class="buttonRounded m-1 p-2 px-4">

@@ -46,7 +46,7 @@
                         @enderror
                     </div>
                     <div class="login-form-group form-floating my-4">
-                        <input id="price" type="number" class="w-100 form-control @error('price') is-invalid @enderror"
+                        <input id="price" type="number" class="w-100 form-control @error('price') is-invalid @enderror disabled"
                             name="price" value="{{ old('price') }}" autocomplete="price"
                             placeholder="Enter Organization Name" @error('price') autofocus @enderror>
                         <label for="price">Price</label>

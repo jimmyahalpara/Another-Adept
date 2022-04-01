@@ -6,8 +6,7 @@
     <section>
         <!-- Intro -->
         <div id="introServiceSearch" class="bg-image d-flex justify-content-center align-items-center"
-            style="
-                                                                                                                        background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
+            style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column" style="">
                 <h1>Services</h1>
 
@@ -16,21 +15,41 @@
     </section>
     <main class="p-3">
         <div class="row">
-            <div class="col-md-7 ">
+            <div class="col-md-7">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary m-1 secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Sort By
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li class="dropdown-links">
+                            @sortablelink('name')
+                        </li>
+                        <li class="dropdown-links">
+                            @sortablelink('price')
+                        </li>
+                        <li class="dropdown-links">
+                            @sortablelink('created_at', 'Created At')
+                        </li>
+                        <li class="dropdown-links">
+                            @sortablelink('organization.name', 'Organization Name')
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="col-md-5 row m-0 align-items-center">
                 <div class="col-md-6 col-lg-9 d-flex justify-content-center align-items-center">
                     <input placeholder="Search .. " type="search" name="search_text" id="query" class="form-control"
                         form="filterForm" value="{{ $search_text }}">
                 </div>
-                <button class="btn btn-primary px-1 col-md-6 col-lg-3"  onclick="$('#filterForm').submit()">Search</button>
+                <button class="btn btn-primary px-1 col-md-6 col-lg-3" onclick="$('#filterForm').submit()">Search</button>
 
             </div>
         </div>
         <div class="m-1 row">
             <div class="col-lg-2">
-                <h4>Filters</h4>
                 <div id="collapseForm">
+                    <h4>Filters</h4>
                     <form id="filterForm" action="" class="m-1">
                         <input type="hidden" name="num_rows" value="{{ $num_rows }}">
 
@@ -39,10 +58,12 @@
                             <label>Price Range</label>
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="number" class="form-control d-inlin-block" name="min_price" id="min_price" placeholder="MIN" value="{{ $min_price }}">
+                                    <input type="number" class="form-control d-inlin-block" name="min_price" id="min_price"
+                                        placeholder="MIN" value="{{ $min_price }}">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="number" class="form-control d-inlin-block" name="max_price" id="max_price" placeholder="MAX" value="{{ $max_price }}">
+                                    <input type="number" class="form-control d-inlin-block" name="max_price" id="max_price"
+                                        placeholder="MAX" value="{{ $max_price }}">
                                 </div>
                             </div>
                         </div>
@@ -101,12 +122,12 @@
                         </div>
                         <div class="button-container d-flex justify-content-center align-items-center flex-column">
                             <button class="btn btn-secondary my-1 w-50" type="submit">Filter</button>
-                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('search') }}" >Reset Filters</a>
+                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('search') }}">Reset Filters</a>
                         </div>
 
-                        
 
-                        
+
+
                     </form>
                 </div>
             </div>
@@ -147,6 +168,87 @@
 
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
+        });
+
+
+        function like_clicked(service_id) {
+            @auth
+                @if ($user = Auth::user() && $user->email_verified_at == null)
+                    document.location='{{ route('verification.notice') }}'
+                @else
+                    $element = $('#like-button-' + service_id);
+                
+                    if ($element.hasClass('fa-regular')){
+                    // code to like this service
+                    $.post({
+                    url: '{{ route('services.like-dislike') }}',
+                    data: {
+                    id: service_id,
+                    action: 1
+                    },
+                    success: function (response) {
+                    console.log(response);
+                
+                    $element.removeClass('fa-regular');
+                    $element.addClass('fa-solid');
+                
+                
+                    $user_like_icon = $('#user-like-icon');
+                    $user_like_number = $('#user-like-number');
+                
+                
+                    $user_like_icon.removeClass('fa-regular');
+                    $user_like_icon.removeClass('fa-solid');
+                    $user_like_icon.addClass('fa-solid');
+                    $user_like_icon.addClass('text-danger');
+                    $user_like_number.html(response);
+                    },
+                    error: function (response) {
+                    console.log(response);
+                    }
+                    });
+                    } else {
+                    // code to dislike this service
+                    $.post({
+                    url: '{{ route('services.like-dislike') }}',
+                    data: {
+                    id: service_id,
+                    action: 0
+                    },
+                    success: function (response) {
+                    console.log(response);
+                
+                    $element.removeClass('fa-solid');
+                    $element.addClass('fa-regular');
+                
+                    $user_like_icon = $('#user-like-icon');
+                    $user_like_number = $('#user-like-number');
+                
+                
+                    if (response <= 0){ $user_like_number.html(''); $user_like_icon.removeClass('fa-solid');
+                        $user_like_icon.removeClass('fa-regular'); $user_like_icon.removeClass('text-danger');
+                        $user_like_icon.addClass('fa-regular'); } else { $user_like_number.html(response); } }, error: function
+                        (response) { console.log(response); } }); } @endif
+            @endauth
+            @guest
+                document.location='{{ route('login') }}';
+            @endguest
+
+        }
+
+
+
+        items = $('.dropdown-links');
+        $.each(items, function (e, element) {
+            element = $(element);
+            child = element.find('a');
+            child.addClass('d-flex');
+            child.addClass('justify-content-between');
+            child.addClass('align-items-center');
+            child.addClass('dropdown-item');
+            child2 = element.find('i');
+            child2.addClass('m-1')
+            child2.detach().appendTo(child);
         });
     </script>
 @endsection

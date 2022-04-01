@@ -39,6 +39,13 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="https://kit.fontawesome.com/e68c17398d.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     <style>
         body {
             font-family: "Karla", sans-serif;
@@ -86,6 +93,22 @@
         }
 
     </style>
+
+
+    <script>
+        $('#price_type_id').on('change', function (e) {
+            selection_id = $(this).val();
+            console.log(selection_id);
+            if (selection_id == {{ config('appconfig.variable_pricetype_id') }}){
+                $('#price').val('0');
+                $('#price').attr('disabled', 'true');
+                
+            } else {
+                $('#price').removeAttr('disabled')
+            }
+        })
+
+    </script>
 </body>
 
 

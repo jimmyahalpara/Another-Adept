@@ -11,6 +11,8 @@ use App\Models\PriceType;
 use App\Models\Service;
 use App\Models\ServiceAreaAvailablity;
 use App\Models\ServiceCategory;
+use App\Models\User;
+use App\Models\UserServiceLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,7 +76,7 @@ class ServiceController extends Controller
         $service = new Service();
         $service->name = $data['name'];
         $service->description = $data['description'];
-        $service->price = $data['price'];
+        $service->price = $data['price_type_id'] != config('appconfig.variable_pricetype_id') ? $data['price']: 0;
         $service->price_type_id = $data['price_type_id'];
         $service->service_category_id = $data['service_category_id'];
         $service->organization_id = Auth::user()->user_organization_memberships[0]->organization_id;
@@ -277,6 +279,7 @@ class ServiceController extends Controller
         ]);
 
         $service->price_type_id = $request->price_type_id;
+        $service->price = $request->price_type_id == config('appconfig.variable_pricetype_id') ? 0 : $service -> price;
         $service->save();
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Price Type Updated Successfully!');
     }
@@ -336,5 +339,28 @@ class ServiceController extends Controller
             $service_area->save();
         }
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Areas Updated Successfully!');
+    }
+
+    public function serviceLikeUnlike(Request $request)
+    {
+        $request -> validate([
+            'id' => ['required', 'numeric'],
+            'action' => ['required', 'numeric']
+        ]);
+
+        $user = Auth::user();
+        $service = Service::findOrFail($request -> id);
+
+        if ($request -> action == '1' && UserServiceLike::where('user_id', $user -> id) -> where('service_id', $service -> id) -> count() <= 0 ){
+            $user_service_like = new UserServiceLike();
+            $user_service_like -> user_id = $user -> id;
+            $user_service_like -> service_id = $service -> id;
+            $user_service_like -> save();
+
+            return $user -> services() -> count();
+        } else {
+            UserServiceLike::where('user_id', $user -> id) -> where('service_id', $service -> id) -> delete();
+            return $user -> services() -> count();; 
+        }
     }
 }
