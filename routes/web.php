@@ -5,6 +5,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UserRatingController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +70,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('search', [SearchController::class, 'index']) -> name('search');
 Route::get('search/{service}', [SearchController::class, 'show']) -> name('search.show');
 
+
+Route::get('service-rating/', [UserRatingController::class, 'index']) -> name('service.rating');
 
 
 /**

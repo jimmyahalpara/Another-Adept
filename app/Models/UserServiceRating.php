@@ -4,10 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class UserServiceRating extends Model
 {
     use HasFactory;
+    use Sortable;
+
+    public $sortable = [
+        'updated_at',
+        'rating',
+        'id'
+    ];
 
     protected $fillable = [
         'user_id',
@@ -15,10 +23,10 @@ class UserServiceRating extends Model
     ];
     public function service()
     {
-        $this -> belongsTo(Service::class);
+        return $this -> belongsTo(Service::class);
     }
 
     public function user(){
-        $this -> belongsTo(User::class);
+        return $this -> belongsTo(User::class);
     }   
 }

@@ -58,6 +58,45 @@
                         <button class="btn btn-outline-secondary w-100">Order</button>
                     @endif
                 </div>
+                <div class="mt-3 show-service-availablity">
+                    @auth
+                        @if ($service->areas->contains($user ? $user->area_id : 0))
+                            <span class="text-success">
+                                <i class="fa-solid fa-check"></i>
+                                Available In Your Area
+                            </span>
+                        @else
+                            <span class="text-danger">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                May Not be available in your area
+                            </span>
+                        @endif
+                    @endauth
+                    @guest
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <i class="fa-solid fa-location-crosshairs"></i>
+                            </div>
+                            <div class="ms-1">
+                                <a class="link-heading" href="{{ route('login') }}">Login</a>
+                                to know if this service is availble in your area or not.
+                            </div>
+                        </div>
+                    @endguest
+
+                </div>
+                <div id="show-service-location" class="show-service-location d-flex">
+                    <div>
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div class="mx-1">
+                        @foreach ($service->areas as $area)
+                            <span
+                                class="badge @if ($area->id == ($user ? $user->area_id : 0)) bg-success @else bg-dark @endif ">{{ $area->city->name }}
+                                - {{ $area->name }}</span>
+                        @endforeach
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -130,57 +169,31 @@
                     </div>
                 @endguest
             </div>
-            <div class="mt-3 p-2">
+            <div class="mt-3">
                 <h2>Reviews</h2>
                 <div class="filter-container">
-                    Filter By:
-                    <button class="btn btn-outline-secondary m-2">Latest</button>
-                    <button class="btn btn-outline-secondary m-2">Worst</button>
+                    Sort By:
+                    <button class="btn btn-outline-secondary m-2"
+                        onclick="updateRatings(1, 'updated_at', 'desc')">Latest</button>
+                    <button class="btn btn-outline-secondary m-2"
+                        onclick="updateRatings(1, 'rating', 'asc')">Critical</button>
 
                 </div>
-                <div class="review-container border p-1">
-
-
-
-                    <div class="review-item my-3 p-2">
-                        <div class="header d-flex justify-container-center align-items-center">
-                            <div>
-                                <b>
-                                    User Name
-                                </b>
-                            </div>
-                                
-                            <div class="ms-1 border">
-                                <i class="fa-solid fa-star text-warning"></i>
-                                <i class="fa-solid fa-star text-warning"></i>
-                                <i class="fa-solid fa-star text-warning"></i>
-                                <i class="fa-solid fa-star text-warning"></i>
-                                <i class="fa-solid fa-star text-warning"></i>
-                                <i class="fa-solid fa-star text-warning"></i>
-                            </div>
-                            <div class="ms-3">
-                                20 minutes ago
-                            </div>
-                        </div>
-                        <div class="review-content">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, nisi sed dolor libero officia at magni, delectus ipsum numquam suscipit temporibus corrupti atque reiciendis accusantium quidem veritatis nostrum eveniet. Commodi.
-                        </div>
-                    </div>
-
-                    
-
-                    
+                <div id="review-container" class="review-container p-1">
 
 
 
 
 
                 </div>
-                <div class="border p-1 pagination-container d-flex justify-content-center align-items-center">
-                    Pagination Here
+                <div class="p-1 pagination-container d-flex justify-content-center align-items-center">
+                    <ul id="review-pagination" class="pagination">
+                        {{-- <li class="page-item"><a class="page-link">Previous</a></li>
+                        <li class="page-item"><a class="page-link">Next</a></li> --}}
+                    </ul>
                 </div>
 
-                
+
             </div>
         </div>
     </main>
@@ -296,5 +309,105 @@
             @endguest
 
         }
+
+
+        function updateRatings(page = 1, sort = 'updated_at', direction = 'DESC') {
+            var review_container = $('#review-container');
+            var page_container = $('#review-pagination');
+            $.get({
+                url: '{{ route('service.rating') }}',
+                data: {
+                    service_id: {{ $service->id }},
+                    page: page,
+                    sort: sort,
+                    direction: direction
+                },
+                success: function(response) {
+                    console.log(response);
+                    posts = response.data;
+
+                    if (posts == null || posts.length == 0) {
+
+                        review_container.html('NO REVIEWS FOUND');
+                    } else {
+                        review_container.html('');
+                    }
+
+                    posts.forEach(element => {
+                        stars = '';
+
+                        updated_at = element.updated_at;
+                        date = updated_at.substring(0, 10);
+                        time = updated_at.substring(12, 16);
+                        for (let index = 0; index < element.rating; index++) {
+                            stars += '<i class="fa-solid fa-star text-warning"></i>';
+                        }
+
+                        html = `
+                        <div class="review-item my-3 p-2">
+                            <div class="header d-flex justify-container-center align-items-center">
+                                <div>
+                                    <b>
+                                        ` + element.user.name + `
+                                    </b>
+                                </div>
+                                    
+                                <div class="ms-1">
+                                    ` + stars + `
+                                </div>
+                                <div class="ms-3">
+                                    ` + time + ' ' + date + `
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                ` + (element.feedback ? element.feedback : '') + `
+                            </div>
+                        </div>
+
+                        `;
+
+                        review_container.append(html);
+
+
+                    });
+
+                    prev_link = ''
+                    if (response.prev_page_url == null) {
+                        prev_link = 'disabled'
+                    }
+
+                    next_link = ''
+                    if (response.next_page_url == null) {
+                        next_link = 'disabled'
+                    }
+
+                    // console.log('prev',prev_link);
+                    // console.log('next',next_link);
+
+                    next_page_number = page + 1;
+                    prev_page_number = page - 1;
+                    paginator = `
+                        <li class="page-item ` + prev_link + ` "><a class="page-link" onclick='updateRatings(` +
+                        prev_page_number + `,"` + sort + `","` + direction + `")'>Previous</a></li>
+                        <li class="page-item ` + next_link + `"><a class="page-link"  onclick='updateRatings(` +
+                        next_page_number + `,"` + sort + `","` + direction + `")'>Next</a></li>
+                    `;
+                    page_container.html(paginator);
+
+
+
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
+        }
+        updateRatings(1, 'id', 'DESC');
+
+        $('#show-service-location').readmore({
+            speed: 75,
+            collapsedHeight: 100,
+            lessLink: '<a href="#">More Locations</a>'
+        });
     </script>
 @endsection
