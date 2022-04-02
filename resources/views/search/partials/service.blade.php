@@ -25,7 +25,9 @@
             </div>
         </div>
         <a class="link-heading">
-            <div class="big-text">{{ $service->name }}</div>
+            <a href="{{ route('search.show', ['service' => $service -> id]) }}" class="link-heading">
+                <div class="big-text">{{ $service->name }}</div>
+            </a>
         </a>
         <div class="row">
             <span class=" col-lg-3">

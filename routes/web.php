@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('price-type/update', 'updatePriceType')->name('price.type.update');
         Route::post('service-category/update', 'updateServiceCategory')->name('service.category.update');
         Route::post('area/update', 'updateArea')->name('area.update');
+        Route::post('rate', 'rate') -> name('rate');
     });
     Route::resource('services', ServiceController::class)->except(['update', 'edit']);
 
@@ -66,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('search', [SearchController::class, 'index']) -> name('search');
+Route::get('search/{service}', [SearchController::class, 'show']) -> name('search.show');
 
 
 

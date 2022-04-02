@@ -353,3 +353,40 @@ a {
     position: sticky;
     top: 12vh;
 }
+
+
+/* service landing page */
+
+#show-service-image {
+    width: 100%;
+}
+
+#show-left-bar-container {
+    position: sticky;
+    top: 12vh;
+}
+
+#rating-container {
+    height: 20vh;
+    /* border: 1px solid rgba(0, 0, 0, 0.426); */
+    border-radius: 1vh;
+}
+
+
+.stars-container i {
+    font-size: 2em;
+    color: black;
+}
+
+
+.stars-container:hover i {
+    color: #ffbb33;
+}
+
+
+.stars-container i:hover ~ i {
+  color: black;
+}
+
+
+

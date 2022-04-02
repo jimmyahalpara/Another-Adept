@@ -25,7 +25,7 @@ class CreateServiceRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255', 'min:3'],
-            'description' => ['required', 'max:1020', 'min:2'],
+            'description' => ['required', 'max:5000', 'min:2'],
             'price' => ['required', 'numeric'],
             'price_type_id' => ['required', 'numeric'],
             'service_category_id' => ['required', 'numeric'],

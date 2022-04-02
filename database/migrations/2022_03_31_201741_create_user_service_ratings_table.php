@@ -18,6 +18,7 @@ class CreateUserServiceRatingsTable extends Migration
 
             $table -> unsignedBigInteger('user_id');
             $table -> unsignedBigInteger('service_id');
+            $table -> text('feedback') -> nullable();
             $table -> unsignedInteger('rating');
 
             $table->timestamps();

@@ -13,6 +13,7 @@ use App\Models\ServiceAreaAvailablity;
 use App\Models\ServiceCategory;
 use App\Models\User;
 use App\Models\UserServiceLike;
+use App\Models\UserServiceRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -234,7 +235,7 @@ class ServiceController extends Controller
 
 
         $request->validate([
-            'description' => ['required', 'max:1020', 'min:3']
+            'description' => ['required', 'max:5000', 'min:3']
         ]);
 
         $service->description = $request->description;
@@ -360,7 +361,32 @@ class ServiceController extends Controller
             return $user -> services() -> count();
         } else {
             UserServiceLike::where('user_id', $user -> id) -> where('service_id', $service -> id) -> delete();
-            return $user -> services() -> count();; 
+            return $user -> services() -> count();
         }
+    }
+
+    public function rate(Request $request, Service $service){
+        $request -> validate([
+            'rating' => 'required',
+            'feedback' => 'max:1000'
+        ]);
+
+
+        $user_id = Auth::id();
+
+        $user_service_rating = UserServiceRating::firstOrNew([
+            'user_id' => $user_id,
+            'service_id' => $service -> id
+        ]);
+        $user_service_rating -> user_id = $user_id;
+        $user_service_rating -> service_id = $service -> id;
+        $user_service_rating -> rating = $request -> rating;
+        $user_service_rating -> feedback = $request -> input('feedback', null);
+
+        $user_service_rating -> save();
+
+        return redirect() -> route('search.show', ['service' => $service -> id]) -> with('message', 'Heartly Thanks for your feedback');
+
+
     }
 }

@@ -106,4 +106,20 @@ class SearchController extends Controller
             'organization_filter'
         ));
     }
+
+
+    public function show(Service $service)
+    {
+        $user = Auth::user();
+        $current_user_rating = null;
+        if ($user){
+            $current_user_rating = $service -> user_service_ratings -> where('user_id', $user -> id) -> first();
+        }
+
+        return view('search.show', compact(
+            'service',
+            'user',
+            'current_user_rating'
+        ));
+    }
 }
