@@ -43,6 +43,7 @@
                 <th>@sortablelink('service_category.name', 'Service Category')</th>
                 <th>@sortablelink('created_at', 'Created At')</th>
                 <th>@sortablelink('updated_at', 'Updated At')</th>
+                <th>Rating</th>
                 <th>Areas</th>
                 <th>Action</th>
             </tr>
@@ -60,6 +61,18 @@
                     <td>{{ $service->created_at }}</td>
                     <td>{{ $service->updated_at }}</td>
                     <td>
+                        @php
+                            $service_stat = $service -> user_service_ratings_stat();
+                        @endphp
+                        (
+                            <i class="fa-solid fa-user"></i>
+                            {{ $service_stat ? $service_stat -> count : 0 }}
+                        )
+                        <i class="fa-solid fa-star text-warning"></i>
+                        {{ $service_stat ? round($service_stat -> average, 1) : 0 }}
+
+                    </td>
+                    <td>
                         @forelse ($service -> areas as $area)
                             <span class="badge bg-primary">{{ $area->city->name }} - {{ $area->name }}</span>
                         @empty
@@ -76,7 +89,7 @@
                             
                             <i class="fa-solid fa-trash-can"></i>
                         </a>
-                        <a href="{{ route('services.show', ['service' => $service->id]) }}" class="m-1">
+                        <a href="{{ route('search.show', ['service' => $service->id]) }}" class="m-1">
                             <i class="fa-solid fa-eye"></i>
                         </a>
 
