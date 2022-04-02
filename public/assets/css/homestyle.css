@@ -331,12 +331,6 @@ a {
 }
 
 
-/* utilities */
-
-.big-text {
-    font-size: 2em;
-    cursor: pointer;
-}
 
 #no-result-image {
     width: 60%;
@@ -368,7 +362,7 @@ a {
 
 #rating-container {
     height: 20vh;
-    /* border: 1px solid rgba(0, 0, 0, 0.426); */
+    border: 1px solid rgba(0, 0, 0, 0.426);
     border-radius: 1vh;
 }
 
@@ -389,4 +383,24 @@ a {
 }
 
 
+#description {
+    overflow: hidden;
+}
 
+
+
+/* utilities */
+
+.big-text {
+    font-size: 2em;
+    cursor: pointer;
+}
+
+
+.review-item {
+    transition: all 0.3s ease-in-out;
+}
+
+.review-item:hover {
+    box-shadow: 0px 0px 20px rgba(128, 128, 128, 0.267);
+}

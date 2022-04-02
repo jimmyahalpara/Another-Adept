@@ -60,6 +60,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/logos/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('assets/images/logos/site.webmanifest') }}">
 
+    <script src="{{ asset('assets/js/readmore.js') }}"></script>
+
 
 </head>
 

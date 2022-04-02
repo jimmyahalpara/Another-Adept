@@ -71,7 +71,6 @@ Route::get('search/{service}', [SearchController::class, 'show']) -> name('searc
 
 
 
-
 /**
  * ----------------------------------
  * Routes for email verification

@@ -10,31 +10,38 @@
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0.15);">
                 <h1>{{ $service->name }}</h1>
-                <h3>{{ $user->get_organization()->name }}</h3>
+                <h3>{{ $service->organization->name }}</h3>
             </div>
         </div>
     </section>
 
-    <main class="border mx-4 mt-2 row">
-        <div class="col-md-4 border">
+    <main class="mx-4 mt-2 row">
+        <div class="col-md-4">
             <div id="show-left-bar-container">
-                <img id="show-service-image" src="{{ $service->images->first()->image_path }}" alt="">
+                <img id="show-service-image" src="{{ $service->images->first()->image_path }}" alt=""
+                    class="mt-3">
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                     <div class="show-service-rating-container">
-                        @php
-                            $rating = $service_stat -> average;
-                        @endphp
+                        @if ($service_stat)
+                            @php
+                                $rating = $service_stat->average;
+                            @endphp
 
-                        @for ($i = 0; $i < (int) $rating; $i++)
-                            <i class="text-warning fa-solid fa-star"></i>
-                        @endfor
-                        @if ($rating - (int) $rating != 0)
-                            <i class="text-warning fa-solid fa-star-half"></i>
+                            @for ($i = 0; $i < (int) $rating; $i++)
+                                <i class="text-warning fa-solid fa-star"></i>
+                            @endfor
+                            @if ($rating - (int) $rating != 0)
+                                <i class="text-warning fa-solid fa-star-half"></i>
+                            @endif
+                            <span id="service-rating-number" class="ms-1">{{ $service_stat->count }}</span>
+                            Ratings
+                        @else
+                            No Ratings Yet
                         @endif
-                        <span id="service-rating-number" class="ms-1">{{ $service_stat -> count }}</span> Ratings
+
                     </div>
                     <div class="show-service-like-container">
-                        @if ($user->services->contains($service->id))
+                        @if ($user && $user->services->contains($service->id))
                             <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-solid fa-heart"
                                 onclick="like_clicked({{ $service->id }})"></i>
                         @else
@@ -54,7 +61,7 @@
 
             </div>
         </div>
-        <div class="col-md-8 border">
+        <div class="col-md-8">
             @if (!$errors->isEmpty())
                 <div class="alert alert-danger">
                     @foreach ($errors->all() as $error)
@@ -75,28 +82,31 @@
                         @if ($user && $current_user_rating)
                             @php
                                 // dd($current_user_rating);
-                                $rating = $current_user_rating -> rating;
+                                $rating = $current_user_rating->rating;
                                 $count = 0;
                             @endphp
 
                             @for ($i = 0; $i < (int) $rating; $i++)
                                 @php
-                                    $count ++;
+                                    $count++;
                                 @endphp
-                                <i class="text-warning show-service-rating-star fa-solid fa-star" onclick="submitRating({{ $count }})"></i>
+                                <i class="text-warning show-service-rating-star fa-solid fa-star"
+                                    onclick="submitRating({{ $count }})"></i>
                             @endfor
                             @if ($rating - (int) $rating != 0)
                                 @php
-                                    $count ++;
+                                    $count++;
                                 @endphp
-                                <i class="text-warning show-service-rating-star fa-regular fa-star-half-stroke" onclick="submitRating({{ $count }})"></i>
+                                <i class="text-warning show-service-rating-star fa-regular fa-star-half-stroke"
+                                    onclick="submitRating({{ $count }})"></i>
                             @endif
 
                             @while ($count < 5)
                                 @php
                                     $count++;
                                 @endphp
-                                <i class="fa-regular fa-star show-service-rating-star" onclick="submitRating({{ $count }})"></i>
+                                <i class="fa-regular fa-star show-service-rating-star"
+                                    onclick="submitRating({{ $count }})"></i>
                             @endwhile
                         @else
                             <i class="fa-regular fa-star show-service-rating-star" onclick="submitRating(1)"></i>
@@ -108,9 +118,69 @@
                     </div>
                 @endauth
                 @guest
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, unde dolore autem enim sunt voluptatem
-                    aperiam est molestias. Sunt, adipisci!
+                    <div class="btn-container">
+                        <button class="buttonRounded-outlined-light px-4 p-2 m-2"
+                            onclick="document.location='{{ route('login') }}'">
+                            Login
+                        </button>
+                        <button class="buttonRounded-outlined-light px-4 p-2 m-2"
+                            onclick="document.location='{{ route('register') }}'">
+                            Sign Up
+                        </button>
+                    </div>
                 @endguest
+            </div>
+            <div class="mt-3 p-2">
+                <h2>Reviews</h2>
+                <div class="filter-container">
+                    Filter By:
+                    <button class="btn btn-outline-secondary m-2">Latest</button>
+                    <button class="btn btn-outline-secondary m-2">Worst</button>
+
+                </div>
+                <div class="review-container border p-1">
+
+
+
+                    <div class="review-item my-3 p-2">
+                        <div class="header d-flex justify-container-center align-items-center">
+                            <div>
+                                <b>
+                                    User Name
+                                </b>
+                            </div>
+                                
+                            <div class="ms-1 border">
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                                <i class="fa-solid fa-star text-warning"></i>
+                            </div>
+                            <div class="ms-3">
+                                20 minutes ago
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, nisi sed dolor libero officia at magni, delectus ipsum numquam suscipit temporibus corrupti atque reiciendis accusantium quidem veritatis nostrum eveniet. Commodi.
+                        </div>
+                    </div>
+
+                    
+
+                    
+
+
+
+
+
+                </div>
+                <div class="border p-1 pagination-container d-flex justify-content-center align-items-center">
+                    Pagination Here
+                </div>
+
+                
             </div>
         </div>
     </main>
@@ -144,7 +214,7 @@
     <script>
         function like_clicked(service_id) {
             @auth
-                @if ($user = Auth::user() && $user->email_verified_at == null)
+                @if ($user && $user->email_verified_at == null)
                     document.location='{{ route('verification.notice') }}'
                 @else
                     $element = $('#like-button-' + service_id);
@@ -210,11 +280,20 @@
 
 
         function submitRating(number) {
-            console.log(number);
-            $('#rating-value').val(number)
-
-            var myModal = new bootstrap.Modal(document.getElementById('ratingModel'));
-            myModal.show(300);
+            @auth
+                @if ($user && $user->email_verified_at == null)
+                    document.location='{{ route('verification.notice') }}'
+                @else
+                    console.log(number);
+                    $('#rating-value').val(number)
+                
+                    var myModal = new bootstrap.Modal(document.getElementById('ratingModel'));
+                    myModal.show(300);
+                @endif
+            @endauth
+            @guest
+                document.location='{{ route('login') }}';
+            @endguest
 
         }
     </script>

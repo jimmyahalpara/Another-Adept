@@ -117,7 +117,12 @@ class SearchController extends Controller
             $current_user_rating = $service -> user_service_ratings -> where('user_id', $user -> id) -> first();
         }
 
-        $service_stat = $service -> user_service_ratings_stat();
+        $service_stat = null;
+        if ($service -> user_service_ratings_stat()){
+            $service_stat = $service -> user_service_ratings_stat();
+        }
+
+
         return view('search.show', compact(
             'service',
             'user',

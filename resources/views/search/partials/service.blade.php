@@ -12,20 +12,30 @@
             </div>
 
             <div class="text-end col-lg-6 me-md-5">
-                @php
-                    $rating = 3.5;
-                @endphp
+                @if ($service->user_service_ratings_stat())
+                    @php
+                        $stat = $service->user_service_ratings_stat();
+                        $rating = $stat->average;
+                    @endphp
 
-                @for ($i = 0; $i < (int) $rating; $i++)
-                    <i class="text-warning fa-solid fa-star"></i>
-                @endfor
-                @if ($rating - (int) $rating != 0)
-                    <i class="text-warning fa-solid fa-star-half"></i>
+                    @for ($i = 0; $i < (int) $rating; $i++)
+                        <i class="text-warning fa-solid fa-star"></i>
+                    @endfor
+                    @if ($rating - (int) $rating != 0)
+                        <i class="text-warning fa-solid fa-star-half"></i>
+                    @endif
+                    <span class="mx-1">(
+                        <i class="fa-solid fa-user"></i>
+                        {{ $stat->count }}
+                        )</span>
+                @else
+                    No Ratings
                 @endif
+
             </div>
         </div>
         <a class="link-heading">
-            <a href="{{ route('search.show', ['service' => $service -> id]) }}" class="link-heading">
+            <a href="{{ route('search.show', ['service' => $service->id]) }}" class="link-heading">
                 <div class="big-text">{{ $service->name }}</div>
             </a>
         </a>
@@ -71,7 +81,7 @@
                 @endif
 
 
-                @if ($user->services->contains($service->id))
+                @if ($user && $user->services->contains($service->id))
                     <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-solid fa-heart"
                         onclick="like_clicked({{ $service->id }})"></i>
                 @else
