@@ -7,6 +7,7 @@ use App\Models\Organization;
 use App\Models\PriceType;
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use App\Models\UserServiceRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -116,10 +117,12 @@ class SearchController extends Controller
             $current_user_rating = $service -> user_service_ratings -> where('user_id', $user -> id) -> first();
         }
 
+        $service_stat = $service -> user_service_ratings_stat();
         return view('search.show', compact(
             'service',
             'user',
-            'current_user_rating'
+            'current_user_rating',
+            'service_stat'
         ));
     }
 }

@@ -49,6 +49,10 @@ class Service extends Model
         return $this -> hasMany(UserServiceRating::class);
     }
 
+    public function user_service_ratings_stat(){
+        return $this -> user_service_ratings() -> selectRaw('avg(rating) as average, count(rating) as count') -> groupBy('service_id') -> having('service_id', $this -> id) -> first();
+    }
+
     public function users(){
         return $this -> belongsToMany(User::class, 'user_service_likes');
     }

@@ -22,7 +22,7 @@
                 <div class="mt-3 d-flex justify-content-between align-items-center">
                     <div class="show-service-rating-container">
                         @php
-                            $rating = 3.5;
+                            $rating = $service_stat -> average;
                         @endphp
 
                         @for ($i = 0; $i < (int) $rating; $i++)
@@ -31,7 +31,7 @@
                         @if ($rating - (int) $rating != 0)
                             <i class="text-warning fa-solid fa-star-half"></i>
                         @endif
-                        <span id="service-rating-number">239</span> Ratings
+                        <span id="service-rating-number" class="ms-1">{{ $service_stat -> count }}</span> Ratings
                     </div>
                     <div class="show-service-like-container">
                         @if ($user->services->contains($service->id))
