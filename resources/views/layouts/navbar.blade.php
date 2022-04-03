@@ -101,7 +101,7 @@
                 <ul class="navbar-nav d-flex flex-row">
                     @auth
                         <li class="nav-item me-3 me-lg-0">
-                            <a class="nav-link d-flex justify-content-between align-items-center" href="#!">
+                            <a class="nav-link d-flex justify-content-between align-items-center" href="{{ route('home.cart') }}">
                                 @php
                                     $like_count = Auth::user()->services()->count();
                                 @endphp
