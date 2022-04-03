@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
@@ -63,6 +65,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('demote', 'demoteMember') -> name('demote');
     });
     Route::resource('members', MemberController::class)->except(['update', 'edit']);
+
+
+
+    Route::prefix('home') -> name('home.') -> controller(HomeController::class) -> group(function (){
+        Route::get('liked-posts', 'view_liked') -> name('cart');
+    });
+
+
+    Route::prefix('order') -> name('order.') -> controller(OrderController::class) -> group(function (){
+        Route::get('{service}/place-order', 'order') -> name('place');
+        Route::post('{service}/place-order','order_confirm') -> name('confirm');
+    });
 
 
 });

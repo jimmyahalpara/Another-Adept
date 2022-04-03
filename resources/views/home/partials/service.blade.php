@@ -1,4 +1,4 @@
-<div class="m-1 my-4 row service-container">
+<div class="m-1 my-4 row service-container" id="service-partial-{{ $service -> id }}">
     <div class="service-image-container col-lg-3 d-flex justify-content-center align-items-center">
         <img class="service-image" src="{{ $service->images->first()->image_path }}" alt="">
     </div>
@@ -6,7 +6,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="small-text">
                 <a class="link-heading"
-                    href="{{ route('search', ['organization_filter' => [$service->organization->id], 'areas' => []]) }}">
+                    href="{{ route('home.cart', ['organization_filter' => [$service->organization->id], 'areas' => []]) }}">
                     {{ $service->organization->name }}
                 </a>
             </div>
@@ -50,7 +50,7 @@
             <span class="col-lg-2">
                 <i class="fa-solid fa-tag"></i>
                 <a class="link-heading"
-                    href="{{ route('search', ['categories_filter' => [$service->service_category->id]]) }}">
+                    href="{{ route('home.cart', ['categories_filter' => [$service->service_category->id]]) }}">
                     {{ $service->service_category->name }}
                 </a>
             </span>
@@ -66,7 +66,7 @@
                 <i class="fa-solid fa-location-dot"></i>
             @endif
             @forelse ($service->areas as $area)
-                <span onclick="document.location='{{ route('search', ['areas' => [$area->id]]) }}'"
+                <span onclick="document.location='{{ route('home.cart', ['areas' => [$area->id]]) }}'"
                     class="area-badge badge @if ($area->id == ($user ? $user->area_id : 0)) bg-success @else bg-dark @endif ">{{ $area->city->name }}
                     - {{ $area->name }}</span>
             @empty
@@ -79,9 +79,9 @@
         <div class="mt-2 py-3 d-flex justify-content-start align-items-center">
             <div class="col-lg-2 d-flex justify-content-start align-items-center">
                 @if ($service->areas->contains($user ? $user->area_id : 0))
-                    <button class="btn btn-success" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}')">Order</button>
+                    <button class="btn btn-success">Order</button>
                 @else
-                    <button class="btn btn-outline-secondary" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}', true)">Order</button>
+                    <button class="btn btn-outline-secondary">Order</button>
                 @endif
 
 

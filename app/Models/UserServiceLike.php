@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class UserServiceLike extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+
+
+    protected $softDelete = true;
 
 
     public function service()

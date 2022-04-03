@@ -29,12 +29,12 @@ class SearchController extends Controller
         $min_price = $request->input('min_price', '');
         $max_price = $request->input('max_price', '');
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         $services = Service::select('*');
 
 
         if ($areas != []) {
-            $services = $services->orWhereHas('areas', function ($query) use ($areas) {
+            $services = $services->whereHas('areas', function ($query) use ($areas) {
                 $query->whereIn('areas.id', $areas);
             });
         }

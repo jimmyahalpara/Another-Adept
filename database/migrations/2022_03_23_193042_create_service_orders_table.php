@@ -17,7 +17,8 @@ class CreateServiceOrdersTable extends Migration
             $table->id();
             $table -> bigInteger('user_id');
             $table -> bigInteger('service_id');
-            $table -> bigInteger('order_state_id');
+            $table -> bigInteger('order_state_id') -> default(1);
+            $table -> string('comment') -> nullable();
             $table->timestamps();
             $table -> softDeletes();
         });

@@ -8,7 +8,7 @@
         <div id="introServiceSearch" class="bg-image d-flex justify-content-center align-items-center"
             style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column" style="">
-                <h1>Services</h1>
+                <h1>Liked Posts</h1>
 
             </div>
         </div>
@@ -122,7 +122,7 @@
                         </div>
                         <div class="button-container d-flex justify-content-center align-items-center flex-column">
                             <button class="btn btn-secondary my-1 w-50" type="submit">Filter</button>
-                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('search') }}">Reset Filters</a>
+                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('home.cart') }}">Reset Filters</a>
                         </div>
 
 
@@ -131,15 +131,15 @@
                     </form>
                 </div>
             </div>
-            <div class="col-lg-10 p-1">
+            <div class="col-lg-10 p-1" id="main-service-container">
                 @forelse ($services as $service)
-                    @include('search.partials.service')
+                    @include('home.partials.service')
                 @empty
                     <div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
                         <img id="no-result-image" src="{{ asset('assets/images/noresult.gif') }}" alt="No Result">
                         <div id="no-result-text" class="d-flex justify-content-center align-items-center flex-column">
                             <h1>No Results Found</h1>
-                            <a href="{{ route('search') }}" class="link-heading">
+                            <a href="{{ route('home.cart') }}" class="link-heading">
                                 Want to try resetting filters ?
                             </a>
                         </div>
@@ -177,7 +177,10 @@
                     document.location='{{ route('verification.notice') }}'
                 @else
                     $element = $('#like-button-' + service_id);
-                
+
+                    if (!confirm('Do You want to delete this service ?')){
+                        return;
+                    }
                     if ($element.hasClass('fa-regular')){
                     // code to like this service
                     $.post({
@@ -202,13 +205,9 @@
                     $user_like_icon.addClass('fa-solid');
                     $user_like_icon.addClass('text-danger');
                     $user_like_number.html(response);
-                
-                    if (notify_later){
-                    likedSuccessFullyWithNotification();
-                    } else {
-                    likedSuccessFully();
-                    }
-                
+
+                    
+
                     },
                     error: function (response) {
                     console.log(response);
@@ -230,7 +229,25 @@
                 
                     $user_like_icon = $('#user-like-icon');
                     $user_like_number = $('#user-like-number');
-                
+                    
+                    dislikedlikedSuccessFully();
+                    $('#service-partial-' + service_id).remove();
+
+                    if($('#main-service-container').children().length <= 0){
+                        html = `
+                        <div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
+                        <img id="no-result-image" src="{{ asset('assets/images/noresult.gif') }}" alt="No Result">
+                        <div id="no-result-text" class="d-flex justify-content-center align-items-center flex-column">
+                            <h1>No Results Found</h1>
+                            <a href="{{ route('home.cart') }}" class="link-heading">
+                                Want to try resetting filters ?
+                            </a>
+                        </div>
+                        </div>
+                        `;
+
+                        $('#main-service-container').html(html);
+                    }
                 
                     if (response <= 0){ $user_like_number.html(''); $user_like_icon.removeClass('fa-solid');
                         $user_like_icon.removeClass('fa-regular'); $user_like_icon.removeClass('text-danger');
@@ -243,7 +260,7 @@
 
         }
 
-        function likedSuccessFully() {
+        function dislikedlikedSuccessFully() {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -258,46 +275,8 @@
 
             Toast.fire({
                 icon: 'success',
-                title: 'Service Liked. You can view it later.'
+                title: 'Service Disliked'
             });
-        }
-
-
-        function likedSuccessFullyWithNotification() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
-
-            Toast.fire({
-                icon: 'success',
-                title: 'Service Liked. We will let you know when this service is available in your area.'
-            });
-        }
-
-
-        function order(url, show_warning = false) {
-            if (show_warning) {
-                Swal.fire({
-                    title: 'This service is not available in your service. ',
-                    confirmButtonText: 'Order',
-                    denyButtonText: `Don't save`,
-                    icon: 'warning'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.location = url;
-                    } 
-                })
-            } else {
-                document.location = url;
-            }
         }
 
 

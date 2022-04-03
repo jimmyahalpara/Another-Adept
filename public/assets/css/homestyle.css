@@ -418,3 +418,20 @@ a {
 #show-service-location {
     overflow: hidden;
 }
+
+
+/* place order */
+#introOrderPlace {
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 20vh;
+    padding-top: 15vh;
+    padding-bottom: 5vh;
+}
+
+#order-summary-id {
+    position: sticky;
+    top: 15vh;
+    border: 1px solid rgba(132, 132, 132, 0.512);
+    border-radius: 1vh;
+}
