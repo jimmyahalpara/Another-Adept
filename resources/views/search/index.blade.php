@@ -17,8 +17,8 @@
         <div class="row">
             <div class="col-md-7">
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary m-1 secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-outline-secondary m-1 secondary dropdown-toggle" type="button"
+                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Sort By
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -171,7 +171,7 @@
         });
 
 
-        function like_clicked(service_id) {
+        function like_clicked(service_id, notify_later = false) {
             @auth
                 @if ($user = Auth::user() && $user->email_verified_at == null)
                     document.location='{{ route('verification.notice') }}'
@@ -202,6 +202,13 @@
                     $user_like_icon.addClass('fa-solid');
                     $user_like_icon.addClass('text-danger');
                     $user_like_number.html(response);
+
+                    if (notify_later){
+                        likedSuccessFullyWithNotification();
+                    } else {
+                        likedSuccessFully();
+                    }
+
                     },
                     error: function (response) {
                     console.log(response);
@@ -236,10 +243,49 @@
 
         }
 
+        function likedSuccessFully() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Service Liked. You can view it later.'
+            });
+        }
+
+
+        function likedSuccessFullyWithNotification() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Service Liked. We will let you know when this service is available in your area.'
+            });
+        }
+
 
 
         items = $('.dropdown-links');
-        $.each(items, function (e, element) {
+        $.each(items, function(e, element) {
             element = $(element);
             child = element.find('a');
             child.addClass('d-flex');

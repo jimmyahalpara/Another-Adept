@@ -19,6 +19,7 @@ class CreateUserOrganizationMembershipRolesTable extends Migration
             $table -> bigInteger('user_organization_membership_id');
             
             $table->timestamps();
+            $table -> softDeletes();
         });
     }
 

@@ -90,11 +90,15 @@
                         <i class="fa-solid fa-location-dot"></i>
                     </div>
                     <div class="mx-1">
-                        @foreach ($service->areas as $area)
+                        @forelse ($service->areas as $area)
                             <span
                                 class="badge @if ($area->id == ($user ? $user->area_id : 0)) bg-success @else bg-dark @endif ">{{ $area->city->name }}
                                 - {{ $area->name }}</span>
-                        @endforeach
+                        @empty
+                            <span class="badge bg-danger">
+                                Not Available in Any Area
+                            </span>
+                        @endforelse
                     </div>
                 </div>
 

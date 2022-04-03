@@ -65,11 +65,15 @@
             @else
                 <i class="fa-solid fa-location-dot"></i>
             @endif
-            @foreach ($service->areas as $area)
+            @forelse ($service->areas as $area)
                 <span onclick="document.location='{{ route('search', ['areas' => [$area->id]]) }}'"
                     class="area-badge badge @if ($area->id == ($user ? $user->area_id : 0)) bg-success @else bg-dark @endif ">{{ $area->city->name }}
                     - {{ $area->name }}</span>
-            @endforeach
+            @empty
+                <span class="badge bg-danger">
+                    Not Available in Any Area
+                </span>
+            @endforelse
         </div>
 
         <div class="mt-2 py-3 d-flex justify-content-start align-items-center">
@@ -83,10 +87,10 @@
 
                 @if ($user && $user->services->contains($service->id))
                     <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-solid fa-heart"
-                        onclick="like_clicked({{ $service->id }})"></i>
+                        onclick="like_clicked({{ $service->id }} @if ($area->id != ($user ? $user->area_id : 0)) ,true  @endif)"></i>
                 @else
                     <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-regular fa-heart"
-                        onclick="like_clicked({{ $service->id }})"></i>
+                        onclick="like_clicked({{ $service->id }} @if ($area->id != ($user ? $user->area_id : 0)) ,true  @endif)"></i>
                 @endif
             </div>
         </div>

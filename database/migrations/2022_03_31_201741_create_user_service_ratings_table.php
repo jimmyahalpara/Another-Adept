@@ -22,6 +22,7 @@ class CreateUserServiceRatingsTable extends Migration
             $table -> unsignedInteger('rating');
 
             $table->timestamps();
+            $table -> softDeletes();
         });
     }
 

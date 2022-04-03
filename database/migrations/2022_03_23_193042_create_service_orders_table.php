@@ -15,11 +15,11 @@ class CreateServiceOrdersTable extends Migration
     {
         Schema::create('service_orders', function (Blueprint $table) {
             $table->id();
-            $table -> integer('quantity');
             $table -> bigInteger('user_id');
             $table -> bigInteger('service_id');
             $table -> bigInteger('order_state_id');
             $table->timestamps();
+            $table -> softDeletes();
         });
     }
 

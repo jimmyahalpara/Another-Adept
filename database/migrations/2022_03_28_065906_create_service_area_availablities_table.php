@@ -18,6 +18,7 @@ class CreateServiceAreaAvailablitiesTable extends Migration
             $table -> bigInteger('service_id') -> nullable();
             $table -> bigInteger('area_id') -> nullable();
             $table->timestamps();
+            $table -> softDeletes();
         });
     }
 

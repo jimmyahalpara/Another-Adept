@@ -16,10 +16,11 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table -> integer('amount');
-            $table -> date('due_date') -> nullable();
+            $table -> string('transaction_id') -> nullable();
+            $table -> string('payment_method_id') -> nullable();
             $table -> timestamp('paid_on') -> nullable();
             $table -> bigInteger('user_id');
-            $table -> bigInteger('service_order_id') -> nullable();  
+            $table -> bigInteger('invoice_id') -> nullable();  
             $table->timestamps();
             $table -> softDeletes();
         });

@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Kyslik\ColumnSortable\Sortable;
 
 class UserOrganizationMembership extends Model
 {
     use HasFactory;
     use Sortable;
+    use SoftDeletes;
 
 
     public function user(){
