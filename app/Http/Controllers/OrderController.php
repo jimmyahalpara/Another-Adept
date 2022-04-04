@@ -31,4 +31,9 @@ class OrderController extends Controller
 
         return redirect() -> route('home') -> with('message', 'Order Placed Successfully. You can view its progress in My Orders section. We will update you about its status.');
     }
+
+    public function view_organization_orders()
+    {
+        
+    }
 }
