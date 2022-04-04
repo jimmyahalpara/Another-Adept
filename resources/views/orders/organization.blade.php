@@ -6,8 +6,7 @@
     <section>
         <!-- Intro -->
         <div id="introServiceIndex" class="bg-image d-flex justify-content-center align-items-center"
-            style="
-                                                                                                                                    background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
+            style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0.15);">
                 <h1>All Orders</h1>
@@ -21,11 +20,14 @@
                 {{ $orders->links() }}
             </div>
 
-            <div class="d-flex justify-content-center align-items-center">
-                <span class="w-25 num-rows-label">
+            <div class="d-flex justify-content-center align-items-center w-50">
+                {{-- <form action="" class="me-3">
+                    <input type="search" name="search_text" class="form-control me-3 w-100" placeholder="Search" value="{{ $search_text }}">
+                </form> --}}
+                <span class="num-rows-label">
                     Num Rows:
                 </span>
-                <select name="num_rows" id="num_rows" class="form-control m-1">
+                <select name="num_rows" id="num_rows" class="form-control m-1 w-25">
                     <option value="10" @if ($num_rows == 10) selected @endif>10</option>
                     <option value="20" @if ($num_rows == 20) selected @endif>20</option>
                     <option value="50" @if ($num_rows == 50) selected @endif>50</option>
@@ -38,16 +40,17 @@
 
         <table class="table table-striped">
             <tr>
-                <th>Order ID</th>
-                <th>Service ID</th>
-                <th>User ID</th>
-                <th>User Name</th>
-                <th>User Email</th>
+                <th>@sortablelink('id', 'Order ID')</th>
+                <th>@sortablelink('service_id', 'Service ID')</th>
+                <th>@sortablelink('user.id', 'User ID')</th>
+                <th>@sortablelink('user.name', 'User Name')</th></th>
+                <th>@sortablelink('user.email', 'User Email')</th>
                 <th>User Area</th>
-                <th>Service Name</th>
-                <th>Price</th>
-                <th>Created At </th>
-                <th>Status</th>
+                <th>@sortablelink('service.name', 'Service Name')</th>
+                <th>@sortablelink('service.price', 'Price')</th>
+                <th>@sortablelink('created_at', 'Created At')</th>
+                <th>@sortablelink('order_status_id', 'Status')</th>
+                <th>Assigned To / Status</th>
                 <th>Comment</th>
                 <th>Action</th>
             </tr>
@@ -85,6 +88,14 @@
                     </td>
                     <td>{{ $order->created_at }}</td>
                     <td>{{ $order->order_state->name }}</td>
+                    <td>
+                        @if ($order -> order_member)
+                            {{ $order -> order_member -> user_organization_membership -> user -> name }} / 
+                            <span class="badge bg-danger">
+                                {{ $order -> order_member -> order_member_state -> name }}
+                            </span>
+                        @endif
+                    </td>
                     <td>{{ $order->comment }}</td>
                     <td>
                         <div class="dropdown">
@@ -93,7 +104,7 @@
                             </i>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item"
-                                        onclick="@if ($order->service->areas->contains($user->area_id)) assign({{ $order->id }}) @else assign({{ $order->id }}, true) @endif">Assign</a>
+                                        onclick="@if ($order->service->areas->contains($user->area_id)) assign({{ $order->id }}); @else assign({{ $order->id }}, true); @endif">Assign</a>
                                 </li>
                                 <li><a class="dropdown-item" href="#">Cancel</a></li>
                                 <div class="dropdown-divider">
@@ -122,30 +133,41 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <b>Name: </b>
                     <h6 id="order-user-name">
                         User Name
                     </h6>
 
-                    <h6>
+                    <b>Service Name: </b>
+                    <h6 id="order-service-name">
                         Order Service Name
                     </h6>
 
+                    <b>Area: </b>
                     <div id="order-service-areas">
                         Service Areas
                     </div>
-                    <div class="form-floating">
-                        <select name="member_id" class="form-control" id="member_id">
-                            <option value="">Select Member</option>
-                            @foreach ($members as $member)
-                                <option value="{{ $member -> id }}">{{ $member -> user -> name }} - {{ $member -> user -> email }}</option>
-                            @endforeach
-                        </select>
-                        <label for="member_id">Select Member</label>
+
+                    <b>Comments: </b>
+                    <div id="order-service-comment">
+                        Service Comment
                     </div>
+                    <form action="{{ route('order.assign') }}" method="post" id="assignOrder">
+                        @csrf
+                        <input type="hidden" name="order_id" id="order_id" value="">
+                        <div class="mt-5 form-floating">
+                            <select name="member_id" class="form-control" id="member_id">
+                                @foreach ($members as $member)
+                                    <option value="{{ $member -> id }}">{{ $member -> user -> area -> city -> name }}-{{ $member -> user -> area -> name }} -- {{ $member -> user -> name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="member_id">Select Member</label>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="$('#assignOrder').submit()">Save changes</button>
                 </div>
             </div>
         </div>
@@ -188,6 +210,25 @@
 
         function showAssignDialog(order_id){
             var myModal = new bootstrap.Modal(document.getElementById('assignProvider'))
+
+            $.get({
+                url: "{{ route('order.details') }}",
+                data: {
+                    order_id : order_id
+                },
+                success: function (response) {
+                    $('#order-user-name').html(response.user.name);
+                    $('#order-service-name').html(response.service.name);
+                    $('#order-service-areas').html(response.user.area.city.name + " - " + response.user.area.name);
+                    $('#order-service-comment').html(response.comment);
+                    $('#order_id').val(order_id);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+
             myModal.show(300);
         }
     </script>

@@ -26,5 +26,10 @@ class UserOrganizationMembership extends Model
         return $this -> belongsToMany(OrganizationRole::class, 'user_organization_membership_roles');
     }
 
+    public function order_members()
+    {
+        return $this -> hasMany(OrderMember::class);
+    }
+
     
 }

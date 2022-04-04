@@ -60,4 +60,8 @@ class Service extends Model
     public function areas_count(){
         return $this -> belongsToMany(Area::class, 'service_area_availablities') -> count();
     }
+
+    public function service_orders(){
+        return $this -> hasMany(ServiceOrder::class);
+    }
 }

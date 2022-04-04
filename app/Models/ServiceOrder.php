@@ -13,6 +13,14 @@ class ServiceOrder extends Model
     use SoftDeletes;
     use Sortable;
 
+    public $sortable = [
+        'id',
+        'service_id',
+        'user_id',
+        'created_at',
+        'order_status_id',
+    ];
+
     public function user(){
         return $this -> belongsTo(User::class);
     }
@@ -23,5 +31,10 @@ class ServiceOrder extends Model
 
     public function order_state(){
         return $this -> belongsTo(OrderState::class);
+    }
+
+    public function order_member()
+    {
+        return $this -> hasOne(OrderMember::class);
     }
 }

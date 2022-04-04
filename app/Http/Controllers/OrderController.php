@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderMember;
 use App\Models\Service;
 use App\Models\ServiceOrder;
 use App\Models\UserOrganizationMembership;
@@ -42,11 +43,26 @@ class OrderController extends Controller
     {
 
         $num_rows = $request -> input('num_rows', 10);
+        // $search_text = $request -> input('search_text', '');
+
         
         $current_user_organization_id = organization_id();
         $orders = ServiceOrder::whereHas('service', function($query) use ($current_user_organization_id){
             $query -> where('organization_id', $current_user_organization_id); 
-        }) -> sortable('order_state_id') -> simplePaginate($num_rows) -> withQueryString() ;
+        });
+        
+        // if (!empty($search_text)){
+        //     $orders = $orders -> whereHas('user', function($query) use ($search_text){
+        //         $query -> Where('users.name', 'LIKE', '%'.$search_text.'%');
+        //         $query -> Where('users.email', 'LIKE', '%'.$search_text.'%');
+
+        //     });
+
+        //     $orders = $orders -> whereHas('service', function($query) use ($search_text){
+        //         $query -> orWhere('name', 'LIKE', '%'.$search_text.'%');
+        //     });
+        // }
+        $orders = $orders -> sortable('order_state_id') -> simplePaginate($num_rows) -> withQueryString() ;
 
         
 
@@ -54,7 +70,39 @@ class OrderController extends Controller
         return view('orders.organization', compact(
             'orders',
             'num_rows',
-            'members'
+            'members',
+            // 'search_text'
         ));
     }
+
+
+    public function assign(Request $request)
+    {
+        $request -> validate([
+            'order_id' => ['required', 'numeric'],
+            'member_id' => ['required', 'numeric']
+        ]);
+
+        $order_member = new OrderMember();
+        $order_member -> service_order_id = $request -> order_id;
+        $order_member -> user_organization_membership_id = $request -> member_id;
+        $order_member -> save();
+
+        $service_order = ServiceOrder::findOrFail($request -> order_id);
+        $service_order -> order_state_id = 2;
+        $service_order -> save();
+
+        return redirect() -> route('order.organization') -> with('message', 'Order assigned');
+    }
+
+    public function view_order_detail_ajax(Request $request)
+    {
+        $request -> validate([
+            'order_id' => ['required', 'numeric']
+        ]);
+
+        return ServiceOrder::with(['service', 'user', 'user.area', 'user.area.city']) -> find($request -> order_id);
+    }
+
+    
 }
