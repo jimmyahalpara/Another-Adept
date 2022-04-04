@@ -330,8 +330,6 @@ a {
     font-size: 1.5em;
 }
 
-
-
 #no-result-image {
     width: 60%;
 }
@@ -366,27 +364,22 @@ a {
     border-radius: 1vh;
 }
 
-
 .stars-container i {
     font-size: 2em;
     color: black;
 }
 
-
 .stars-container:hover i {
     color: #ffbb33;
 }
 
-
-.stars-container i:hover ~ i {
-  color: black;
+.stars-container i:hover~i {
+    color: black;
 }
-
 
 #description {
     overflow: hidden;
 }
-
 
 
 /* utilities */
@@ -395,7 +388,6 @@ a {
     font-size: 2em;
     cursor: pointer;
 }
-
 
 .review-item {
     transition: all 0.3s ease-in-out;
@@ -421,6 +413,7 @@ a {
 
 
 /* place order */
+
 #introOrderPlace {
     background-repeat: no-repeat;
     background-size: cover;
@@ -434,4 +427,8 @@ a {
     top: 15vh;
     border: 1px solid rgba(132, 132, 132, 0.512);
     border-radius: 1vh;
+}
+
+.num-rows-label {
+    min-width: 8vw;
 }

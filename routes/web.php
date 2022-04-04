@@ -76,6 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('order') -> name('order.') -> controller(OrderController::class) -> group(function (){
         Route::get('{service}/place-order', 'order') -> name('place');
         Route::post('{service}/place-order','order_confirm') -> name('confirm');
+        Route::get('organization', 'view_organization_orders') -> name('organization');
     });
 
 

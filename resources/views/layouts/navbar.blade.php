@@ -46,7 +46,7 @@
                             @endorganization_role
 
                             @organization_role('manager')
-                            <li><a class="dropdown-item" href="#">Orders</a></li>
+                            <li><a class="dropdown-item" href="{{ route('order.organization') }}">Orders</a></li>
                             @endorganization_role
 
                             @organization_role('provider')
