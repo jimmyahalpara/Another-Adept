@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+
+    function __construct()
+    {
+        $this -> middleware()
+    }
     public function order(Request $request, Service $service)
     {
         
