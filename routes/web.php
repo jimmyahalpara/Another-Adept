@@ -81,7 +81,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('assign', 'assign') -> name('assign');
         Route::post('cancel', 'cancel_order') -> name('cancel');
         Route::post('reject', 'reject_order') -> name('reject');
-
+        Route::get('my-orders', 'my_orders') -> name('my.orders');
+        Route::post('assigned/change-state', 'change_order_member_state') -> name('assigned.state.change');
     });
 
 

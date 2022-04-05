@@ -15,7 +15,7 @@
         </div>
     </section>
 
-    <main class="p-3 px-5">
+    <main class="p-3 px-3">
         <div class="links m-1 d-flex align-items-center justify-content-between">
             <div>
                 {{ $orders->links() }}
@@ -50,7 +50,6 @@
             <tr>
                 <th>@sortablelink('id', 'Order ID')</th>
                 <th>@sortablelink('service_id', 'Service ID')</th>
-                <th>@sortablelink('user.id', 'User ID')</th>
                 <th>@sortablelink('user.name', 'User Name')</th>
                 </th>
                 <th>@sortablelink('user.email', 'User Email')</th>
@@ -75,8 +74,12 @@
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->service->id }}</td>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
+                    <td>
+                        <a href="#" onclick="showUserDetail({{ $order->id }})">
+                            {{ $user->name }}
+                        </a>
+                    </td>
+                    </a>
                     <td>{{ $user->email }}</td>
                     <td>
 
@@ -86,7 +89,7 @@
                         </span>
                     </td>
                     <td>
-                        <a href="#">
+                        <a href="{{ route('services.show', ['service' => $order->service->id]) }}">
                             {{ $order->service->name }}
                         </a>
                     </td>
@@ -102,7 +105,7 @@
                     <td>
                         @if ($order->order_member)
                             {{ $order->order_member->user_organization_membership->user->name }} /
-                            <span class="badge bg-danger">
+                            <span class="badge @if($order -> order_member -> order_member_state_id == 1) bg-danger @else bg-success @endif">
                                 {{ $order->order_member->order_member_state->name }}
                             </span>
                         @endif
@@ -133,7 +136,8 @@
                                 </li>
                                 <li><a class="dropdown-item" onclick="cancelOrder({{ $order->id }})">Cancel</a></li>
                                 <li><a class="dropdown-item" onclick="rejectOrder({{ $order->id }})">Reject</a></li>
-                                <li><a class="dropdown-item" onclick="generateInvoice({{ $order->id }})">Generate Invoice</a></li>
+                                <li><a class="dropdown-item" onclick="generateInvoice({{ $order->id }})">Generate
+                                        Invoice</a></li>
                                 <div class="dropdown-divider">
 
                                 </div>
@@ -145,7 +149,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td>No members Available</td>
+                    <td>No Orders</td>
                 </tr>
             @endforelse
         </table>
@@ -257,6 +261,59 @@
     </div>
 
 
+    {{-- User Details --}}
+    <div class="modal fade" id="showDetails" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showDetailsLabel">User Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <b>Name: </b>
+                    <h6 id="detail-order-user-name">
+                        Loading .. 
+                    </h6>
+
+                    <b>Service Name: </b>
+                    <h6 id="detail-order-service-name">
+                        Loading .. 
+                    </h6>
+
+                    <b>User Address </b>
+                    <h6 id="detail-order-user-address">
+                        Loading .. 
+                    </h6>
+
+                    <b>Area: </b>
+                    <div id="detail-order-service-areas">
+                        Loading .. 
+                    </div>
+
+                    <b>Comments: </b>
+                    <div id="detail-order-service-comment">
+                        Loading .. 
+                    </div>
+
+                    <b>User Email: </b>
+                    <div id="detail-order-user-email">
+                        Loading .. 
+                    </div>
+
+                    <b>User Phone: </b>
+                    <div id="detail-order-user-phone">
+                        Loading .. 
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {{-- <button type="button" class="btn btn-primary" >Save changes</button> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <script>
         $("#num_rows").on('change', function(e) {
@@ -348,6 +405,32 @@
 
                     $('#reject_order_id').val(order_id);
                     myModal.show(300)
+                }
+            });
+        }
+
+
+        function showUserDetail(order_id) {
+            var myModal = new bootstrap.Modal(document.getElementById('showDetails'));
+            myModal.show(300);
+            $.get({
+                url: "{{ route('order.details') }}",
+                data: {
+                    order_id: order_id
+                },
+                success: function(response) {
+                    $('#detail-order-user-name').html(response.user.name);
+                    $('#detail-order-service-name').html(response.service.name);
+                    $('#detail-order-service-areas').html(response.user.area.city.name + " - " + response.user.area
+                        .name);
+                    $('#detail-order-service-comment').html(response.comment);
+                    $('#detail-order-user-email').html(response.user.email);
+                    $('#detail-order-user-phone').html(response.user.phone_number);
+                    $('#detail-order-user-address').html(response.user.address);
+                    
+                },
+                error: function(response) {
+                    console.log(response);
                 }
             });
         }

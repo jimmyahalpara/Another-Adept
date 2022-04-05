@@ -15,7 +15,7 @@ class OrderController extends Controller
 
     function __construct()
     {
-        $this -> middleware('organization.role:manager', ['except' => ['order', 'order_confirm']]);
+        $this -> middleware('organization.role:manager', ['except' => ['order', 'order_confirm', 'my_orders']]);
     }
     public function order(Request $request, Service $service)
     {
@@ -52,17 +52,6 @@ class OrderController extends Controller
             $query -> where('organization_id', $current_user_organization_id); 
         });
         
-        // if (!empty($search_text)){
-        //     $orders = $orders -> whereHas('user', function($query) use ($search_text){
-        //         $query -> Where('users.name', 'LIKE', '%'.$search_text.'%');
-        //         $query -> Where('users.email', 'LIKE', '%'.$search_text.'%');
-
-        //     });
-
-        //     $orders = $orders -> whereHas('service', function($query) use ($search_text){
-        //         $query -> orWhere('name', 'LIKE', '%'.$search_text.'%');
-        //     });
-        // }
         $orders = $orders -> sortable('order_state_id') -> simplePaginate($num_rows) -> withQueryString() ;
 
         
@@ -176,6 +165,46 @@ class OrderController extends Controller
 
         return redirect() -> route('order.organization') -> with('message', 'Order Rejected.');
 
+    }
+
+
+    public function my_orders(Request $request)
+    {
+        $user = Auth::user();
+        $num_rows = $request -> input('num_rows', 10);
+
+        $member_orders = OrderMember::select('*');
+        $member_orders = $member_orders -> whereHas('user_organization_membership', function ($query) use ($user){
+            $query -> where('user_id', $user -> id);
+        });
+
+
+        $member_orders = $member_orders -> whereHas('service_order', function($query){
+            $query -> where('order_state_id', 2);
+        });
+
+
+
+        $member_orders = $member_orders -> sortable('order_member_state_id') -> simplePaginate($num_rows);
+        return view('orders.orders', compact(
+            'member_orders',
+            'num_rows'
+        ));
+    }
+
+    public function change_order_member_state(Request $request){
+        
+        // dd($request -> all());
+        $request -> validate([
+            'order_member_id' => ['required', 'numeric'],
+            'order_member_state_id' => ['required', 'numeric']
+        ]);
+
+        $order_member = OrderMember::findOrFail($request -> order_member_id);
+        $order_member -> order_member_state_id = $request -> order_member_state_id;
+        $order_member -> save();
+
+        return redirect() -> route('order.my.orders') -> with('message', 'State Change Successfully.');
     }
 
     
