@@ -43,7 +43,8 @@
                 <th>@sortablelink('id', 'Order ID')</th>
                 <th>@sortablelink('service_id', 'Service ID')</th>
                 <th>@sortablelink('user.id', 'User ID')</th>
-                <th>@sortablelink('user.name', 'User Name')</th></th>
+                <th>@sortablelink('user.name', 'User Name')</th>
+                </th>
                 <th>@sortablelink('user.email', 'User Email')</th>
                 <th>User Area</th>
                 <th>@sortablelink('service.name', 'Service Name')</th>
@@ -89,10 +90,10 @@
                     <td>{{ $order->created_at }}</td>
                     <td>{{ $order->order_state->name }}</td>
                     <td>
-                        @if ($order -> order_member)
-                            {{ $order -> order_member -> user_organization_membership -> user -> name }} / 
+                        @if ($order->order_member)
+                            {{ $order->order_member->user_organization_membership->user->name }} /
                             <span class="badge bg-danger">
-                                {{ $order -> order_member -> order_member_state -> name }}
+                                {{ $order->order_member->order_member_state->name }}
                             </span>
                         @endif
                     </td>
@@ -106,7 +107,8 @@
                                 <li><a class="dropdown-item"
                                         onclick="@if ($order->service->areas->contains($user->area_id)) assign({{ $order->id }}); @else assign({{ $order->id }}, true); @endif">Assign</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Cancel</a></li>
+                                <li><a class="dropdown-item" onclick="cancelOrder({{ $order -> id }})">Cancel</a></li>
+                                <li><a class="dropdown-item" href="#">Reject</a></li>
                                 <div class="dropdown-divider">
 
                                 </div>
@@ -158,7 +160,9 @@
                         <div class="mt-5 form-floating">
                             <select name="member_id" class="form-control" id="member_id">
                                 @foreach ($members as $member)
-                                    <option value="{{ $member -> id }}">{{ $member -> user -> area -> city -> name }}-{{ $member -> user -> area -> name }} -- {{ $member -> user -> name }}</option>
+                                    <option value="{{ $member->id }}">
+                                        {{ $member->user->area->city->name }}-{{ $member->user->area->name }}
+                                        -- {{ $member->user->name }}</option>
                                 @endforeach
                             </select>
                             <label for="member_id">Select Member</label>
@@ -201,35 +205,49 @@
                             'You can reject the Order from your side as the user area is not covered by your service',
                             '', 'info')
                     }
-                })
+                });
             } else {
                 showAssignDialog(order_id)
             }
         }
 
 
-        function showAssignDialog(order_id){
+        function showAssignDialog(order_id) {
             var myModal = new bootstrap.Modal(document.getElementById('assignProvider'))
 
             $.get({
                 url: "{{ route('order.details') }}",
                 data: {
-                    order_id : order_id
+                    order_id: order_id
                 },
-                success: function (response) {
+                success: function(response) {
                     $('#order-user-name').html(response.user.name);
                     $('#order-service-name').html(response.service.name);
-                    $('#order-service-areas').html(response.user.area.city.name + " - " + response.user.area.name);
+                    $('#order-service-areas').html(response.user.area.city.name + " - " + response.user.area
+                        .name);
                     $('#order-service-comment').html(response.comment);
                     $('#order_id').val(order_id);
                 },
-                error: function (response) {
+                error: function(response) {
                     console.log(response);
                 }
             });
 
 
             myModal.show(300);
+        }
+
+        function cancelOrder(order_id) {
+            Swal.fire({
+                title: 'Do You Really want to cancel this order ?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    console.log('Order Cancelled');
+                }
+            });
         }
     </script>
 @endsection

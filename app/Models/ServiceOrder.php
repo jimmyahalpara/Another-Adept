@@ -37,4 +37,8 @@ class ServiceOrder extends Model
     {
         return $this -> hasOne(OrderMember::class);
     }
+
+    public function reasons(){
+        return $this -> morphMany(Reason::class, 'reasonable');
+    }
 }
