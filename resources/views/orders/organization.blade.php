@@ -14,6 +14,7 @@
             </div>
         </div>
     </section>
+
     <main class="p-3 px-5">
         <div class="links m-1 d-flex align-items-center justify-content-between">
             <div>
@@ -28,6 +29,7 @@
                     Num Rows:
                 </span>
                 <select name="num_rows" id="num_rows" class="form-control m-1 w-25">
+                    <option value="5" @if ($num_rows == 5) selected @endif>5</option>
                     <option value="10" @if ($num_rows == 10) selected @endif>10</option>
                     <option value="20" @if ($num_rows == 20) selected @endif>20</option>
                     <option value="50" @if ($num_rows == 50) selected @endif>50</option>
@@ -37,7 +39,13 @@
             </div>
 
         </div>
-
+        @if (!$errors->isEmpty())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <span>{{ $error }}</span><br>
+                @endforeach
+            </div>
+        @endif
         <table class="table table-striped">
             <tr>
                 <th>@sortablelink('id', 'Order ID')</th>
@@ -50,9 +58,11 @@
                 <th>@sortablelink('service.name', 'Service Name')</th>
                 <th>@sortablelink('service.price', 'Price')</th>
                 <th>@sortablelink('created_at', 'Created At')</th>
-                <th>@sortablelink('order_status_id', 'Status')</th>
+                <th>@sortablelink('order_state_id', 'Status')</th>
                 <th>Assigned To / Status</th>
                 <th>Comment</th>
+                <th>Reasons</th>
+                <th>Invoices</th>
                 <th>Action</th>
             </tr>
             @forelse ($orders as $order)
@@ -99,6 +109,20 @@
                     </td>
                     <td>{{ $order->comment }}</td>
                     <td>
+                        <table class="table table-bordered table-primary">
+                            @foreach ($order->reasons as $reason)
+                                <tr>
+                                    <td>
+                                        {{ $reason->body }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </td>
+                    <td>
+                        Invoices
+                    </td>
+                    <td>
                         <div class="dropdown">
                             <i class="fas fa-ellipsis-v px-2" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -107,8 +131,9 @@
                                 <li><a class="dropdown-item"
                                         onclick="@if ($order->service->areas->contains($user->area_id)) assign({{ $order->id }}); @else assign({{ $order->id }}, true); @endif">Assign</a>
                                 </li>
-                                <li><a class="dropdown-item" onclick="cancelOrder({{ $order -> id }})">Cancel</a></li>
-                                <li><a class="dropdown-item" href="#">Reject</a></li>
+                                <li><a class="dropdown-item" onclick="cancelOrder({{ $order->id }})">Cancel</a></li>
+                                <li><a class="dropdown-item" onclick="rejectOrder({{ $order->id }})">Reject</a></li>
+                                <li><a class="dropdown-item" onclick="generateInvoice({{ $order->id }})">Generate Invoice</a></li>
                                 <div class="dropdown-divider">
 
                                 </div>
@@ -177,6 +202,62 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="cancelMessage" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignProviderLabel">Cancel Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('order.cancel') }}" method="post" id="cancelOrder">
+                        @csrf
+                        <input type="hidden" name="order_id" id="cancel_order_id" value="">
+                        <div class="mt-5 form-floating">
+                            <input class="form-control" type="text" name="reason" id="cancel_reason_id"
+                                placeholder="Enter Cancellation Reason" maxlength="100">
+                            <label for="cancel_reason_id">Enter Cancellation Reason</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="$('#cancelOrder').submit()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="rejectMessage" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignProviderLabel">Reject Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('order.reject') }}" method="post" id="rejectOrder">
+                        @csrf
+                        <input type="hidden" name="order_id" id="reject_order_id" value="">
+                        <div class="mt-5 form-floating">
+                            <input class="form-control" type="text" name="reason" id="reject_reason_id"
+                                placeholder="Enter Rejection Reason" maxlength="100">
+                            <label for="reject_reason_id">Enter Rrejection Reason</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="$('#rejectOrder').submit()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <script>
         $("#num_rows").on('change', function(e) {
             value = this.value;
@@ -211,7 +292,7 @@
             }
         }
 
-
+        // assign Order
         function showAssignDialog(order_id) {
             var myModal = new bootstrap.Modal(document.getElementById('assignProvider'))
 
@@ -227,25 +308,46 @@
                         .name);
                     $('#order-service-comment').html(response.comment);
                     $('#order_id').val(order_id);
+                    myModal.show(300);
                 },
                 error: function(response) {
                     console.log(response);
                 }
             });
-
-
-            myModal.show(300);
         }
 
+
+        // CANCEL ORDER
         function cancelOrder(order_id) {
+            var myModal = new bootstrap.Modal(document.getElementById('cancelMessage'));
+
             Swal.fire({
                 title: 'Do You Really want to cancel this order ?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    console.log('Order Cancelled');
+
+                    $('#cancel_order_id').val(order_id);
+                    myModal.show(300)
+                }
+            });
+        }
+
+
+        // REJECT ORDER
+        function rejectOrder(order_id) {
+            var myModal = new bootstrap.Modal(document.getElementById('rejectMessage'));
+
+            Swal.fire({
+                title: 'Do You Really want to reject this order ?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $('#reject_order_id').val(order_id);
+                    myModal.show(300)
                 }
             });
         }

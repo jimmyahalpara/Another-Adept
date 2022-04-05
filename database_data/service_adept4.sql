@@ -284,10 +284,10 @@ CREATE TABLE `order_states` (
 INSERT INTO `order_states` (`id`, `name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'Placed', 'Order Placed', NULL, NULL, NULL),
 (2, 'Assigned', 'Order Assigned', NULL, NULL, NULL),
-(3, 'Completed', 'Order Complete', NULL, NULL, NULL),
-(4, 'Cancelled', 'Order Cancelled', NULL, NULL, NULL),
-(5, 'Rejected', 'Order Rejected', NULL, NULL, NULL),
-(6, 'Hold', 'Order On Hold', NULL, NULL, NULL);
+(3, 'Cancelled', 'Order Cancelled', NULL, NULL, NULL),
+(4, 'Rejected', 'Order Rejected', NULL, NULL, NULL),
+(5, 'Hold', 'Order On Hold', NULL, NULL, NULL),
+(6, 'Completed', 'Order Complete', NULL, NULL, NULL),
 
 -- --------------------------------------------------------
 

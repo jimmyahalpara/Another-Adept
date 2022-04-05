@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrderMember;
+use App\Models\Reason;
 use App\Models\Service;
 use App\Models\ServiceOrder;
 use App\Models\UserOrganizationMembership;
@@ -83,14 +84,27 @@ class OrderController extends Controller
             'member_id' => ['required', 'numeric']
         ]);
 
-        $order_member = new OrderMember();
-        $order_member -> service_order_id = $request -> order_id;
+        $service_order = ServiceOrder::findOrFail($request -> order_id);
+        if ($service_order -> order_state_id != 1 && $service_order -> order_state_id != 2){
+            return redirect() ->route('order.organization') -> with('message', 'Cannot assign members to any order which is Cancelled/Rejected/On Hold/Completed. Contact Help Center for Help');
+        }
+        $service_order -> order_state_id = 2;
+        $service_order -> save();
+
+
+        $order_member = OrderMember::firstOrCreate(
+            [
+                'service_order_id' => $request -> order_id,
+            ],
+            [
+                'user_organization_membership_id' => $request -> member_id
+            ]
+        );
+        // $order_member -> service_order_id = $request -> order_id;
         $order_member -> user_organization_membership_id = $request -> member_id;
         $order_member -> save();
 
-        $service_order = ServiceOrder::findOrFail($request -> order_id);
-        $service_order -> order_state_id = 2;
-        $service_order -> save();
+        
 
         return redirect() -> route('order.organization') -> with('message', 'Order assigned');
     }
@@ -102,6 +116,66 @@ class OrderController extends Controller
         ]);
 
         return ServiceOrder::with(['service', 'user', 'user.area', 'user.area.city']) -> find($request -> order_id);
+    }
+
+    public function cancel_order(Request $request)
+    {
+        $request -> validate([
+            'order_id' => ['required', 'numeric'],
+            'reason' => ['required', 'max:100']
+        ]);
+
+        $service_order = ServiceOrder::findOrFail($request -> order_id);
+        if ($service_order -> order_state_id != 2 && $service_order -> order_state_id != 1){
+            return redirect() -> route('order.organization') -> with('message', 'Can Only Cancel Order which was placed or assigned');
+        }
+
+        if ($service_order -> order_member){
+            $service_order -> order_member -> delete();
+        }
+
+
+        $service_order -> order_state_id = 3;
+        $service_order -> save();
+
+
+        $reason = new Reason();
+        $reason -> body = "Cancelled: " .  $request -> reason;
+        
+        $service_order -> reasons() -> save($reason);
+
+        return redirect() -> route('order.organization') -> with('message', 'Order Cancelled.');
+
+    }
+
+    public function reject_order(Request $request)
+    {
+        $request -> validate([
+            'order_id' => ['required', 'numeric'],
+            'reason' => ['required', 'max:100']
+        ]);
+
+        $service_order = ServiceOrder::findOrFail($request -> order_id);
+        if ($service_order -> order_state_id != 2 && $service_order -> order_state_id != 1){
+            return redirect() -> route('order.organization') -> with('message', 'Can Only Reject Order which was placed or assigned');
+        }
+        // dd($service_order);
+
+        if ($service_order -> order_member){
+            $service_order -> order_member -> delete();
+        }
+
+        $service_order -> order_state_id = 4;
+        $service_order -> save();
+
+
+        $reason = new Reason();
+        $reason -> body = "Rejected: " .  $request -> reason;
+        
+        $service_order -> reasons() -> save($reason);
+
+        return redirect() -> route('order.organization') -> with('message', 'Order Rejected.');
+
     }
 
     

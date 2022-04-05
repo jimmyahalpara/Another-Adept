@@ -24,6 +24,11 @@ class OrderMember extends Model
     ];
 
 
+    protected $fillable = [
+        'user_organization_membership_id',
+        'service_order_id'
+    ];
+
     public function service_order()
     {
         return $this -> belongsTo(ServiceOrder::class);

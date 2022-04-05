@@ -79,6 +79,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('organization', 'view_organization_orders') -> name('organization');
         Route::get('organization/detail', 'view_order_detail_ajax') -> name('details');
         Route::post('assign', 'assign') -> name('assign');
+        Route::post('cancel', 'cancel_order') -> name('cancel');
+        Route::post('reject', 'reject_order') -> name('reject');
 
     });
 

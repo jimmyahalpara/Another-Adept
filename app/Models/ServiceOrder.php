@@ -18,7 +18,7 @@ class ServiceOrder extends Model
         'service_id',
         'user_id',
         'created_at',
-        'order_status_id',
+        'order_state_id',
     ];
 
     public function user(){

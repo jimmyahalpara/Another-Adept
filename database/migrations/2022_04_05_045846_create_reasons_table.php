@@ -19,9 +19,9 @@ class CreateReasonsTable extends Migration
             $table -> string('body');
             $table -> unsignedBigInteger('reasonable_id');
             $table -> string('reasonable_type');
-            $table -> unsignedBigInteger('order_status_id');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
