@@ -123,9 +123,9 @@
                         </table>
                     </td>
                     <td>
-                        @foreach ($order -> invoices as $invoice)
-                            <span class="badge @if($invoice -> invoice_state_id == 1) bg-danger @else bg-success @endif">
-                                {{ $invoice -> invoice_state -> name }}
+                        @foreach ($order->invoices as $invoice)
+                            <span class="badge @if ($invoice->invoice_state_id == 1) bg-danger @else bg-success @endif">
+                                {{ $invoice->invoice_state->name }}
                             </span>
                         @endforeach
                     </td>
@@ -140,7 +140,8 @@
                                 </li>
                                 <li><a class="dropdown-item" onclick="cancelOrder({{ $order->id }})">Cancel</a></li>
                                 <li><a class="dropdown-item" onclick="rejectOrder({{ $order->id }})">Reject</a></li>
-                                <li><a class="dropdown-item" href="{{ route('order.invoice.create', ['service_order' => $order -> id]) }}">Generate
+                                <li><a class="dropdown-item"
+                                        href="{{ route('order.invoice.create', ['service_order' => $order->id]) }}">Generate
                                         Invoice</a></li>
 
                                 @if ($order->order_state_id != 3 && $order->order_state_id != 4 && $order->order_state_id != 5)
@@ -275,7 +276,7 @@
 
     {{-- User Details --}}
     <div class="modal fade" id="showDetails" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="showDetailsLabel">User Details</h5>
@@ -315,6 +316,42 @@
                     <b>User Phone: </b>
                     <div id="detail-order-user-phone">
                         Loading ..
+                    </div>
+
+                    <b>Generated Invoices</b>
+                    <div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Amount</th>
+                                    <th>Amount Paid</th>
+                                    <th>Due Date</th>
+                                    <th>Created At</th>
+                                    <th>Updated At</th>
+                                    <th>Description</th>
+                                    <th>Invoice State</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="showDetailsInvoice">
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Amount</td>
+                                    <td>Amount Paid</td>
+                                    <td>Due Date</td>
+                                    <td>Created At</td>
+                                    <td>Updated At</td>
+                                    <td>Description</td>
+                                    <td>Invoice State</td>
+                                    <td>
+                                        <a href="">
+                                            <i class="fa-solid fa-circle-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -444,6 +481,68 @@
                     $('#detail-order-user-email').html(response.user.email);
                     $('#detail-order-user-phone').html(response.user.phone_number);
                     $('#detail-order-user-address').html(response.user.address);
+
+                    $('#showDetailsInvoice').html('');
+
+                    response.invoices.forEach(invoice => {
+                        // convert invoice.created_at to datetime 
+                        var date = new Date(invoice.created_at);
+                        var created_at_datetime = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                            date.getFullYear() + ' ' +
+                            date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+
+                        // do same for updated_at
+                        var date = new Date(invoice.updated_at);
+                        var updated_at_datetime = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                            date.getFullYear() + ' ' +
+                            date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                        
+                        // do same for due
+                        // console.log(invoice.due);
+                        if (invoice.due != null){
+                            var date = new Date(invoice.due);
+                            console.log(date);
+                            var due = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                                date.getFullYear() + ' ' +
+                                date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                        } else {
+                            var due = '-';
+                        }
+
+                        // append invoice to invoice table 
+                        // background color light orange if invoice.invoice_state_id is 1 and due date has passed 
+                        bg_color = "";
+                        if (invoice.invoice_state_id == 1) {
+                            var date = new Date(invoice.due);
+                            if (date < new Date()) {
+                                bg_color = "bg-warning";
+                            }
+                        }
+                        $('#showDetailsInvoice').append(`
+                            <tr class="${bg_color}">
+                                <td>${invoice.id}</td>
+                                <td>${invoice.amount}</td>
+                                <td>${invoice.amount_paid}</td>
+                                <td>${due}</td>
+                                <td>${created_at_datetime}</td>
+                                <td>${updated_at_datetime}</td>
+                                <td>${invoice.description}</td>
+                                <td>${invoice.invoice_state.name}</td>
+                                <td>
+                                    <form action="{{ route('invoice.delete') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="invoice_id" value="${invoice.id}">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                        `);
+
+
+                    });
+
 
                 },
                 error: function(response) {

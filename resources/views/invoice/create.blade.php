@@ -54,6 +54,11 @@
                         <td>{{ $service_order->service->price_type->name }}</td>
                     </tr>
                     <tr>
+                        <th>Due Date</th>
+                        {{-- due date is config(appconfig.due_days) days from today --}}
+                        <td>{{ date('d-m-Y', strtotime(' + ' . config('appconfig.due_days') . ' days')) }}</td>
+                    </tr>
+                    <tr>
                         <th>Amount</th>
                         <td>
                             <form action="{{ route('order.invoice.store', ['service_order' => $service_order->id]) }}"

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrganizationController;
@@ -88,6 +89,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('complete', 'complete') -> name('complete');
         Route::get('{service_order}/invoice/create', 'generate_invoice_form') -> name('invoice.create');
         Route::post('{service_order}/invoice/store', 'store_invoice') -> name('invoice.store');
+    });
+
+    Route::prefix('invoice') -> name('invoice.') -> controller(InvoiceController::class) -> group(function (){
+        // route to delete invoice 
+        Route::post('delete', 'delete') -> name('delete');
+        // route to index 
+        Route::get('index', 'index') -> name('index');
     });
 
 

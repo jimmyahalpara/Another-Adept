@@ -8,6 +8,7 @@ use App\Models\Reason;
 use App\Models\Service;
 use App\Models\ServiceOrder;
 use App\Models\UserOrganizationMembership;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -111,10 +112,17 @@ class OrderController extends Controller
             'order_id' => ['required', 'numeric']
         ]);
 
-        $service_order = ServiceOrder::with(['service', 'user', 'user.area', 'user.area.city'])->find($request->order_id);
+        $service_order = ServiceOrder::with(['service','invoices','invoices.invoice_state', 'user', 'user.area', 'user.area.city'])->find($request->order_id);
         $current_user_organization_id = organization_id();
         if ($current_user_organization_id != $service_order->service->organization_id) {
             return redirect()->route('order.organization')->with('message', 'Unauthorized action');
+        }
+
+        // convert service_order.ivoices.created_at to normal timestamp from carbon
+        // convert service_order.ivoices.updated_at to normal timestamp from carbon
+        foreach ($service_order->invoices as $invoice) {
+            $invoice->created_at = $invoice->created_at->timestamp;
+            $invoice->updated_at = $invoice->updated_at->timestamp;
         }
 
         return $service_order;
@@ -299,6 +307,8 @@ class OrderController extends Controller
 
         $invoice->service_order_id = $service_order->id;
         $invoice->description = $request->input('description', '');
+        // set due date to be confif(appconfig.due_days) days from today 
+        $invoice->due = Carbon::now()->addDays(config('appconfig.due_days'));
         $invoice->save();
 
         return redirect()->route('order.organization')->with('message', 'Invoice Generated Successfully');

@@ -17,5 +17,16 @@ class Invoice extends Model
         return $this -> belongsTo(InvoiceState::class);
     }
 
+    public function service_order()
+    {
+        return $this -> belongsTo(ServiceOrder::class);
+    }
+
+    // hasMany relation to Payment
+    public function payments()
+    {
+        return $this -> hasMany(Payment::class);
+    }
+
     
 }
