@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/homestyle.css') }}">
     <section>
         <!-- Intro -->
-        <div id="introServiceIndex" class="bg-image d-flex justify-content-center align-items-center"
+        <div id="introServiceOrders" class="bg-image d-flex justify-content-center align-items-center"
             style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0.15);">
@@ -105,7 +105,7 @@
                     <td>
                         @if ($order->order_member)
                             {{ $order->order_member->user_organization_membership->user->name }} /
-                            <span class="badge @if($order -> order_member -> order_member_state_id == 1) bg-danger @else bg-success @endif">
+                            <span class="badge @if ($order->order_member->order_member_state_id == 1) bg-danger @else bg-success @endif">
                                 {{ $order->order_member->order_member_state->name }}
                             </span>
                         @endif
@@ -123,7 +123,11 @@
                         </table>
                     </td>
                     <td>
-                        Invoices
+                        @foreach ($order -> invoices as $invoice)
+                            <span class="badge @if($invoice -> invoice_state_id == 1) bg-danger @else bg-success @endif">
+                                {{ $invoice -> invoice_state -> name }}
+                            </span>
+                        @endforeach
                     </td>
                     <td>
                         <div class="dropdown">
@@ -136,11 +140,19 @@
                                 </li>
                                 <li><a class="dropdown-item" onclick="cancelOrder({{ $order->id }})">Cancel</a></li>
                                 <li><a class="dropdown-item" onclick="rejectOrder({{ $order->id }})">Reject</a></li>
-                                <li><a class="dropdown-item" onclick="generateInvoice({{ $order->id }})">Generate
+                                <li><a class="dropdown-item" href="{{ route('order.invoice.create', ['service_order' => $order -> id]) }}">Generate
                                         Invoice</a></li>
-                                <div class="dropdown-divider">
 
-                                </div>
+                                @if ($order->order_state_id != 3 && $order->order_state_id != 4 && $order->order_state_id != 5)
+                                    @if ($order->order_state_id != 6)
+                                        <li><a class="dropdown-item"
+                                                onclick="completeOrder({{ $order->id }}, 6)">Complete</a></li>
+                                    @else
+                                        <li><a class="dropdown-item" onclick="completeOrder({{ $order->id }}, 2)">In
+                                                Complete</a></li>
+                                    @endif
+                                @endif
+                                <div class="dropdown-divider"></div>
                                 <li><a class="dropdown-item" href="#">Report</a></li>
                             </ul>
                         </div>
@@ -272,37 +284,37 @@
                 <div class="modal-body">
                     <b>Name: </b>
                     <h6 id="detail-order-user-name">
-                        Loading .. 
+                        Loading ..
                     </h6>
 
                     <b>Service Name: </b>
                     <h6 id="detail-order-service-name">
-                        Loading .. 
+                        Loading ..
                     </h6>
 
                     <b>User Address </b>
                     <h6 id="detail-order-user-address">
-                        Loading .. 
+                        Loading ..
                     </h6>
 
                     <b>Area: </b>
                     <div id="detail-order-service-areas">
-                        Loading .. 
+                        Loading ..
                     </div>
 
                     <b>Comments: </b>
                     <div id="detail-order-service-comment">
-                        Loading .. 
+                        Loading ..
                     </div>
 
                     <b>User Email: </b>
                     <div id="detail-order-user-email">
-                        Loading .. 
+                        Loading ..
                     </div>
 
                     <b>User Phone: </b>
                     <div id="detail-order-user-phone">
-                        Loading .. 
+                        Loading ..
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -313,7 +325,11 @@
         </div>
     </div>
 
-
+    <form action="{{ route('order.complete') }}" method="post" id="complete_order_form">
+        @csrf
+        <input type="hidden" name="order_state_id" id="order_state_id" value="2">
+        <input type="hidden" name="service_order_id" id="service_order_id" value="0">
+    </form>
 
     <script>
         $("#num_rows").on('change', function(e) {
@@ -421,18 +437,39 @@
                 success: function(response) {
                     $('#detail-order-user-name').html(response.user.name);
                     $('#detail-order-service-name').html(response.service.name);
-                    $('#detail-order-service-areas').html(response.user.area.city.name + " - " + response.user.area
+                    $('#detail-order-service-areas').html(response.user.area.city.name + " - " + response.user
+                        .area
                         .name);
                     $('#detail-order-service-comment').html(response.comment);
                     $('#detail-order-user-email').html(response.user.email);
                     $('#detail-order-user-phone').html(response.user.phone_number);
                     $('#detail-order-user-address').html(response.user.address);
-                    
+
                 },
                 error: function(response) {
                     console.log(response);
                 }
             });
+        }
+
+        function completeOrder(order_id, state_id) {
+            $('#order_state_id').val(state_id);
+            $('#service_order_id').val(order_id);
+
+
+
+            Swal.fire({
+                title: 'Do you want to change state of this order?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $('#complete_order_form').submit();
+                }
+            });
+
+
         }
     </script>
 @endsection

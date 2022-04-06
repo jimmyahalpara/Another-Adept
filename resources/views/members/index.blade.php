@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/homestyle.css') }}">
     <section>
         <!-- Intro -->
-        <div id="introServiceIndex" class="bg-image d-flex justify-content-center align-items-center"
+        <div id="introServiceOrders" class="bg-image d-flex justify-content-center align-items-center"
             style="
                                                                                                 background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"

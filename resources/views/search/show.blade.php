@@ -53,9 +53,9 @@
                 </div>
                 <div class="mt-3">
                     @if ($service->areas->contains($user ? $user->area_id : 0))
-                        <button class="btn btn-success w-100">Order</button>
+                        <button class="btn btn-success w-100" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}')">Order</button>
                     @else
-                        <button class="btn btn-outline-secondary w-100">Order</button>
+                        <button class="btn btn-outline-secondary w-100" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}', true)">Order</button>
                     @endif
                 </div>
                 <div class="mt-3 show-service-availablity">
@@ -413,5 +413,23 @@
             collapsedHeight: 100,
             lessLink: '<a href="#">More Locations</a>'
         });
+
+
+        function order(url, show_warning = false) {
+            if (show_warning) {
+                Swal.fire({
+                    title: 'This service is not available in your service. ',
+                    confirmButtonText: 'Order',
+                    denyButtonText: `Don't save`,
+                    icon: 'warning'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.location = url;
+                    }
+                })
+            } else {
+                document.location = url;
+            }
+        }
     </script>
 @endsection

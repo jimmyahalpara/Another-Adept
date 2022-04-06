@@ -20,8 +20,9 @@ class CreateInvoicesTable extends Migration
             $table -> unsignedBigInteger('user_id') -> nullable();
             $table -> unsignedBigInteger('service_order_id') -> nullable();
             $table -> unsignedBigInteger('amount') -> nullable();
+            $table -> unsignedBigInteger('amount_paid') -> default(0);
             $table -> text('description') -> nullable();
-            $table -> integer('invoice_state_id') -> default(1) -> comment('0 => Unpaid, 1 => paid');
+            $table -> integer('invoice_state_id') -> default(1) -> comment('1 => Unpaid, 2 => paid');
             
 
 

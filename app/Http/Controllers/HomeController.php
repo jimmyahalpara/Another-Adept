@@ -6,8 +6,10 @@ use App\Models\City;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
 use App\Models\PriceType;
+use App\Models\Reason;
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use App\Models\ServiceOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -128,5 +130,40 @@ class HomeController extends Controller
             'organizations',
             'organization_filter'
         ));
+    }
+
+    public function my_orders(Request $request)
+    {
+        $user = Auth::user();
+        $orders = ServiceOrder::where('user_id', $user -> id) -> sortable(['id' => 'desc']) -> simplePaginate(10) -> withQueryString();
+        return view('home.orders', compact(
+            'orders',
+            'user'
+        ));
+    }
+
+    public function cancel_order(Request $request)
+    {
+        // dd($request -> all());
+        $request -> validate([
+            'service_order_id' => ['required', 'numeric']
+        ]);
+        $user_id = Auth::id();
+        $service_order = ServiceOrder::where('id', $request -> service_order_id) -> where('user_id', $user_id) -> first();
+
+    
+
+        $service_order -> order_state_id = 3;
+        $service_order -> save();
+
+
+        $reason = new Reason();
+        $reason -> body = "Cancelled: By User";
+
+        $service_order -> reasons() -> save($reason);
+
+
+        return redirect() -> route('home.orders') -> with('message', 'Service Cancelled');
+
     }
 }

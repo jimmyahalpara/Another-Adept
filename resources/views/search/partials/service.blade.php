@@ -1,3 +1,4 @@
+{{-- {{ dd($service -> areas-> contains ($user ? $user->area_id : 0)) }} --}}
 <div class="m-1 my-4 row service-container">
     <div class="service-image-container col-lg-3 d-flex justify-content-center align-items-center">
         <img class="service-image" src="{{ $service->images->first()->image_path }}" alt="">
@@ -87,10 +88,10 @@
 
                 @if ($user && $user->services->contains($service->id))
                     <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-solid fa-heart"
-                        onclick="like_clicked({{ $service->id }} @if ($area->id != ($user ? $user->area_id : 0)) ,true  @endif)"></i>
+                        onclick="like_clicked({{ $service->id }} @if (!$service -> areas-> contains($user ? $user->area_id : 0)) ,true  @endif)"></i>
                 @else
                     <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-regular fa-heart"
-                        onclick="like_clicked({{ $service->id }} @if ($area->id != ($user ? $user->area_id : 0)) ,true  @endif)"></i>
+                        onclick="like_clicked({{ $service->id }} @if (!$service -> areas-> contains ($user ? $user->area_id : 0)) ,true  @endif)"></i>
                 @endif
             </div>
         </div>

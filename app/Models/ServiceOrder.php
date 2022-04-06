@@ -41,4 +41,8 @@ class ServiceOrder extends Model
     public function reasons(){
         return $this -> morphMany(Reason::class, 'reasonable');
     }
+
+    public function invoices(){
+        return $this -> hasMany(Invoice::class);
+    }
 }

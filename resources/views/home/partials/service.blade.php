@@ -79,18 +79,19 @@
         <div class="mt-2 py-3 d-flex justify-content-start align-items-center">
             <div class="col-lg-2 d-flex justify-content-start align-items-center">
                 @if ($service->areas->contains($user ? $user->area_id : 0))
-                    <button class="btn btn-success">Order</button>
+
+                    <button onclick="order('{{ route('order.place', ['service' => $service ->id]) }}')" class="btn btn-success">Order</button>
                 @else
-                    <button class="btn btn-outline-secondary">Order</button>
+                    <button onclick="order('{{ route('order.place', ['service' => $service ->id]) }}', true)" class="btn btn-outline-secondary">Order</button>
                 @endif
 
 
                 @if ($user && $user->services->contains($service->id))
                     <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-solid fa-heart"
-                        onclick="like_clicked({{ $service->id }} @if ($area->id != ($user ? $user->area_id : 0)) ,true  @endif)"></i>
+                        onclick="like_clicked({{ $service->id }} @if (!$service -> areas-> contains ($user ? $user->area_id : 0)) ,true  @endif)"></i>
                 @else
                     <i id="like-button-{{ $service->id }}" class="cart-button ps-3 text-danger fa-regular fa-heart"
-                        onclick="like_clicked({{ $service->id }} @if ($area->id != ($user ? $user->area_id : 0)) ,true  @endif)"></i>
+                        onclick="like_clicked({{ $service->id }} @if (!$service -> areas-> contains ($user ? $user->area_id : 0)) ,true  @endif)"></i>
                 @endif
             </div>
         </div>

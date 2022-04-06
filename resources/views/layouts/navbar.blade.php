@@ -77,7 +77,7 @@
                                 {{ Auth::user()->name }}
                             </a>
                             <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">My Orders</a></li>
+                                <li><a class="dropdown-item" href="{{ route('home.orders') }}">My Orders</a></li>
                                 <li><a class="dropdown-item" href="#">My Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider">

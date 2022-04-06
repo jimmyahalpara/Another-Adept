@@ -327,13 +327,9 @@ class ServiceController extends Controller
         ]);
 
         ServiceAreaAvailablity::where('service_id', $service -> id) -> delete();
-
         foreach ($request -> area as $value) {
 
-            $area = ServiceAreaAvailablity::where('area_id', $value)->where('service_id', $service->id)->get();
-            if ($area->count() > 0) {
-                continue;
-            }
+            
             $service_area = new ServiceAreaAvailablity();
             $service_area->area_id = $value;
             $service_area->service_id = $service->id;

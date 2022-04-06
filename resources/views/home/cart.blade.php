@@ -122,7 +122,8 @@
                         </div>
                         <div class="button-container d-flex justify-content-center align-items-center flex-column">
                             <button class="btn btn-secondary my-1 w-50" type="submit">Filter</button>
-                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('home.cart') }}">Reset Filters</a>
+                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('home.cart') }}">Reset
+                                Filters</a>
                         </div>
 
 
@@ -177,9 +178,9 @@
                     document.location='{{ route('verification.notice') }}'
                 @else
                     $element = $('#like-button-' + service_id);
-
+                
                     if (!confirm('Do You want to delete this service ?')){
-                        return;
+                    return;
                     }
                     if ($element.hasClass('fa-regular')){
                     // code to like this service
@@ -205,9 +206,9 @@
                     $user_like_icon.addClass('fa-solid');
                     $user_like_icon.addClass('text-danger');
                     $user_like_number.html(response);
-
-                    
-
+                
+                
+                
                     },
                     error: function (response) {
                     console.log(response);
@@ -229,13 +230,12 @@
                 
                     $user_like_icon = $('#user-like-icon');
                     $user_like_number = $('#user-like-number');
-                    
+                
                     dislikedlikedSuccessFully();
                     $('#service-partial-' + service_id).remove();
-
-                    if($('#main-service-container').children().length <= 0){
-                        html = `
-                        <div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
+                
+                    if($('#main-service-container').children().length <= 0){ html=` <div
+                        class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
                         <img id="no-result-image" src="{{ asset('assets/images/noresult.gif') }}" alt="No Result">
                         <div id="no-result-text" class="d-flex justify-content-center align-items-center flex-column">
                             <h1>No Results Found</h1>
@@ -245,14 +245,14 @@
                         </div>
                         </div>
                         `;
-
-                        $('#main-service-container').html(html);
-                    }
                 
-                    if (response <= 0){ $user_like_number.html(''); $user_like_icon.removeClass('fa-solid');
-                        $user_like_icon.removeClass('fa-regular'); $user_like_icon.removeClass('text-danger');
-                        $user_like_icon.addClass('fa-regular'); } else { $user_like_number.html(response); } }, error: function
-                        (response) { console.log(response); } }); } @endif
+                        $('#main-service-container').html(html);
+                        }
+                
+                        if (response <= 0){ $user_like_number.html(''); $user_like_icon.removeClass('fa-solid');
+                            $user_like_icon.removeClass('fa-regular'); $user_like_icon.removeClass('text-danger');
+                            $user_like_icon.addClass('fa-regular'); } else { $user_like_number.html(response); } }, error: function
+                            (response) { console.log(response); } }); } @endif
             @endauth
             @guest
                 document.location='{{ route('login') }}';
@@ -293,5 +293,23 @@
             child2.addClass('m-1')
             child2.detach().appendTo(child);
         });
+
+
+        function order(url, show_warning = false) {
+            if (show_warning) {
+                Swal.fire({
+                    title: 'This service is not available in your service. ',
+                    confirmButtonText: 'Order',
+                    denyButtonText: `Don't save`,
+                    icon: 'warning'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.location = url;
+                    }
+                })
+            } else {
+                document.location = url;
+            }
+        }
     </script>
 @endsection
