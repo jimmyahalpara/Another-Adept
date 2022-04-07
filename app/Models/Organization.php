@@ -38,4 +38,8 @@ class Organization extends Model
     public function documents(){
         return $this -> morphMany(Document::class, 'documentable');
     }
+
+    public function organization_payment_information(){
+        return $this -> hasOne(OrganizationPaymentInformation::class);
+    }
 }
