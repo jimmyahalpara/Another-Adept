@@ -17,8 +17,8 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table -> integer('amount');
             $table -> string('transaction_id') -> nullable();
-            $table -> string('payment_method_id') -> nullable();
-            $table -> timestamp('paid_on') -> nullable();
+            
+            $table -> tinyInteger('status') -> default(0) -> comment('0: pending, 1: paid'); 
             $table -> bigInteger('user_id');
             $table -> bigInteger('invoice_id') -> nullable();  
             $table->timestamps();

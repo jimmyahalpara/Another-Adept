@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Image;
 use App\Models\Organization;
 use App\Models\OrganizationPaymentInformation;
+use App\Models\OrganizationPayout;
 use App\Models\UserOrganizationMembership;
 use App\Models\UserOrganizationMembershipRole;
 use Illuminate\Cache\RedisStore;
@@ -168,7 +169,7 @@ class OrganizationController extends Controller
         return redirect()->route('organizations.show', ['organization' => $organization->id])->with('message', 'Organization Description Update Successfully');
     }
 
-    public function update_organizatoin_payment_information(Request $request, Organization $organization)
+    public function update_organization_payment_information(Request $request, Organization $organization)
     {
         if (organization_id() != $organization->id) {
             return redirect()->route('home')->with('message', 'Unauthorized Action');
@@ -190,4 +191,29 @@ class OrganizationController extends Controller
 
         return redirect() -> back() -> with('message', 'Payment Details Updated Successfully');
     }
+
+    public function request_payout(Request $request, Organization $organization)
+    {
+        if (organization_id() != $organization->id) {
+            return redirect()->route('home')->with('message', 'Unauthorized Action');
+        }
+
+        $payment_information = $organization -> organization_payment_information;
+
+        if ($payment_information == null){
+            return redirect() -> back() -> with('message', 'Please Update Payment Details');
+        }
+
+        $request->validate([
+            'amount' => ['required', 'numeric', 'min:1'],
+        ]);
+
+        $organization_payment_request = new OrganizationPayout();
+        $organization_payment_request -> organization_id = $organization -> id;
+        $organization_payment_request -> amount = $request -> input('amount');
+        $organization_payment_request -> save();
+
+        return redirect() -> back() -> with('message', 'Payment Request Submitted Successfully');
+    }
+
 }

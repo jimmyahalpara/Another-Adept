@@ -42,4 +42,8 @@ class Organization extends Model
     public function organization_payment_information(){
         return $this -> hasOne(OrganizationPaymentInformation::class);
     }
+
+    public function organization_payouts(){
+        return $this -> hasMany(OrganizationPayout::class);
+    }
 }
