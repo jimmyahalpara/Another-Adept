@@ -18,6 +18,7 @@ class CreateOrganizationsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->bigInteger('organization_state_id') -> default(0);
+            $table -> bigInteger('wallet_balance') -> default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -40,6 +40,17 @@
                     </a>
                 </td>
             </tr>
+            <tr>
+                <th>Wallet Balence</th>
+                <td>
+                    {{ $organization -> wallet_balence }}
+                </td>
+                <td>
+                    <button class="btn btn-success">
+                        Request Payout
+                    </button>
+                </td>
+            </tr>
 
         </table>
         <button onclick="document.location='{{ route('home') }}'"
