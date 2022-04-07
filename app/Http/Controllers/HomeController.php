@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserEditRequest;
 use App\Models\City;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
@@ -151,7 +152,6 @@ class HomeController extends Controller
         $user_id = Auth::id();
         $service_order = ServiceOrder::where('id', $request -> service_order_id) -> where('user_id', $user_id) -> first();
 
-    
 
         $service_order -> order_state_id = 3;
         $service_order -> save();
@@ -165,5 +165,34 @@ class HomeController extends Controller
 
         return redirect() -> route('home.orders') -> with('message', 'Service Cancelled');
 
+    }
+
+    public function view_profile(){
+        $user = Auth::user();
+        $cities = City::orderBy('name') -> get();
+        return view('home.profile', compact(
+            'user',
+            'cities'
+        ));
+    }
+
+    public function edit_profile(UserEditRequest $request)
+    {
+        $message = 'Profile updated successfully.';
+        $user = Auth::user();
+        $user -> name = $request -> name;
+
+        if ($user -> email != $request -> email){
+            $user -> email = $request -> email;
+            $user -> email_verified_at = null;
+            $message .= "You need to verify your email id before doing other things.";
+        }
+        $user -> phone_number - $request -> phone_number;
+        $user -> address = $request -> address;
+        $user -> area_id = $request -> area_id;
+
+        $user -> save();
+
+        return redirect() -> back() -> with('message', $message);
     }
 }

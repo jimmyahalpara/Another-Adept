@@ -71,8 +71,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('home') -> name('home.') -> controller(HomeController::class) -> group(function (){
         Route::get('liked-posts', 'view_liked') -> name('cart');
-        Route::get('orders', [HomeController::class, 'my_orders']) -> name('orders');
-        Route::post('cancel', [HomeController::class, 'cancel_order']) -> name('cancel');
+        Route::get('orders', 'my_orders') -> name('orders');
+        Route::post('cancel', 'cancel_order') -> name('cancel');
+        Route::get('profile', 'view_profile') -> name('profile') -> withoutMiddleware('verified');
+        Route::post('profile', 'edit_profile') -> name('profile') -> withoutMiddleware('verified');
     });
 
 
@@ -97,6 +99,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // route to index 
         Route::get('index', 'index') -> name('index');
     });
+
+
 
 
 });

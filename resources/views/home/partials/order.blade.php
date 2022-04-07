@@ -75,7 +75,7 @@
                 </div>
 
                 <div>
-                    <b>Phoe Number To: </b>
+                    <b>Phone Number To: </b>
                     <span>
                         {{ $order->order_member->user_organization_membership->user->phone_number }}
                     </span>

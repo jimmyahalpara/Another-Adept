@@ -10,7 +10,7 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {   
-        $this -> middleware('organization.role:manager');
+        $this -> middleware('organization.role:manager', ['except' => ['index']]);
     }
     /**
      * Method to Delete Invoice

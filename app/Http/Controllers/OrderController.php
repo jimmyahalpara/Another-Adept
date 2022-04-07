@@ -17,7 +17,24 @@ class OrderController extends Controller
 
     function __construct()
     {
-        $this->middleware('organization.role:manager', ['except' => ['order', 'order_confirm', 'my_orders']]);
+        $this->middleware('organization.role:manager', [
+            'except' => [
+                'order',
+                'order_confirm',
+                'my_orders',
+                // for service providers 
+                'change_order_member_state',
+                'complete'
+                ]
+            ]
+        );
+
+        $this -> middleware('organization.role:provider', [
+            'only' => [
+                'change_order_member_state',
+                'complete'
+            ]
+        ]);
     }
     public function order(Request $request, Service $service)
     {
@@ -29,6 +46,16 @@ class OrderController extends Controller
         ));
     }
 
+
+    /**
+     * Can Be done by normal users. It is used to confirm the order for given user. 
+     * Access: all 
+     * 
+     * @param Request $request
+     * @param int $service_id
+     * 
+     * @return redirect 
+     */
     public function order_confirm(Request $request, $service_id)
     {
         $user_id = Auth::id();
@@ -42,11 +69,21 @@ class OrderController extends Controller
         return redirect()->route('home')->with('message', 'Order Placed Successfully. You can view its progress in My Orders section. We will update you about its status.');
     }
 
+
+
+    /**
+     * Returens view containing orders  for organization id of current user.
+     * Access: manager, admin
+     * 
+     * @param Request $request
+     * 
+     * @return view orders.organization
+     */
     public function view_organization_orders(Request $request)
     {
 
         $num_rows = $request->input('num_rows', 10);
-        // $search_text = $request -> input('search_text', '');
+        
 
 
         $current_user_organization_id = organization_id();
@@ -68,6 +105,16 @@ class OrderController extends Controller
     }
 
 
+    /**
+     * Called from orders.organization view, is used to assign orders to organization members. 
+     * Entry is created in OrderMember with appropriate attributes. 
+     * shows error if organization id of the servcie which is ordered does not match the 
+     * organization id of the user currently logged in. This goes for all the functions below. 
+     * 
+     * @param Request $request 
+     * 
+     * @return redirect
+     */
     public function assign(Request $request)
     {
         $request->validate([
@@ -106,6 +153,15 @@ class OrderController extends Controller
         return redirect()->route('order.organization')->with('message', 'Order assigned');
     }
 
+
+    /**
+     * Ajax call which returns all the details about a given order id. All the information related to service, invoices, 
+     * invoice state, user who ordered it, user.area and user.area.city is returned as json string.
+     * 
+     * @param Request $request
+     * 
+     * @return json
+     */
     public function view_order_detail_ajax(Request $request)
     {
         $request->validate([
@@ -265,6 +321,8 @@ class OrderController extends Controller
 
         return redirect()->route('order.organization')->with('message', 'Order State changed');
     }
+
+
 
     public function generate_invoice_form(Request $request, ServiceOrder $service_order)
     {

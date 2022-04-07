@@ -124,9 +124,11 @@
                                         placeholder="Enter Full Name" value="{{ old('name') }}">
                                 </div>
                                 <div class="form-group">
+                                    
                                     <label for="email" class="sr-only">Email</label>
                                     <input type="email" name="email" id="email" class="form-control"
                                         placeholder="Email address" value="{{ old('email') }}">
+                                        
                                 </div>
                                 <div class="form-group mb-4">
                                     <label for="password" class="sr-only">Password</label>

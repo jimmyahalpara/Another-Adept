@@ -79,7 +79,7 @@
                             <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ route('home.orders') }}">My Orders</a></li>
                                 <li><a href="{{ route('invoice.index') }}" class="dropdown-item">Invoices</a></li>
-                                <li><a class="dropdown-item" href="#">My Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('home.profile') }}">My Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -116,16 +116,6 @@
                             </a>
                         </li>
                     @endauth
-                    {{-- <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="#!">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="#!">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </li> --}}
                 </ul>
             </div>
         </div>

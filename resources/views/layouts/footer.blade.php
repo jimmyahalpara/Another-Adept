@@ -1,4 +1,4 @@
-<footer class="pt-3">
+<footer class="pt-3 d-flex justify-content-center align-items-center flex-column">
     <div id="userfulLinks" class="row px-5 mx-5 mt-5">
         <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem1">
             <p class="no-margins smallText">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit,
@@ -28,15 +28,17 @@
 
         </div>
     </div>
-    <div id="sep"></div>
-    <div class="copyrightContainer d-flex justify-content-center align-items-center flex-column">
-        <p class="smallText no-margins">Copyright ©{{ date('Y') }} {{ config('app.name', 'Service Adept') }}. All Rights Reserved.</p>
-        <p class="smallText no-margins">Lorem, ipsum dolor.</p>
-        <div class="copyrightSocialMediaIcons">
-            <i style="font-size:24px" class="fa"></i>
-            <i style="font-size:24px" class="fa"></i>
-            <i style="font-size:24px" class="fa"></i>
-            <i style="font-size:24px" class="fa"></i>
+    <div>
+        <div id="sep"></div>
+        <div class="copyrightContainer d-flex justify-content-center align-items-center flex-column">
+            <p class="smallText no-margins">Copyright ©{{ date('Y') }} {{ config('app.name', 'Service Adept') }}. All Rights Reserved.</p>
+            <p class="smallText no-margins">Lorem, ipsum dolor.</p>
+            <div class="copyrightSocialMediaIcons">
+                <i style="font-size:24px" class="fa"></i>
+                <i style="font-size:24px" class="fa"></i>
+                <i style="font-size:24px" class="fa"></i>
+                <i style="font-size:24px" class="fa"></i>
+            </div>
         </div>
     </div>
 </footer>
@@ -45,6 +47,7 @@
     footer {
         background-color: black;
         color: white;
+        min-height: 50vh
     }
 
     footer a {

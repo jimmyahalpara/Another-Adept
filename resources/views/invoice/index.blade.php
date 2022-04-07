@@ -14,9 +14,9 @@
         </div>
     </section>
     <main class="p-3">
-            <div class="col-lg-10 p-1" id="main-service-container">
-                @foreach ($invoices as $invoice)
-                    <div class="border m-3 row">
+            <div class="col-lg-10 p-1 d-flex justify-content-center align-items-center w-100" id="main-service-container">
+                @forelse ($invoices as $invoice)
+                    <div class="border m-3 row w-100">
                         <div class="col-lg-2 p-2">
                             <b>Invoice #{{ $invoice->id }}</b>
                             <div>{{ $invoice->created_at }}</div>
@@ -45,11 +45,18 @@
                             </span>
                             @endif
                         </div>
-                        <div class="col-lg-2 p-2 d-flex justify-content-center align-items-center">
-                            <button class="btn btn-success">Pay</button>
+                        <div class="col-lg-2 p-2 d-flex justify-content-center align-items-center flex-column">
+                            <b>Pay</b>
+                            <button class="btn btn-success m-1">
+                                PAYTM
+                            </button>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h1>No Invoice Generated</h1>
+                    </div>
+                @endforelse
             </div>
             <div class="m-1 d-flex justify-content-center align-items-center">
                 {{ $invoices->links() }}
