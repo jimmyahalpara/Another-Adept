@@ -21,6 +21,8 @@ class CreatePaymentsTable extends Migration
             $table -> tinyInteger('status') -> default(0) -> comment('0: pending, 1: paid'); 
             $table -> bigInteger('user_id');
             $table -> bigInteger('invoice_id') -> nullable();  
+            $table -> string('order_id', 50) -> nullable();  
+            $table -> string('payment_method') -> default('Paytm');
             $table->timestamps();
             $table -> softDeletes();
         });
