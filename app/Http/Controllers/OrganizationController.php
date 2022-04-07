@@ -6,6 +6,7 @@ use App\Http\Requests\CreateOrganizatinRequest;
 use App\Models\Document;
 use App\Models\Image;
 use App\Models\Organization;
+use App\Models\OrganizationPaymentInformation;
 use App\Models\UserOrganizationMembership;
 use App\Models\UserOrganizationMembershipRole;
 use Illuminate\Cache\RedisStore;
@@ -165,5 +166,28 @@ class OrganizationController extends Controller
 
 
         return redirect()->route('organizations.show', ['organization' => $organization->id])->with('message', 'Organization Description Update Successfully');
+    }
+
+    public function update_organizatoin_payment_information(Request $request, Organization $organization)
+    {
+        if (organization_id() != $organization->id) {
+            return redirect()->route('home')->with('message', 'Unauthorized Action');
+        }
+
+        $payment_information = $organization -> organization_payment_information;
+
+        if ($payment_information == null){
+            $payment_information = new OrganizationPaymentInformation();
+            $payment_information -> organization_id = $organization -> id;
+        }
+
+        $payment_information -> bank_name = $request -> input('bank_name', '');
+        $payment_information -> bank_account_number = $request -> input('bank_account_number', '');
+        $payment_information -> ifsc = $request -> input('ifsc', '');
+        $payment_information -> upi_id = $request -> input('upi_id');
+
+        $payment_information -> save();
+
+        return redirect() -> back() -> with('message', 'Payment Details Updated Successfully');
     }
 }

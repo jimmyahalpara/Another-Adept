@@ -65,6 +65,10 @@
                     <th>IFSC Code </th>
                     <td>{{ $organization -> organization_payment_information -> ifsc }}</td>
                 </tr>
+                <tr>
+                    <th>UPI ID </th>
+                    <td>{{ $organization -> organization_payment_information -> upi_id }}</td>
+                </tr>
             @endif
         </table>
         <button onclick="document.location='{{ route('home') }}'"
@@ -153,7 +157,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="editBankDetailsForm"
-                        action="{{ route('organizations.description.update', ['organization' => $organization->id]) }}"
+                        action="{{ route('organizations.payment.update', ['organization' => $organization->id]) }}"
                         method="post">
                         @csrf
 
@@ -166,7 +170,7 @@
                             <label for="bank_name_id">Enter Bank Account Number</label>
                         </div>
                         <div class="form-floating m-3">
-                            <input class="form-control" placeholder="Enter IFSC Code" type="text" name="ifsc" id="ifsc_id" value="{{ ($organization -> ifsc) ? ($organization -> ifsc -> bank_account_number) : '' }}">
+                            <input class="form-control" placeholder="Enter IFSC Code" type="text" name="ifsc" id="ifsc_id" value="{{ ($organization -> organization_payment_information) ? ($organization -> organization_payment_information -> ifsc) : '' }}">
                             <label for="bank_name_id">Enter IFSC Code</label>
                         </div>
                         <div class="form-floating m-3">

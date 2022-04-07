@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('organizations/{organization}') -> name('organizations.') -> controller(OrganizationController::class) -> group(function (){
         Route::post('name/update', 'updateName') -> name('name.update');
         Route::post('description/update', 'updateDescription') -> name('description.update');
+        Route::post('payment/update', 'update_organizatoin_payment_information') -> name('payment.update');
     });
     Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
 
