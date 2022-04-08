@@ -11,6 +11,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserRatingController;
 use App\Http\Middleware\VerifyCsrfToken;
+use Faker\Guesser\Name;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,11 +103,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('delete', 'delete')->name('delete');
         // route to index 
         Route::get('index', 'index')->name('index');
+        Route::get('{invoice}/pdf', 'generate_pdf') -> name('pdf');
     });
 
 
     
     Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment') -> withoutMiddleware([VerifyCsrfToken::class]);
+
 });
 
 // paytm clalback uri
@@ -138,3 +141,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+
+
+
+Route::view('trial','invoice.viewpdf');

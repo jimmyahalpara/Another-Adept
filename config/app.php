@@ -166,7 +166,7 @@ return [
          * Package Service Providers...
          */
         Anand\LaravelPaytmWallet\PaytmWalletServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -232,6 +232,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'PaytmWallet' => Anand\LaravelPaytmWallet\Facades\PaytmWallet::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

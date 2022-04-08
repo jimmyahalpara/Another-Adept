@@ -46,21 +46,23 @@
                             </span>
                         @endif
                     </div>
-                    <div class="col-lg-2 p-2 d-flex justify-content-center align-items-center flex-column">
+                    <div class="col-lg-2 p-2 d-flex justify-content-center align-items-center flex-column ">
                         @if ($invoice->invoice_state_id == 1)
                             <b>Pay</b>
-                            <form target="__blank" method="POST" action="{{ route('make.payment', ['invoice' => $invoice->id]) }}"
+                            <form target="__blank" method="POST"
+                                action="{{ route('make.payment', ['invoice' => $invoice->id]) }}"
                                 id="paytm-{{ $invoice->id }}">
                                 @csrf
                             </form>
-                            <button onclick="$('#paytm-{{ $invoice->id }}').submit()" class="btn btn-outline-secondary m-1">
+                            <button onclick="$('#paytm-{{ $invoice->id }}').submit()"
+                                class="btn btn-outline-secondary m-1">
                                 <img style="height: 15px" src="{{ asset('assets/images/paytmlogo.png') }}" alt="">
                             </button>
-                        @else
-                            <a class="btn btn-primary m-1">
-                                View
-                            </a>
                         @endif
+                        <a class="btn btn-primary m-1" target="__blank" href="{{ route('invoice.pdf', ['invoice' => $invoice -> id]) }}">
+                            View
+                        </a>
+
                     </div>
                 </div>
             @empty

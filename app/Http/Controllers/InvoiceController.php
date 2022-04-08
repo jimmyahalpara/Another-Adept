@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class InvoiceController extends Controller
 {
@@ -60,6 +61,18 @@ class InvoiceController extends Controller
         return view('invoice.index', compact(
             'invoices'
         ));
+    }
+
+    public function generate_pdf(Invoice $invoice)
+    {
+
+        
+        $pdf = PDF::loadView('invoice.viewpdf', compact(
+            'invoice',
+            
+        ));
+
+        return $pdf -> download('bill.pdf');
     }
 
 
