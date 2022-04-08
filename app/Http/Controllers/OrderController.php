@@ -66,7 +66,7 @@ class OrderController extends Controller
         $service_order->save();
 
 
-        return redirect()->route('home')->with('message', 'Order Placed Successfully. You can view its progress in My Orders section. We will update you about its status.');
+        return redirect()->route('home.orders')->with('message', 'Order Placed Successfully. You can view its progress in My Orders section. We will update you about its status.');
     }
 
 
