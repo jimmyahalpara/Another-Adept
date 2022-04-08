@@ -105,10 +105,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
 
-    Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment') -> withoutMiddleware(['auth', 'verified', VerifyCsrfToken::class]);
-    Route::post('paytm/callback', [PaytmController::class, 'paymentCallback'])->name('paytm.callback') -> withoutMiddleware(['auth', 'verified', VerifyCsrfToken::class]);
+    
 });
 
+Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment') -> withoutMiddleware(['auth', 'verified', VerifyCsrfToken::class]);
+// paytm clalback uri
+Route::post('paytm/callback', [PaytmController::class, 'paymentCallback'])->name('paytm.callback') -> withoutMiddleware(['auth', 'verified', VerifyCsrfToken::class]);
 Route::get('search', [SearchController::class, 'index'])->name('search');
 Route::get('search/{service}', [SearchController::class, 'show'])->name('search.show');
 
