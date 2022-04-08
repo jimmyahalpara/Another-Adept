@@ -49,7 +49,7 @@
                     <div class="col-lg-2 p-2 d-flex justify-content-center align-items-center flex-column">
                         @if ($invoice->invoice_state_id == 1)
                             <b>Pay</b>
-                            <form method="POST" action="{{ route('make.payment', ['invoice' => $invoice->id]) }}"
+                            <form target="__blank" method="POST" action="{{ route('make.payment', ['invoice' => $invoice->id]) }}"
                                 id="paytm-{{ $invoice->id }}">
                                 @csrf
                             </form>

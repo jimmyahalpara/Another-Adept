@@ -131,8 +131,8 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input d-none" type="checkbox" name="remember" id="remember"
+                                <div class="form-check d-none">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember"
                                         {{ old('remember') ? 'checked' : '' }} checked>
 
                                     <label class="form-check-label d-none" for="remember">
