@@ -64,9 +64,6 @@
                 @else
                     $element = $('#like-button-' + service_id);
 
-                    if (!confirm('Do You want to delete this service ?')){
-                        return;
-                    }
                     if ($element.hasClass('fa-regular')){
                     // code to like this service
                     $.post({
@@ -117,7 +114,7 @@
                     $user_like_number = $('#user-like-number');
                     
                     dislikedlikedSuccessFully();
-                    $('#service-partial-' + service_id).remove();
+                    
 
                     if($('#main-service-container').children().length <= 0){
                         html = `
