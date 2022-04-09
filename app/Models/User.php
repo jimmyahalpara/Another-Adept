@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;
 use Laravel\Sanctum\HasApiTokens;
+use PDO;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -71,6 +72,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Area::class);
     }
 
+
+    /**
+     * Return organization model of current user 
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function get_organization()
     {
 
@@ -96,6 +103,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this -> belongsToMany(Service::class, 'user_service_likes');
     }
 
+    /**
+     * User role in organization
+     * 
+     */
     public function user_role(){
         $mem = $this -> user_organization_memberships;
         if (count($mem) > 0){
@@ -108,6 +119,15 @@ class User extends Authenticatable implements MustVerifyEmail
         } else {
             return false;
         }
+    }
+    
+
+    public function roles(){
+        return $this -> belongsToMany(Role::class, 'user_roles');
+    }
+
+    public function permissions(){
+        return $this -> belongsToMany(Permission::class, 'role_permissions');
     }
 
 
