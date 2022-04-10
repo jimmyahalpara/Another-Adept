@@ -184,6 +184,16 @@ class OrderController extends Controller
         return $service_order;
     }
 
+    /**
+     * Cancel order from Organization Side. Service ordered should be of same organization as the organization 
+     * of current user. Order state should be either placed or assigned. It also take a reason as required 
+     * parameter which will be stored with action name in Reasons table.
+     * 
+     * @param Request $request
+     * 
+     * @return redirect
+     */
+
     public function cancel_order(Request $request)
     {
         $request->validate([
@@ -218,6 +228,16 @@ class OrderController extends Controller
         return redirect()->route('order.organization')->with('message', 'Order Cancelled.');
     }
 
+
+    /**
+     * Reject order from Organization Side. Service ordered should be of same organization as the organization 
+     * of current user. Order state should be either placed or assigned. It also take a reason as required 
+     * parameter which will be stored with action name in Reasons table.
+     * 
+     * @param Request $request
+     * 
+     * @return redirect
+     */
     public function reject_order(Request $request)
     {
         $request->validate([
@@ -251,7 +271,13 @@ class OrderController extends Controller
         return redirect()->route('order.organization')->with('message', 'Order Rejected.');
     }
 
-
+    /**
+     * List All orders assigned to me. 
+     * 
+     * @param Request $reqeust
+     * 
+     * @return view
+     */
     public function my_orders(Request $request)
     {
         $user = Auth::user();
@@ -276,10 +302,17 @@ class OrderController extends Controller
         ));
     }
 
+
+    /**
+     * Change order_member state from complete to incomplete, or vice versa. Order member should be of same organization as
+     * the current user organization .
+     * 
+     * @param Request $request
+     * 
+     * @return redirect
+     */
     public function change_order_member_state(Request $request)
     {
-
-        // dd($request -> all());
         $request->validate([
             'order_member_id' => ['required', 'numeric'],
             'order_member_state_id' => ['required', 'numeric']
@@ -306,9 +339,8 @@ class OrderController extends Controller
             'order_state_id' => ['required', 'numeric'],
             'service_order_id' => ['required', 'numeric']
         ]);
-
         $user_id = Auth::id();
-        $service_order = ServiceOrder::where('id', $request->service_order_id)->where('user_id', $user_id)->first();
+        $service_order = ServiceOrder::where('id', $request->service_order_id) -> first();
         $current_user_organization_id = organization_id();
         if ($current_user_organization_id != $service_order->service->organization_id) {
             return redirect()->route('order.organization')->with('message', 'Unauthorized action');

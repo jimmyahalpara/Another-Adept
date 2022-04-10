@@ -33,7 +33,7 @@
             <p class="smallText no-margins">Copyright ©{{ date('Y') }} {{ config('app.name', 'Service Adept') }}. All Rights Reserved.</p>
             <p class="smallText no-margins">
                 <i class="fa-solid fa-quote-left"></i>
-                Lorem, ipsum dolor
+                We Rise by Lifting Others
                 <i class="fa-solid fa-quote-right"></i>
             </p>
             <div class="copyrightSocialMediaIcons">
