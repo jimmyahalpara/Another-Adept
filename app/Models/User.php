@@ -11,7 +11,7 @@ use Kyslik\ColumnSortable\Sortable;
 use Laravel\Sanctum\HasApiTokens;
 use PDO;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
@@ -122,13 +122,13 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     
 
-    public function roles(){
-        return $this -> belongsToMany(Role::class, 'user_roles');
-    }
+    // public function roles(){
+    //     return $this -> belongsToMany(Role::class, 'user_roles');
+    // }
 
-    public function permissions(){
-        return $this -> belongsToMany(Permission::class, 'role_permissions');
-    }
+    // public function permissions(){
+    //     return $this -> belongsToMany(Permission::class, 'role_permissions');
+    // }
 
 
 }

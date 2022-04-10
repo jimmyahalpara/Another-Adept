@@ -145,3 +145,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 
 Route::view('trial','invoice.viewpdf');
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
