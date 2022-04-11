@@ -50,7 +50,7 @@ class OrganizationController extends Controller
     public function store(CreateOrganizatinRequest $request)
     {
 
-
+        // dd(base_path());
         $validated = $request->validated();
         $organization = Organization::create([
             'name' => $validated['name'],
@@ -75,11 +75,10 @@ class OrganizationController extends Controller
 
 
         $fileName = time() . '.' . $request->identification->extension();
-        $path = public_path('uploads') . "/" . $fileName;
-        $request->identification->move(public_path('uploads'), $fileName);
+        $request->identification->move( base_path() . '/private_documents/', $fileName);
 
         $document = new Document();
-        $document->document_path = $path;
+        $document->document_path = route('storage.get.document', ['filename' => $fileName]);
 
         $organization->documents()->save($document);
         return redirect()->home()->with('message', "Organization Created Successfully! Now you will only have to wait for it to get verified.. ");

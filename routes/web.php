@@ -110,6 +110,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment') -> withoutMiddleware([VerifyCsrfToken::class]);
 
+    Route::get('private_documents/{filename}', [App\Http\Controllers\StorageController::class, 'getDocument'])->name('storage.get.document');
+
 });
 
 // paytm clalback uri
