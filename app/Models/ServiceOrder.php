@@ -26,7 +26,7 @@ class ServiceOrder extends Model
     }
 
     public function service(){
-        return $this -> belongsTo(Service::class);
+        return $this -> belongsTo(Service::class) -> withTrashed();
     }
 
     public function order_state(){

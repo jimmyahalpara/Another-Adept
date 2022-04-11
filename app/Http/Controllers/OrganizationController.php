@@ -208,6 +208,11 @@ class OrganizationController extends Controller
             'amount' => ['required', 'numeric', 'min:1'],
         ]);
 
+
+        // check if organization wallet_balence is greater than amount
+        if ($organization->wallet_balance < $request->amount){
+            return redirect() -> back() -> with('message', 'Insufficient Balance');
+        }
         $organization_payment_request = new OrganizationPayout();
         $organization_payment_request -> organization_id = $organization -> id;
         $organization_payment_request -> amount = $request -> input('amount');
