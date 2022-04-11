@@ -43,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('description/update', 'updateDescription')->name('description.update');
         Route::post('payment/update', 'update_organization_payment_information')->name('payment.update');
         Route::post('payout/request', 'request_payout')->name('payout.request');
+
+        Route::get('active/confirmation', 'active_confirmation_form')->name('active.confirmation');
+        Route::post('active/confirmation', 'active_confirmation')->name('active.confirmation.post');
     });
     Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
 

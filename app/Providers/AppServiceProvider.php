@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Actions\MyAction;
 use App\Models\OrganizationRole;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use TCG\Voyager\Facades\Voyager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -75,6 +77,8 @@ class AppServiceProvider extends ServiceProvider
 
 
         Paginator::useBootstrap();
+
+        Voyager::addAction(MyAction::class);
 
     }
 }
