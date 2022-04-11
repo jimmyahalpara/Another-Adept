@@ -66,20 +66,24 @@ class PaytmController extends Controller
 
         // dd($response);
 
+        $order_id = $response['ORDERID'];
 
         $transaction->getTransactionId(); // return a transaction id
+
+        $payment = Payment::where('order_id', $order_id)->first();
+        $payment->transaction_id = $response['TXNID'];
+        $payment->status = 1;
+        $payment->save();
 
         // update the db data as per result from api call
         if ($transaction->isSuccessful()) {
 
-            $order_id = $response['ORDERID'];
-            $payment = Payment::where('order_id', $order_id)->first();
-            $payment->transaction_id = $response['TXNID'];
-            $payment->status = 1;
-            $payment->save();
+            
+
 
             $invoice = Invoice::find($payment->invoice_id);
             $invoice->invoice_state_id = 2;
+            $invoice->amount_paid = $payment->amount;
             $invoice->save();
 
             // add amount to organization wallet_balance
