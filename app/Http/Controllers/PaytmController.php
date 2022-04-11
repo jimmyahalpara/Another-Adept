@@ -72,7 +72,7 @@ class PaytmController extends Controller
 
         $payment = Payment::where('order_id', $order_id)->first();
         $payment->transaction_id = $response['TXNID'];
-        $payment->status = 1;
+        
         $payment->save();
 
         // update the db data as per result from api call
@@ -80,6 +80,8 @@ class PaytmController extends Controller
 
             
 
+            $payment->status = 1;
+            $payment -> save();
 
             $invoice = Invoice::find($payment->invoice_id);
             $invoice->invoice_state_id = 2;
