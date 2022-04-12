@@ -21,6 +21,7 @@ class OrganizationController extends Controller
     public function __construct()
     {
         $this->middleware('organization.role:admin', ['except' => ['create', 'store', 'active_confirmation_form', 'active_confirmation']]);
+        $this-> middleware('permission:edit_organizations', ['only' => ['active_confirmation', 'active_confirmation_form']]);
     }
 
     /**
@@ -191,10 +192,10 @@ class OrganizationController extends Controller
 
         $document_path = $request -> document_path;
         // check if current user has edit_organization permission or not 
-        $user = Auth::user();
-        if (!$user || !$user -> hasPermission('edit_organizations')){
-            return redirect() -> back();
-        }
+        // $user = Auth::user();
+        // if (!$user || !$user -> hasPermission('edit_organizations')){
+        //     return redirect() -> back();
+        // }
         return view('organizations.active_confirmation', compact(
             'organization',
             'document_path'
@@ -207,10 +208,10 @@ class OrganizationController extends Controller
         if ($organization->organization_state_id == 2){
             return redirect() -> back() -> with('message', 'Organization Already Active');
         }
-        $user = Auth::user();
-        if (!$user || !$user -> hasPermission('edit_organizations')){
-            return redirect() -> back();
-        }
+        // $user = Auth::user();
+        // if (!$user || !$user -> hasPermission('edit_organizations')){
+        //     return redirect() -> back();
+        // }
 
         $request -> validate([
             'submit' => 'required'
@@ -246,5 +247,35 @@ class OrganizationController extends Controller
         }
 
     }
+
+    public function payout_form(OrganizationPayout $payout)
+    {
+        return view('organizations.payout_confirmation', compact(
+            'payout'
+        ));
+    }
+
+    public function payout_confirm(Request $request, OrganizationPayout $payout)
+    {
+        $request -> validate([
+            'submit' => 'required'
+        ]);
+
+
+        if ($request -> submit == 'accept'){
+            
+        } else {
+            $request -> validate([
+                'reason' => 'required'
+            ]);
+
+            $payout -> delete();
+
+            return redirect() -> route('voyager.organization-payouts.index') -> with('message', 'Payout request deleted.');
+            
+        }
+    }
+
+
 
 }

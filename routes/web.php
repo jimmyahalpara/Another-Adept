@@ -47,6 +47,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('active/confirmation', 'active_confirmation_form')->name('active.confirmation');
         Route::post('active/confirmation', 'active_confirmation')->name('active.confirmation.post');
     });
+    
+    Route::get('organizations/payout/{payout}/confirmation',[OrganizationController::class, 'payout_form'])->name('organizations.payout.confirmation');
+    Route::post('organizations/payout/{payout}/confirmation',[OrganizationController::class, 'payout_confirm'])->name('organizations.payout.confirmation.post');
+    
     Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
 
 
@@ -106,19 +110,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('delete', 'delete')->name('delete');
         // route to index 
         Route::get('index', 'index')->name('index');
-        Route::get('{invoice}/pdf', 'generate_pdf') -> name('pdf');
+        Route::get('{invoice}/pdf', 'generate_pdf')->name('pdf');
+        Route::get('{invoice}/pdf/view', 'view_pdf_admin')->name('pdf.view');
     });
 
 
-    
-    Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment') -> withoutMiddleware([VerifyCsrfToken::class]);
+
+    Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment')->withoutMiddleware([VerifyCsrfToken::class]);
 
     Route::get('private_documents/{filename}', [App\Http\Controllers\StorageController::class, 'getDocument'])->name('storage.get.document');
-
 });
 
 // paytm clalback uri
-Route::post('paytm/callback', [PaytmController::class, 'paymentCallback'])->name('paytm.callback') -> withoutMiddleware([ VerifyCsrfToken::class]);
+Route::post('paytm/callback', [PaytmController::class, 'paymentCallback'])->name('paytm.callback')->withoutMiddleware([VerifyCsrfToken::class]);
 Route::get('search', [SearchController::class, 'index'])->name('search');
 Route::get('search/{service}', [SearchController::class, 'show'])->name('search.show');
 
@@ -149,7 +153,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 
 
-Route::view('trial','invoice.viewpdf');
+Route::view('trial', 'invoice.viewpdf');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\OrganizationCheckRole;
+use App\Http\Middleware\PermissionMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,5 +67,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'organization.role' => OrganizationCheckRole::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'permission' => PermissionMiddleware::class
     ];
 }

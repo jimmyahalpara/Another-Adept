@@ -9,18 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class StorageController extends Controller
 {
+
+    public function __construct()
+    {
+        $this -> middleware('permission:browse_documents');
+    }
     public function getDocument(Request $request, String $filename)
     {
         // get current user 
         $user = Auth::user();
-
-
-
-        // check if current user has browse_documents permission 
-        if (!$user || !$user->hasPermission('browse_documents')) {
-            // return 404 code as response. 
-            return abort(404);
-        }
 
         // file path using base path
         $file_path = base_path() . '\private_documents\\' . $filename;

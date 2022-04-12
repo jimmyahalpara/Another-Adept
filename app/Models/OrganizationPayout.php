@@ -17,4 +17,10 @@ class OrganizationPayout extends Model
         'status'
     ];
 
+
+    public function organization()
+    {
+        return $this -> belongsTo(Organization::class);
+    }
+
 }

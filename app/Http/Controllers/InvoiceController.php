@@ -11,7 +11,8 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {   
-        $this -> middleware('organization.role:manager', ['except' => ['index']]);
+        $this -> middleware('organization.role:manager', ['except' => ['index', 'view_pdf_admin']]);
+        $this -> middleware('permission:read_invoices', ['only' => ['view_pdf_admin']]);
     }
     /**
      * Method to Delete Invoice
@@ -73,6 +74,15 @@ class InvoiceController extends Controller
         ));
 
         return $pdf -> download('bill.pdf');
+    }
+
+    public function view_pdf_admin(Invoice $invoice){
+        $pdf = PDF::loadView('invoice.viewpdf', compact(
+            'invoice',
+            
+        ));
+
+        return $pdf->stream("dompdf_out.pdf", array("Attachment" => false));
     }
 
 

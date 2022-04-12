@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Actions\MyAction;
+use App\Actions\PayoutAction;
+use App\Actions\ViewInvoicePDF;
 use App\Models\OrganizationRole;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -78,7 +80,12 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrap();
 
-        Voyager::addAction(MyAction::class);
 
+        /**
+         * Custom action for voyager
+         */
+        Voyager::addAction(MyAction::class);
+        Voyager::addAction(ViewInvoicePDF::class);
+        Voyager::addAction(PayoutAction::class);
     }
 }
