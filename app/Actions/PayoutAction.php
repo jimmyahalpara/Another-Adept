@@ -36,15 +36,13 @@ class PayoutAction extends AbstractAction
 
     public function shouldActionDisplayOnDataType()
     {
-        // return true;
-        // dd($this -> dataType -> slug);
         return $this->dataType->slug == 'organization-payouts';
     }
 
     public function shouldActionDisplayOnRow($row)
     {
-        return true;
-        // return $row-> organization_state_id == 1;
+        // return true;
+        return $row-> status == 0;
     }
 
 }

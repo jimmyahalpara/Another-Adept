@@ -20,8 +20,9 @@ class OrganizationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('organization.role:admin', ['except' => ['create', 'store', 'active_confirmation_form', 'active_confirmation']]);
+        $this->middleware('organization.role:admin', ['except' => ['create', 'store', 'active_confirmation_form', 'active_confirmation', 'payout_form', 'payout_confirm']]);
         $this-> middleware('permission:edit_organizations', ['only' => ['active_confirmation', 'active_confirmation_form']]);
+        $this -> middleware('permission:edit_organization_payouts', ['only' => ['payout_form', 'payout_confirm']]);
     }
 
     /**
@@ -250,6 +251,15 @@ class OrganizationController extends Controller
 
     public function payout_form(OrganizationPayout $payout)
     {
+        // check if payout status is already 1 or not
+        if ($payout->status == 1){
+            return redirect() -> back() -> with('message', 'Payout Already Accepted');
+        }
+        
+        if ($payout->status == 2){
+            return redirect() -> back() -> with('message', 'Payout Already Rejected');
+        }
+
         return view('organizations.payout_confirmation', compact(
             'payout'
         ));
@@ -257,19 +267,37 @@ class OrganizationController extends Controller
 
     public function payout_confirm(Request $request, OrganizationPayout $payout)
     {
+        // check if payout status is already 1 or not
+        if ($payout->status == 1){
+            return redirect() -> back() -> with('message', 'Payout Already Accepted');
+        }
+
+        if ($payout->status == 2){
+            return redirect() -> back() -> with('message', 'Payout Already Rejected');
+        }
         $request -> validate([
             'submit' => 'required'
         ]);
 
 
         if ($request -> submit == 'accept'){
-            
+            $payout -> status = 1;
+            $payout -> save();
+
+
+            // deduct amount from organization wallet balance
+            $organization = $payout -> organization;
+            $organization -> wallet_balance = $organization -> wallet_balance - $payout -> amount;
+            $organization -> save();
+
+            return redirect() -> route('voyager.organization-payouts.index') -> with('message', 'Payout Accepted Successfully');
         } else {
             $request -> validate([
                 'reason' => 'required'
             ]);
 
-            $payout -> delete();
+            $payout -> status = 2;
+            $payout -> save();
 
             return redirect() -> route('voyager.organization-payouts.index') -> with('message', 'Payout request deleted.');
             

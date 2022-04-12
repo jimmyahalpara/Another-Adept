@@ -67,7 +67,7 @@
                             <th>Status</th>
                             <th>Created At</th>
                         </tr>
-                        @forelse ($organization->organization_payouts as $payout)
+                        @forelse ($organization->organization_payouts() -> orderBy('status') -> get() as $payout)
                             <tr>
                                 <td>{{ $payout->id }}</td>
                                 <td>{{ $payout->amount }}</td>
@@ -75,9 +75,13 @@
                                     <td>
                                         <span class="badge bg-warning">Pending</span>
                                     </td>
-                                @else
+                                @elseif ($payout->status == 1)
                                     <td>
                                         <span class="badge bg-success">Accepted</span>
+                                    </td>
+                                @elseif ($payout->status == 2)
+                                    <td>
+                                        <span class="badge bg-danger">Rejected</span>
                                     </td>
                                 @endif
                                 <td>{{ $payout->created_at }}</td>

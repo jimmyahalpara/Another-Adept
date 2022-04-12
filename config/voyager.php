@@ -146,6 +146,7 @@ return [
         'widgets' => [
             'TCG\\Voyager\\Widgets\\UserDimmer',
             'App\\Widgets\\Admin\\OrganizationDimmer',
+            'App\\Widgets\\Admin\\PayoutRequestDimmer',
             'App\\Widgets\\Admin\\OrganizationRequestDimmer',
             // 'TCG\\Voyager\\Widgets\\PageDimmer',
         ],
