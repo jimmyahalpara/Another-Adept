@@ -75,8 +75,8 @@ class OrganizationController extends Controller
 
 
         $fileName = time() . '.' . $request->identification->extension();
-        $path = public_path('uploads') . "/" . $fileName;
-        $request->identification->move(public_path('uploads'), $fileName);
+        $path = 'documents' . "/" . $fileName;
+        $request->identification->move('storage/documents/', $fileName);
 
         $document = new Document();
         $document->document_path = $path;
