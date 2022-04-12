@@ -43,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('description/update', 'updateDescription')->name('description.update');
         Route::post('payment/update', 'update_organization_payment_information')->name('payment.update');
         Route::post('payout/request', 'request_payout')->name('payout.request');
+
+        Route::get('active/confirmation', 'active_confirmation_form')->name('active.confirmation');
+        Route::post('active/confirmation', 'active_confirmation')->name('active.confirmation.post');
     });
     Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
 
@@ -109,6 +112,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     
     Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment') -> withoutMiddleware([VerifyCsrfToken::class]);
+
+    Route::get('private_documents/{filename}', [App\Http\Controllers\StorageController::class, 'getDocument'])->name('storage.get.document');
 
 });
 

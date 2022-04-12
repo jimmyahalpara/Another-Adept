@@ -8,6 +8,7 @@ use App\Models\Image;
 use App\Models\Organization;
 use App\Models\OrganizationPaymentInformation;
 use App\Models\OrganizationPayout;
+use App\Models\OrganizationRole;
 use App\Models\UserOrganizationMembership;
 use App\Models\UserOrganizationMembershipRole;
 use Illuminate\Cache\RedisStore;
@@ -19,16 +20,7 @@ class OrganizationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('organization.role:admin', ['except' => ['create', 'store']]);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+        $this->middleware('organization.role:admin', ['except' => ['create', 'store', 'active_confirmation_form', 'active_confirmation']]);
     }
 
     /**
@@ -50,7 +42,7 @@ class OrganizationController extends Controller
     public function store(CreateOrganizatinRequest $request)
     {
 
-
+        // dd(base_path());
         $validated = $request->validated();
         $organization = Organization::create([
             'name' => $validated['name'],
@@ -75,11 +67,10 @@ class OrganizationController extends Controller
 
 
         $fileName = time() . '.' . $request->identification->extension();
-        $path = 'documents' . "/" . $fileName;
-        $request->identification->move('storage/documents/', $fileName);
+        $request->identification->move( base_path() . '/private_documents/', $fileName);
 
         $document = new Document();
-        $document->document_path = $path;
+        $document->document_path = route('storage.get.document', ['filename' => $fileName]);
 
         $organization->documents()->save($document);
         return redirect()->home()->with('message', "Organization Created Successfully! Now you will only have to wait for it to get verified.. ");
@@ -100,41 +91,6 @@ class OrganizationController extends Controller
             'organization'
         ));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Organization $organization)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Organization $organization)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Organization $organization)
-    {
-        
-    }
-
 
     public function updateName(Request $request, Organization $organization)
     {
@@ -219,6 +175,76 @@ class OrganizationController extends Controller
         $organization_payment_request -> save();
 
         return redirect() -> back() -> with('message', 'Payment Request Submitted Successfully');
+    }
+
+
+    public function active_confirmation_form(Request $request, Organization $organization)
+    {
+        // check if organization state id is already 2 or not 
+        if ($organization->organization_state_id == 2){
+            return redirect() -> back() -> with('message', 'Organization Already Active');
+        }
+
+        $request -> validate([
+            'document_path' => 'required'
+        ]);
+
+        $document_path = $request -> document_path;
+        // check if current user has edit_organization permission or not 
+        $user = Auth::user();
+        if (!$user || !$user -> hasPermission('edit_organizations')){
+            return redirect() -> back();
+        }
+        return view('organizations.active_confirmation', compact(
+            'organization',
+            'document_path'
+        ));
+    }
+    public function active_confirmation(Request $request, Organization $organization)
+    {
+
+        // check if organization state id is already 2 or not 
+        if ($organization->organization_state_id == 2){
+            return redirect() -> back() -> with('message', 'Organization Already Active');
+        }
+        $user = Auth::user();
+        if (!$user || !$user -> hasPermission('edit_organizations')){
+            return redirect() -> back();
+        }
+
+        $request -> validate([
+            'submit' => 'required'
+        ]);
+
+        if ($request -> submit == 'accept'){
+            $organization -> organization_state_id = 2;
+            $organization -> save();
+            return redirect() -> route('voyager.organizations.index') -> with('message', 'Organization Activated Successfully');
+        } else {
+            $request -> validate([
+                'reason' => 'required'
+            ]);
+
+
+        
+            $reason = $request -> reason;
+
+            // get first UserOrganizationMembership for organization id 
+            $user_organization_membership = UserOrganizationMembership::where('organization_id', $organization -> id) -> first();
+
+
+            // Delete from UserOrganizationMemberShipROle for user_organization_membership_id 
+            $user_organization_membership_role = UserOrganizationMembershipRole::where('user_organization_membership_id', $user_organization_membership -> id) -> delete();
+
+            // Delete from UserOrganizationMembership for user_organization_membership_id
+            $user_organization_membership -> delete();
+
+            // Delete ORganization 
+            $organization -> delete();
+
+            return redirect() -> route('voyager.organizations.index') -> with('message', 'Organization Deleted Successfully');
+        }
+
     }
 
 }
