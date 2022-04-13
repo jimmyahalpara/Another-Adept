@@ -3,7 +3,7 @@
 
 
 @section('heading')
-    Welcome $fullname to Service Adept. 
+    Welcome {{ $user_name }} to Service Adept. 
 @endsection
 
 
