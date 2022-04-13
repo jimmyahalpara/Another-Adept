@@ -158,3 +158,8 @@ Route::view('trial', 'invoice.viewpdf');
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+
+Route::get('/mailtest', function () {
+    return view('mails.welcome');
+});
