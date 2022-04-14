@@ -20,7 +20,7 @@ class StorageController extends Controller
         $user = Auth::user();
 
         // file path using base path
-        $file_path = base_path() . '\private_documents\\' . $filename;
+        $file_path = base_path() . '/private_documents/' . $filename;
 
         // check if file exists at file path 
         dd($file_path);
