@@ -36,7 +36,7 @@ class StorageController extends Controller
         $mime_type = mime_content_type($file_path);
 
         // return file as response
-        dd($mime_type);
+        // dd($mime_type);
         return response()->file($file_path, [
             'Content-Type' => $mime_type
         ]);
