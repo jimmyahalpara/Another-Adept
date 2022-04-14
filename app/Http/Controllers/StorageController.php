@@ -23,6 +23,7 @@ class StorageController extends Controller
         $file_path = base_path() . '\private_documents\\' . $filename;
 
         // check if file exists at file path 
+        dd($file_path);
         if (!file_exists($file_path)) {
             // return 404 code as response. 
             return abort(404);
