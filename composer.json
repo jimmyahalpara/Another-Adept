@@ -15,6 +15,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "onecentlin/laravel-adminer": "^6.0",
         "proengsoft/laravel-jsvalidation": "^4.7",
         "snowfire/beautymail": "^1.1",
         "tcg/voyager": "^1.5"

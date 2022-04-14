@@ -167,6 +167,7 @@ return [
          */
         Anand\LaravelPaytmWallet\PaytmWalletServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Onecentlin\Adminer\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
