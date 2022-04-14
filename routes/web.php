@@ -11,7 +11,12 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserRatingController;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Jobs\NewOrganizationRequestJob;
+use App\Jobs\NewOrganizationRequestRejectJob;
+use App\Jobs\WelcomeMailJob;
 use App\Mail\WelcomeMail;
+use App\Models\Organization;
+use App\Models\User;
 use Faker\Guesser\Name;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -163,17 +168,23 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 
-Route::get('/mailtest', function () {
-    return view('mails.welcome');
-});
+// Route::get('/mailtest', function () {
+//     return view('mails.welcome');
+// });
 
-Route::get('/sendMail', function(){
-    $beautymail = app()->make(Snowfire\Beautymail\Beautymail::class);
-	$beautymail->send('mails.another', [], function($message)
-	{
-		$message
-			->from('noreply.serviceadept.me@gmail.com')
-			->to('jimmyatridhyatech@gmail.com', 'Jimmy Ahalpara')
-			->subject('Welcome!');
-	});
-});
+// Route::get('/sendMail', function(){
+//     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
+// 	$beautymail->send('mails.neworganizationrequestaccept', ['organization' => Organization::find(1), 'reason' => 'insuffecient documentation', 'user' => User::find(1)], function($message)
+// 	{
+// 		$message
+// 			->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
+// 			->to('jimmyatridhyatech@gmail.com', 'Jimmy Ahalpara')
+// 			->subject('Organization Request Accepted.');
+// 	});
+// });
+
+// Route::get('/jobtest', function () {
+//     $job = new NewOrganizationRequestRejectJob(['user' => User::find(1), 'organization' => Organization::find(1), 'reason' => 'insuffecient documentation']);
+//     dispatch($job);
+// });
+

@@ -11,7 +11,7 @@
     ])
     <tr>
         <td class="title">
-            Welcome {{ $user_name }} to Service Adept.
+            Hello, {{ $user -> name }}
         </td>
     </tr>
     <tr>
@@ -19,7 +19,7 @@
     </tr>
     <tr>
         <td class="paragraph">
-            Thank You for Signing Up. All the services that you need to one place.
+            Your request to create new organization with name "{{ $organization -> name }}" has been accepted. You can now start with adding members and services to your organization.  
         </td>
     </tr>
     <tr>
@@ -28,8 +28,19 @@
     <tr>
         <td>
             @include('beautymail::templates.minty.button', [
-                'text' => 'Explore Services',
-                'link' => route('search'),
+                'text' => 'Add Member',
+                'link' => route('members.index'),
+            ])
+        </td>
+    </tr>
+    <tr>
+        <td width="100%" height="22"></td>
+    </tr>
+    <tr>
+        <td>
+            @include('beautymail::templates.minty.button', [
+                'text' => 'Add Service',
+                'link' => route('services.index'),
             ])
         </td>
     </tr>
