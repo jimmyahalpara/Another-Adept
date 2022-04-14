@@ -13,6 +13,10 @@
     <style>
         body {
             font-family: "Karla", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
         }
         #main-container {
             background: url('{{ asset('assets/images/mailback.jpg') }}');
@@ -22,6 +26,10 @@
             border-radius: 2vh;
             height: fit-content;
             overflow: hidden;
+            display: flex !important;
+            justify-content: center;
+            align-items:center;
+            width: 50%
             
         }
         
@@ -30,12 +38,19 @@
             width: 100%;
             height: 100%;
             padding: 5vh 2vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
         #logo-container {
             height: 20vh;
             width: 60%;
             background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center
             
         }
 
@@ -53,16 +68,21 @@
         a {
             color: rgb(122, 122, 255)
         }
+
+        #heading {
+            padding-top: 5vh;
+            width: 75%;
+        }
     </style>
 </head>
 
-<body class="d-flex justify-content-center align-items-center text-light">
-    <div id="main-container" class="w-50">
-        <div id="second-container" class="d-flex  align-items-center flex-column" >
-            <div id="logo-container" class="d-flex justify-content-center align-items-center">
+<body class="" id="body">
+    <div id="main-container" class="">
+        <div id="second-container" class="" >
+            <div id="logo-container" class="">
                 <img id="logo" src="https://serviceadept.me/assets/images/logo.svg" alt="">
             </div>
-            <h1 class="pt-2 w-75 test-justify">@yield('heading')</h1>
+            <h1 id="heading" class="pt-2 w-75 test-justify">@yield('heading')</h1>
             <div id="container">
                 @yield('content')
             </div>
