@@ -60,7 +60,7 @@
     <div id="main-container" class="w-50">
         <div id="second-container" class="d-flex  align-items-center flex-column" >
             <div id="logo-container" class="d-flex justify-content-center align-items-center">
-                <img id="logo" src="{{ asset('assets/images/logo.svg') }}" alt="">
+                <img id="logo" src="https://serviceadept.me/assets/images/logo.svg" alt="">
             </div>
             <h1 class="pt-2 w-75 test-justify">@yield('heading')</h1>
             <div id="container">
