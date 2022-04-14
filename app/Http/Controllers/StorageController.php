@@ -23,12 +23,12 @@ class StorageController extends Controller
         $file_path = base_path() . '/private_documents/' . $filename;
 
         // check if file exists at file path 
-        dd($file_path, file_exists($file_path));
+        // dd($file_path, file_exists($file_path));
         if (!file_exists($file_path)) {
             // return 404 code as response. 
             return abort(404);
         }
-
+        dd("GOING HERE");
         // get file extension
         $extension = pathinfo($file_path, PATHINFO_EXTENSION);
 
