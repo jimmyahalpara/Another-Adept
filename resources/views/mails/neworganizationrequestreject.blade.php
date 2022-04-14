@@ -20,7 +20,7 @@
 
     <tr>
         <td class="paragraph">
-            Your request to create organization with name "{{ $organization -> name }}" has been rejected due to "{{ $reason }}". You can again request organization creation with updated details. If you want to discuss more, then mail us at {{ config('appconfig.help_email') }}.`
+            Your request to create organization with name "{{ $organization -> name }}" has been rejected due to "{{ $reason }}". You can again request organization creation with updated details. If you want to discuss more, then mail us at {{ config('appconfig.help_email') }}.
             <br>
             Thank You.
         </td>

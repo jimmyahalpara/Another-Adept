@@ -12,7 +12,7 @@ return [
 
     'colors' => [
 
-        'highlight' => '#004ca3',
+        'highlight' => 'white',
         'button'    => '#004cad',
 
     ],
@@ -24,8 +24,8 @@ return [
         'address'     => null,
 
         'logo'        => [
-            'path'   => '%PUBLIC%/vendor/beautymail/assets/images/sunny/logo.png',
-            'width'  => '',
+            'path'   => 'https://serviceadept.me/assets/images/logo.png',
+            'width'  => '60px',
             'height' => '',
         ],
 

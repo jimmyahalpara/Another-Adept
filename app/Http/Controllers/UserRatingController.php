@@ -11,6 +11,8 @@ class UserRatingController extends Controller
     public function index(Request $request)
     {   
         $service_id = $request -> input('service_id', 0);
-        return UserServiceRating::with('user') -> where('service_id', $service_id) -> sortable() -> simplePaginate(5);
+        return UserServiceRating::with(['user' => function($q){
+            $q -> select('id', 'name');
+        }]) -> where('service_id', $service_id) -> sortable() -> simplePaginate(5);
     }
 }
