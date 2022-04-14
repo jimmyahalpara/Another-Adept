@@ -28,7 +28,7 @@ class StorageController extends Controller
             // return 404 code as response. 
             return abort(404);
         }
-        dd("GOING HERE");
+        // dd("GOING HERE");
         // get file extension
         $extension = pathinfo($file_path, PATHINFO_EXTENSION);
 
@@ -36,6 +36,7 @@ class StorageController extends Controller
         $mime_type = mime_content_type($file_path);
 
         // return file as response
+        dd($mime_type);
         return response()->file($file_path, [
             'Content-Type' => $mime_type
         ]);
