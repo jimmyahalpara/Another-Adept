@@ -11,11 +11,14 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserRatingController;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Mail\WelcomeMail;
 use Faker\Guesser\Name;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use TCG\Voyager\Facades\Voyager;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,4 +165,8 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::get('/mailtest', function () {
     return view('mails.welcome');
+});
+
+Route::get('/sendMail', function(){
+    Mail::to('jimmyatridhyatech@gmail.com')->send(new WelcomeMail('jimmy'));
 });
