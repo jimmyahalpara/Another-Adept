@@ -168,5 +168,12 @@ Route::get('/mailtest', function () {
 });
 
 Route::get('/sendMail', function(){
-    Mail::to('jimmyatridhyatech@gmail.com')->send(new WelcomeMail('jimmy'));
+    $beautymail = app()->make(Snowfire\Beautymail\Beautymail::class);
+	$beautymail->send('mails.another', [], function($message)
+	{
+		$message
+			->from('noreply.serviceadept.me@gmail.com')
+			->to('jimmyatridhyatech@gmail.com', 'Jimmy Ahalpara')
+			->subject('Welcome!');
+	});
 });

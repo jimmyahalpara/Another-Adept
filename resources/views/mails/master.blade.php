@@ -2,14 +2,6 @@
 <html>
 
     <head>
-        
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    
-    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: "Karla", sans-serif;
@@ -80,7 +72,7 @@
     <div id="main-container" class="">
         <div id="second-container" class="" >
             <div id="logo-container" class="">
-                <img id="logo" src="https://serviceadept.me/assets/images/logo.svg" alt="">
+                <img id="logo" src="https://www.serviceadept.me/assets/images/logo.svg" alt="">
             </div>
             <h1 id="heading" class="pt-2 w-75 test-justify">@yield('heading')</h1>
             <div id="container">

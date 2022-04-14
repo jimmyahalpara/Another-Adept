@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "proengsoft/laravel-jsvalidation": "^4.7",
+        "snowfire/beautymail": "^1.1",
         "tcg/voyager": "^1.5"
     },
     "require-dev": {
