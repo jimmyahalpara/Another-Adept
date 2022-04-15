@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
+use App\Jobs\OrderCancelledByUserJob;
 use App\Models\City;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
@@ -52,9 +53,9 @@ class HomeController extends Controller
         $organization_filter = $request->input('organization_filter', []);
         $min_price = $request->input('min_price', '');
         $max_price = $request->input('max_price', '');
-        
+
         // DB::enableQueryLog();
-        $services = $user -> services() -> select('*');
+        $services = $user->services()->select('*');
 
 
         if ($areas != []) {
@@ -113,7 +114,7 @@ class HomeController extends Controller
         $cities = City::orderBy('name')->get();
         $categories = ServiceCategory::orderBy('name')->get();
         $price_types = PriceType::orderBy('name')->get();
-        
+
         $organizations = Organization::orderBy('name')->get();
         return view('home.cart', compact(
             'user',
@@ -136,7 +137,7 @@ class HomeController extends Controller
     public function my_orders(Request $request)
     {
         $user = Auth::user();
-        $orders = ServiceOrder::where('user_id', $user -> id) -> sortable(['id' => 'desc']) -> simplePaginate(10) -> withQueryString();
+        $orders = ServiceOrder::where('user_id', $user->id)->sortable(['id' => 'desc'])->simplePaginate(10)->withQueryString();
         return view('home.orders', compact(
             'orders',
             'user'
@@ -146,30 +147,33 @@ class HomeController extends Controller
     public function cancel_order(Request $request)
     {
         // dd($request -> all());
-        $request -> validate([
+        $request->validate([
             'service_order_id' => ['required', 'numeric']
         ]);
         $user_id = Auth::id();
-        $service_order = ServiceOrder::where('id', $request -> service_order_id) -> where('user_id', $user_id) -> first();
+        $service_order = ServiceOrder::where('id', $request->service_order_id)->where('user_id', $user_id)->first();
 
 
-        $service_order -> order_state_id = 3;
-        $service_order -> save();
+        $service_order->order_state_id = 3;
+        $service_order->save();
 
 
         $reason = new Reason();
-        $reason -> body = "Cancelled: By User";
+        $reason->body = "Cancelled: By User";
 
-        $service_order -> reasons() -> save($reason);
+        $service_order->reasons()->save($reason);
+
+        $job = new OrderCancelledByUserJob(['order' => $service_order]);
+        dispatch($job);
 
 
-        return redirect() -> route('home.orders') -> with('message', 'Service Cancelled');
-
+        return redirect()->route('home.orders')->with('message', 'Service Cancelled');
     }
 
-    public function view_profile(){
+    public function view_profile()
+    {
         $user = Auth::user();
-        $cities = City::orderBy('name') -> get();
+        $cities = City::orderBy('name')->get();
         return view('home.profile', compact(
             'user',
             'cities'
@@ -180,19 +184,19 @@ class HomeController extends Controller
     {
         $message = 'Profile updated successfully.';
         $user = Auth::user();
-        $user -> name = $request -> name;
+        $user->name = $request->name;
 
-        if ($user -> email != $request -> email){
-            $user -> email = $request -> email;
-            $user -> email_verified_at = null;
+        if ($user->email != $request->email) {
+            $user->email = $request->email;
+            $user->email_verified_at = null;
             $message .= "You need to verify your email id before doing other things.";
         }
-        $user -> phone_number - $request -> phone_number;
-        $user -> address = $request -> address;
-        $user -> area_id = $request -> area_id;
+        $user->phone_number - $request->phone_number;
+        $user->address = $request->address;
+        $user->area_id = $request->area_id;
 
-        $user -> save();
+        $user->save();
 
-        return redirect() -> back() -> with('message', $message);
+        return redirect()->back()->with('message', $message);
     }
 }

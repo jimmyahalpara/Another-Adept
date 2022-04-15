@@ -14,6 +14,7 @@ use App\Http\Middleware\VerifyCsrfToken;
 use App\Jobs\NewOrganizationRequestJob;
 use App\Jobs\NewOrganizationRequestRejectJob;
 use App\Jobs\OrderAssignJob;
+use App\Jobs\OrderCancelledByUserJob;
 use App\Jobs\OrderPlacedAdminJob;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\WelcomeMailJob;
@@ -173,12 +174,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 // Route::get('/mailtest', function () {
-//     return view('mails.welcome');
+//     return view('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)]);
 // });
 
 Route::get('/sendMail', function(){
     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-	$beautymail->send('mails.order_assigned', ['order' => ServiceOrder::find(3), 'member' => User::find(1)], function($message)
+	$beautymail->send('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)], function($message)
 	{
 		$message
 			->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
@@ -188,7 +189,7 @@ Route::get('/sendMail', function(){
 });
 
 Route::get('/jobtest', function () {
-    $job = new OrderAssignJob(['order' => ServiceOrder::find(3), 'user' => User::find(1)]);
+    $job = new OrderCancelledByUserJob(['order' => ServiceOrder::find(3)]);
     dispatch($job);
 });
 

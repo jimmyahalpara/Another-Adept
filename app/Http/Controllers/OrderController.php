@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\OrderAssignJob;
+use App\Jobs\OrderAssignUserJob;
 use App\Jobs\OrderPlacedAdminJob;
 use App\Jobs\OrderPlacedJob;
+use App\Jobs\OrderStateChangeJob;
 use App\Models\Invoice;
 use App\Models\OrderMember;
+use App\Models\OrderState;
 use App\Models\Reason;
 use App\Models\Service;
 use App\Models\ServiceOrder;
@@ -162,7 +165,11 @@ class OrderController extends Controller
         $order_member->user_organization_membership_id = $request->member_id;
         $order_member->save();
 
-        $job = new OrderAssignJob(['order' => $service_order, 'user' => OrderMember::find($order_member->id) -> user_organization_membership -> user]);
+        $job = new OrderAssignJob(['order' => $service_order, 'user' => OrderMember::find($order_member->id)->user_organization_membership->user]);
+        dispatch($job);
+
+
+        $job = new OrderAssignUserJob(['order' => ServiceOrder::find($service_order->id), 'user' => $service_order->user]);
         dispatch($job);
 
         return redirect()->route('order.organization')->with('message', 'Order assigned');
@@ -234,6 +241,8 @@ class OrderController extends Controller
         $service_order->order_state_id = 3;
         $service_order->save();
 
+        $job = new OrderStateChangeJob(['order' => $service_order, 'user' => $service_order->user, 'reason' => $request->reason, 'status' => 'Cancelled']);
+        dispatch($job);
 
         $reason = new Reason();
         $reason->body = "Cancelled: " .  $request->reason;
@@ -277,6 +286,8 @@ class OrderController extends Controller
         $service_order->order_state_id = 4;
         $service_order->save();
 
+        $job = new OrderStateChangeJob(['order' => $service_order, 'user' => $service_order->user, 'reason' => $request->reason, 'status' => 'Rejected']);
+        dispatch($job);
 
         $reason = new Reason();
         $reason->body = "Rejected: " .  $request->reason;

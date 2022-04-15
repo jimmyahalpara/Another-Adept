@@ -103,7 +103,7 @@
                     <td>{{ $order->created_at }}</td>
                     <td>{{ $order->order_state->name }}</td>
                     <td>
-                        @if ($order->order_member)
+                        @if ($order->order_member && $order -> order_member -> user_organization_membership -> user)
                             {{ $order->order_member->user_organization_membership->user->name }} /
                             <span class="badge @if ($order->order_member->order_member_state_id == 1) bg-danger @else bg-success @endif">
                                 {{ $order->order_member->order_member_state->name }}
@@ -261,7 +261,7 @@
                         <div class="mt-5 form-floating">
                             <input class="form-control" type="text" name="reason" id="reject_reason_id"
                                 placeholder="Enter Rejection Reason" maxlength="100">
-                            <label for="reject_reason_id">Enter Rrejection Reason</label>
+                            <label for="reject_reason_id">Enter Rejection Reason</label>
                         </div>
                     </form>
                 </div>
