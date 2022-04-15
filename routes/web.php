@@ -177,19 +177,19 @@ Route::group(['prefix' => 'admin'], function () {
 //     return view('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)]);
 // });
 
-Route::get('/sendMail', function(){
-    $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-	$beautymail->send('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)], function($message)
-	{
-		$message
-			->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
-			->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
-			->subject('New Order');
-	});
-});
+// Route::get('/sendMail', function(){
+//     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
+// 	$beautymail->send('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)], function($message)
+// 	{
+// 		$message
+// 			->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
+// 			->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
+// 			->subject('New Order');
+// 	});
+// });
 
-Route::get('/jobtest', function () {
-    $job = new OrderCancelledByUserJob(['order' => ServiceOrder::find(3)]);
-    dispatch($job);
-});
+// Route::get('/jobtest', function () {
+//     $job = new OrderCancelledByUserJob(['order' => ServiceOrder::find(3)]);
+//     dispatch($job);
+// });
 
