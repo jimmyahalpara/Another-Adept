@@ -56,7 +56,7 @@ class InvoiceController extends Controller
         // Select Invoice where user_id = current user id
         $invoices = Invoice::where('user_id', $user -> id)
             -> orderBy('invoice_state_id')
-            -> orderBy('due')
+            -> orderBy('created_at', 'desc')
             -> simplePaginate(10);
         
         return view('invoice.index', compact(

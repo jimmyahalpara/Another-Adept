@@ -47,7 +47,7 @@
 
 <body>
     <div class="" id="main-container">
-        <h1 style="margin-bottom: 0">Invoice #4</h1>
+        <h1 style="margin-bottom: 0">Invoice #{{ $invoice -> id }}</h1>
         <small style="padding-bottom: 10px"><i>{{ now() }}</i></small>
         <table  id="detail-table" class="table-bordered w-50">
             @php
