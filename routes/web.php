@@ -13,9 +13,13 @@ use App\Http\Controllers\UserRatingController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Jobs\NewOrganizationRequestJob;
 use App\Jobs\NewOrganizationRequestRejectJob;
+use App\Jobs\OrderAssignJob;
+use App\Jobs\OrderPlacedAdminJob;
+use App\Jobs\OrderPlacedJob;
 use App\Jobs\WelcomeMailJob;
 use App\Mail\WelcomeMail;
 use App\Models\Organization;
+use App\Models\ServiceOrder;
 use App\Models\User;
 use Faker\Guesser\Name;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -174,17 +178,17 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::get('/sendMail', function(){
     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-	$beautymail->send('mails.neworganizationrequestreject', ['organization' => Organization::find(1), 'reason' => 'insuffecient documentation', 'user' => User::find(1)], function($message)
+	$beautymail->send('mails.order_assigned', ['order' => ServiceOrder::find(3), 'member' => User::find(1)], function($message)
 	{
 		$message
 			->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
-			->to('jahalpara5@gmail.com', 'Jimmy Ahalpara')
-			->subject('Organization Request Accepted.');
+			->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
+			->subject('New Order');
 	});
 });
 
-// Route::get('/jobtest', function () {
-//     $job = new NewOrganizationRequestRejectJob(['user' => User::find(1), 'organization' => Organization::find(1), 'reason' => 'insuffecient documentation']);
-//     dispatch($job);
-// });
+Route::get('/jobtest', function () {
+    $job = new OrderAssignJob(['order' => ServiceOrder::find(3), 'user' => User::find(1)]);
+    dispatch($job);
+});
 

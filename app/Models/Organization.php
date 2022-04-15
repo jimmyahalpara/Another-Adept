@@ -46,4 +46,8 @@ class Organization extends Model
     public function organization_payouts(){
         return $this -> hasMany(OrganizationPayout::class);
     }
+
+    public function all_admins(){
+        return $this -> user_organization_memberships();
+    }
 }

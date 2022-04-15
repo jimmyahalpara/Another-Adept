@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\OrderAssignJob;
+use App\Jobs\OrderPlacedAdminJob;
+use App\Jobs\OrderPlacedJob;
 use App\Models\Invoice;
 use App\Models\OrderMember;
 use App\Models\Reason;
 use App\Models\Service;
 use App\Models\ServiceOrder;
+use App\Models\User;
 use App\Models\UserOrganizationMembership;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,19 +21,21 @@ class OrderController extends Controller
 
     function __construct()
     {
-        $this->middleware('organization.role:manager', [
-            'except' => [
-                'order',
-                'order_confirm',
-                'my_orders',
-                // for service providers 
-                'change_order_member_state',
-                'complete'
+        $this->middleware(
+            'organization.role:manager',
+            [
+                'except' => [
+                    'order',
+                    'order_confirm',
+                    'my_orders',
+                    // for service providers 
+                    'change_order_member_state',
+                    'complete'
                 ]
             ]
         );
 
-        $this -> middleware('organization.role:provider', [
+        $this->middleware('organization.role:provider', [
             'only' => [
                 'change_order_member_state',
                 'complete'
@@ -66,6 +72,14 @@ class OrderController extends Controller
         $service_order->save();
 
 
+        $order = ServiceOrder::find($service_order->id);
+        $job = new OrderPlacedJob(['order' => $order]);
+        dispatch($job);
+
+
+        $job = new OrderPlacedAdminJob(['order' => $order]);
+        dispatch($job);
+
         return redirect()->route('home.orders')->with('message', 'Order Placed Successfully. You can view its progress in My Orders section. We will update you about its status.');
     }
 
@@ -83,7 +97,7 @@ class OrderController extends Controller
     {
 
         $num_rows = $request->input('num_rows', 10);
-        
+
 
 
         $current_user_organization_id = organization_id();
@@ -148,7 +162,8 @@ class OrderController extends Controller
         $order_member->user_organization_membership_id = $request->member_id;
         $order_member->save();
 
-
+        $job = new OrderAssignJob(['order' => $service_order, 'user' => OrderMember::find($order_member->id) -> user_organization_membership -> user]);
+        dispatch($job);
 
         return redirect()->route('order.organization')->with('message', 'Order assigned');
     }
@@ -168,7 +183,7 @@ class OrderController extends Controller
             'order_id' => ['required', 'numeric']
         ]);
 
-        $service_order = ServiceOrder::with(['service','invoices','invoices.invoice_state', 'user', 'user.area', 'user.area.city'])->find($request->order_id);
+        $service_order = ServiceOrder::with(['service', 'invoices', 'invoices.invoice_state', 'user', 'user.area', 'user.area.city'])->find($request->order_id);
         $current_user_organization_id = organization_id();
         if ($current_user_organization_id != $service_order->service->organization_id) {
             return redirect()->route('order.organization')->with('message', 'Unauthorized action');
@@ -340,7 +355,7 @@ class OrderController extends Controller
             'service_order_id' => ['required', 'numeric']
         ]);
         $user_id = Auth::id();
-        $service_order = ServiceOrder::where('id', $request->service_order_id) -> first();
+        $service_order = ServiceOrder::where('id', $request->service_order_id)->first();
         $current_user_organization_id = organization_id();
         if ($current_user_organization_id != $service_order->service->organization_id) {
             return redirect()->route('order.organization')->with('message', 'Unauthorized action');
