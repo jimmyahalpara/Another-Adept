@@ -35,7 +35,7 @@ class OrderMember extends Model
     }
 
     public function user_organization_membership(){
-        return $this -> belongsTo(UserOrganizationMembership::class);
+        return $this -> belongsTo(UserOrganizationMembership::class) -> withTrashed();
     }
 
     public function order_member_state()
