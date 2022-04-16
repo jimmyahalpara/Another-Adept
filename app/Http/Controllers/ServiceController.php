@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateServiceRequest;
 use App\Http\Requests\ImageUploadRequest;
+use App\Jobs\ServiceAvailableJob;
 use App\Models\Area;
 use App\Models\City;
 use App\Models\Image;
@@ -326,6 +327,12 @@ class ServiceController extends Controller
             'area.*' => ['required', 'numeric', 'min:1']
         ]);
 
+        $service_id = $service->id;
+
+        $old_areas_ids = $service->areas->pluck('id')->toArray();
+        $new_areas_ids = $request->area;
+        // dd($old_areas_ids, $new_areas_ids);
+
         ServiceAreaAvailablity::where('service_id', $service -> id) -> delete();
         foreach ($request -> area as $value) {
 
@@ -335,6 +342,15 @@ class ServiceController extends Controller
             $service_area->service_id = $service->id;
             $service_area->save();
         }
+
+        $job = new ServiceAvailableJob([
+            'service' => Service::find($service_id),
+            'old_areas_ids' => $old_areas_ids,
+            'new_areas_ids' => $new_areas_ids
+        ]);
+        // dd($job);
+        dispatch($job);
+
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Areas Updated Successfully!');
     }
 

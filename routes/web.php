@@ -21,8 +21,10 @@ use App\Jobs\WelcomeMailJob;
 use App\Mail\WelcomeMail;
 use App\Models\Invoice;
 use App\Models\Organization;
+use App\Models\Service;
 use App\Models\ServiceOrder;
 use App\Models\User;
+use App\Models\UserServiceLike;
 use Faker\Guesser\Name;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -178,16 +180,31 @@ Route::group(['prefix' => 'admin'], function () {
 //     return view('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)]);
 // });
 
-// Route::get('/sendMail', function(){
-//     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-// 	$beautymail->send('mails.invoice_generated', ['invoice' => Invoice::find(16)], function($message)
-// 	{
-// 		$message
-// 			->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
-// 			->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
-// 			->subject('Invoice Generated');
-// 	});
-// });
+Route::get('/sendMail', function(){
+    // $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
+
+	// $beautymail->send('mails.service_available', ['service' => Service::find(49), 'user' => User::find(1)], function($message)
+	// {
+	// 	$message
+	// 		->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
+	// 		->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
+	// 		->subject('Hurry!!');
+	// });
+
+    $user_service_like = UserServiceLike::where('service_id', '=', 49) -> get();
+    dump($user_service_like);
+    
+    
+    $service = Service::find(49);
+
+    dump($service -> areas -> pluck('id') -> toArray());
+    
+    dump(array_diff([1,2,5], [2,1,3]));
+    dd();
+
+
+
+});
 
 // Route::get('/jobtest', function () {
 //     $job = new OrderCancelledByUserJob(['order' => ServiceOrder::find(3)]);

@@ -109,6 +109,17 @@
         <td width="100%" height="25"></td>
     </tr>
     <tr>
+        <td>
+            @include('beautymail::templates.minty.button', [
+                'text' => 'Pay Invoice',
+                'link' => route('invoice.index'),
+            ])
+        </td>
+    </tr>
+    <tr>
+        <td width="100%" height="25"></td>
+    </tr>
+    <tr>
         <td class="paragraph">
             <small>
                 Regards,<br>
