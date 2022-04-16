@@ -77,7 +77,7 @@ class OrganizationController extends Controller
 
         $document = new Document();
         $document->document_path = route('storage.get.document', ['filename' => $fileName]);
-
+        dd($document);
         $job = new NewOrganizationRequestJob(['user' => Auth::user()]);
         dispatch($job);
 
