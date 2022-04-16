@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Models\Organization;
 use TCG\Voyager\Actions\AbstractAction;
 
 class MyAction extends AbstractAction
@@ -31,9 +32,10 @@ class MyAction extends AbstractAction
     public function getDefaultRoute()
     {
         // dd($this -> data -> documents -> first() -> document_path);
+        $document = Organization::find($this -> data -> id) -> documents() -> first();
         return route('organizations.active.confirmation', [
             'organization' => $this -> data -> id,
-            'document_path' => $this -> data -> documents -> first() -> document_path,
+            'document_path' => $document -> document_path,
         ]);
     }
 
