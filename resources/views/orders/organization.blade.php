@@ -46,7 +46,7 @@
                 @endforeach
             </div>
         @endif
-        <table class="table table-striped">
+        <table class="table table-striped" style="width: 80vw">
             <tr>
                 <th>@sortablelink('id', 'Order ID')</th>
                 <th>@sortablelink('service_id', 'Service ID')</th>

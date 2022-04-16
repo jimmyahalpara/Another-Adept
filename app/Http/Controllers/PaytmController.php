@@ -7,6 +7,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Anand\LaravelPaytmWallet\Facades\PaytmWallet;
+use App\Jobs\InvoicePaidAdminJob;
 
 class PaytmController extends Controller
 {
@@ -92,6 +93,10 @@ class PaytmController extends Controller
             $organization = $invoice->service_order->service->organization;
             $organization->wallet_balance += $invoice->amount;
             $organization->save();
+
+
+            $job = new InvoicePaidAdminJob(['invoice' => $invoice]);
+            dispatch($job);
 
             return redirect()->route('invoice.index')->with('message', 'Payment Successful');
         } else if ($transaction->isFailed()) {

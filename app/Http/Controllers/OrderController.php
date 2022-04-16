@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\InvoiceGeneratedUserJob;
 use App\Jobs\OrderAssignJob;
 use App\Jobs\OrderAssignUserJob;
+use App\Jobs\OrderCompleteUserJob;
 use App\Jobs\OrderPlacedAdminJob;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\OrderStateChangeJob;
@@ -366,7 +368,9 @@ class OrderController extends Controller
             'service_order_id' => ['required', 'numeric']
         ]);
         $user_id = Auth::id();
-        $service_order = ServiceOrder::where('id', $request->service_order_id)->first();
+        // $service_order = ServiceOrder::where('id', $request->service_order_id)->first();
+        $service_order = ServiceOrder::findOrFail($request->service_order_id);
+
         $current_user_organization_id = organization_id();
         if ($current_user_organization_id != $service_order->service->organization_id) {
             return redirect()->route('order.organization')->with('message', 'Unauthorized action');
@@ -375,6 +379,10 @@ class OrderController extends Controller
             return redirect()->route('order.organization')->with('message', 'Cannot change state of the order which is cancelled/rejected or On Hold.');
         }
         $service_order->order_state_id = $request->order_state_id;
+        if ($request -> order_state_id == 6){
+            $job = new OrderCompleteUserJob(['order' => $service_order]);
+            dispatch($job);
+        }
         $service_order->save();
 
         return redirect()->route('order.organization')->with('message', 'Order State changed');
@@ -426,6 +434,11 @@ class OrderController extends Controller
         // set due date to be confif(appconfig.due_days) days from today 
         $invoice->due = Carbon::now()->addDays(config('appconfig.due_days'));
         $invoice->save();
+
+
+        $job = new InvoiceGeneratedUserJob(['invoice' => Invoice::find($invoice->id)]);
+        dispatch($job);
+
 
         return redirect()->route('order.organization')->with('message', 'Invoice Generated Successfully');
     }

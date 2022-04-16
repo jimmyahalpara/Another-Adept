@@ -19,6 +19,7 @@ use App\Jobs\OrderPlacedAdminJob;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\WelcomeMailJob;
 use App\Mail\WelcomeMail;
+use App\Models\Invoice;
 use App\Models\Organization;
 use App\Models\ServiceOrder;
 use App\Models\User;
@@ -179,12 +180,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 // Route::get('/sendMail', function(){
 //     $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
-// 	$beautymail->send('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)], function($message)
+// 	$beautymail->send('mails.invoice_generated', ['invoice' => Invoice::find(16)], function($message)
 // 	{
 // 		$message
 // 			->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
 // 			->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
-// 			->subject('New Order');
+// 			->subject('Invoice Generated');
 // 	});
 // });
 
