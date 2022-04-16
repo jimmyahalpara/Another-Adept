@@ -30,6 +30,7 @@ class MyAction extends AbstractAction
 
     public function getDefaultRoute()
     {
+        dd($this -> data -> documents -> first() -> document_path);
         return route('organizations.active.confirmation', [
             'organization' => $this -> data -> id,
             'document_path' => $this -> data -> documents -> first() -> document_path,
