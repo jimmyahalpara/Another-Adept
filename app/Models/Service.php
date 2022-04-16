@@ -28,7 +28,7 @@ class Service extends Model
     }
 
     public function organization(){
-        return $this -> belongsTo(Organization::class);
+        return $this -> belongsTo(Organization::class) -> withTrashed();
     }
 
     public function images(){
