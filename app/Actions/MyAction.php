@@ -33,7 +33,7 @@ class MyAction extends AbstractAction
     {
         // dd($this -> data -> documents -> first() -> document_path);
         $document = Organization::find($this -> data -> id) -> documents() -> first();
-        dd($document);
+        // dd($document);
         return route('organizations.active.confirmation', [
             'organization' => $this -> data -> id,
             'document_path' => $document -> document_path,
