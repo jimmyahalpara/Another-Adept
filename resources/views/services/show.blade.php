@@ -349,7 +349,9 @@
                                             onchange="on_state_change({{ $num_area }});">
                                             <option value="">Select State</option>
                                             @foreach ($states as $state)
-                                                <option value="{{ $state->state }}" @if($service_area -> city -> state == $state -> state) selected @endif>{{ $state->state }}</option>
+                                                <option value="{{ $state->state }}"
+                                                    @if ($service_area->city->state == $state->state) selected @endif>{{ $state->state }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         <label for="state_id_{{ $num_area }}">State</label>
@@ -367,10 +369,12 @@
                                             onchange="on_city_change({{ $num_area }})">
                                             <option value="">Select District</option>
                                             @php
-                                                $cities_current = \App\Models\City::where('state', $service_area -> city -> state)->get();
+                                                $cities_current = \App\Models\City::where('state', $service_area->city->state)->get();
                                             @endphp
                                             @foreach ($cities_current as $city)
-                                                <option value="{{ $city->city }}" @if($service_area -> city -> id == $city -> id) selected @endif>{{ $city->name }}</option>
+                                                <option value="{{ $city->city }}"
+                                                    @if ($service_area->city->id == $city->id) selected @endif>{{ $city->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         <label for="city_id_{{ $num_area }}">District</label>
@@ -387,10 +391,12 @@
                                             @error('area_id_{{ $num_area }}') autofocus @enderror>
                                             <option value="">Select Area</option>
                                             @php
-                                                $areas_current = \App\Models\Area::where('city_id', $service_area -> city -> id)->get();
+                                                $areas_current = \App\Models\Area::where('city_id', $service_area->city->id)->get();
                                             @endphp
                                             @foreach ($areas_current as $area)
-                                                <option value="{{ $area->id }}" @if($service_area -> id == $area -> id) selected @endif>{{ $area->name }}</option>
+                                                <option value="{{ $area->id }}"
+                                                    @if ($service_area->id == $area->id) selected @endif>{{ $area->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         <label for="area_id_{{ $num_area }}">Area</label>
@@ -400,11 +406,12 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-danger"
-                                        onclick="">Remove</button>
-                                    <button>
+                                    <div class="w-100 d-flex justify-content-end align-items-center">
+                                        <button onclick="$('#area_container_{{ $num_area }}').remove()" type="button"
+                                            class="buttonRounded-organization float-right mt-1 p-2 px-4">
+                                            Remove
+                                        </button>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -473,7 +480,15 @@
                                         </select>
                                         <label for="area_id_` + num_area + `">Area</label>
                                     </div>
-                                </div>`;
+                                    <div class="w-100 d-flex justify-content-end align-items-center">
+                                        <button onclick="$('#area_container_` + num_area + `').remove()" type="button"
+                                            class="buttonRounded-organization float-right mt-1 p-2 px-4">
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                `;
             console.log($area_container);
             $area_container.append(area_html);
         }

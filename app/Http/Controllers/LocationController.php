@@ -20,7 +20,7 @@ class LocationController extends Controller
         }
 
 
-        $cities = City::where('state', $request -> state) -> get();
+        $cities = City::where('state', $request -> state) -> orderBy('name') -> get();
         return $cities;
     }
 
@@ -34,7 +34,7 @@ class LocationController extends Controller
         }
 
         
-        $areas = Area::where('city_id', $request -> city_id) -> get();
+        $areas = Area::where('city_id', $request -> city_id) -> orderBy('name') -> get();
         return $areas;
     }
 }
