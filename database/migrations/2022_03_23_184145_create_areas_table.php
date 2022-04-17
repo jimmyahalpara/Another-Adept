@@ -16,7 +16,7 @@ class CreateAreasTable extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table -> string('name');
-            $table -> string('pincode', 7);
+            $table -> string('pincode', 7) -> nullable();
             $table -> bigInteger('city_id')->nullable();
 
 

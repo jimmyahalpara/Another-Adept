@@ -1,0 +1,761 @@
+index,area,city
+1,Adhewada ,1
+2,Adtala ,1
+3,Agiyali ,1
+4,Akwada ,1
+5,Alampar ,1
+6,Alang SBY ,1
+7,Amargadh ,1
+8,Ambla ,1
+9,Anandpur ,1
+10,Anida ,1
+11,Anida ,1
+12,ANKOLALI ,1
+13,Awaniya ,1
+14,Ayavej ,1
+15,Bagdana ,1
+16,Bahadurpur ,1
+17,Bajud ,1
+18,Bambhan ,1
+19,Bambhania ,1
+20,Bapada ,1
+21,Bela ,1
+22,Belampur ,1
+23,Bhadavav ,1
+24,Bhadbhid ,1
+25,Bhadla Nana ,1
+26,Bhadli ,1
+27,Bhadra ,1
+28,Bhadravadi ,1
+29,Bhadraval ,1
+30,Bhadrod ,1
+31,Bhandariya ,1
+32,Bhandariya ,1
+33,Bhandariya ,1
+34,Bhankhal ,1
+35,Bharoli ,1
+36,Bhavnagar Anandnagar ,1
+37,Bhavnagar Bharatnagar ,1
+38,Bhavnagar BPTI ,1
+39,Bhavnagar Chitra ,1
+40,Bhavnagar Gogha Circle ,1
+41,Bhavnagar HO,1
+42,Bhavnagar K Nagar ,1
+43,Bhavnagar Khargate ,1
+44,Bhavnagar Kumbharwada ,1
+45,Bhavnagar Nirmalnagar ,1
+46,Bhavnagar Para ,1
+47,Bhavnagar Shivaji Circle Area ,1
+48,Bhavnagar Station Road ,1
+49,Bhavnagar Takhteshwar ,1
+50,Bhavnagar Wadva ,1
+51,Bhikda ,1
+52,Bhimdad ,1
+53,Bhojavadar ,1
+54,Bhojpara ,1
+55,Bhumbhli ,1
+56,Bhutiya ,1
+57,Bhutiya ,1
+58,Bila ,1
+59,Boda ,1
+60,Bodi ,1
+61,Bodki ,1
+62,Borda ,1
+63,Bordi ,1
+64,Botad ,1
+65,Botad Statoin Road ,1
+66,Budhana ,1
+67,Budhel ,1
+68,Chabhadia ,1
+69,Chamardi ,1
+70,Chhapariyali ,1
+71,Chhapri Juni ,1
+72,Chogath ,1
+73,Chok ,1
+74,Concret Jetty ,1
+75,Dadva ,1
+76,Dakana ,1
+77,Damrala ,1
+78,Dared ,1
+79,Datha ,1
+80,Dayal ,1
+81,Dedarda ,1
+82,Degvada ,1
+83,Depla ,1
+84,Devaliya ,1
+85,Devgana ,1
+86,Devli ,1
+87,Dhakania ,1
+88,Dhankankunda ,1
+89,Dharai ,1
+90,Dharuka ,1
+91,Dharwala ,1
+92,Dhasa Gam ,1
+93,Dhasa Jn ,1
+94,Dhola ,1
+95,Dhrufania ,1
+96,Dhundsar ,1
+97,Dihor ,1
+98,Dudhala ,1
+99,Dudhala No 2 ,1
+100,Dudheri ,1
+101,Dundas ,1
+102,Fariyadka ,1
+103,Fulsar ,1
+104,Gadhada Sn ,1
+105,Gadhadiya ,1
+106,Gadhali ,1
+107,Gadhesar ,1
+108,Galthar ,1
+109,Ganeshgadh ,1
+110,Gariyadhar ,1
+111,Ghanghli ,1
+112,Gheti ,1
+113,Gogha ,1
+114,Goradka ,1
+115,Goras ,1
+116,Gorkhi ,1
+117,Gujarda ,1
+118,Gundala ,1
+119,Gundala ,1
+120,Gundarna ,1
+121,Gundarni ,1
+122,Habukvad ,1
+123,Haddad ,1
+124,Hadmatiya ,1
+125,HAJIPUR ,1
+126,Haliyad ,1
+127,Hanol ,1
+128,Haripar ,1
+129,Hathab ,1
+130,Hathasani ,1
+131,Hoidad ,1
+132,Ingorala ,1
+133,Ingorala ,1
+134,Ishwariya ,1
+135,Itaria ,1
+136,Jalalpur ,1
+137,Jaliya Amraji ,1
+138,Jaliya ,1
+139,JaliyaP ,1
+140,Jamanvav ,1
+141,Jambala ,1
+142,Jaspara ,1
+143,Jesar ,1
+144,Junarampar ,1
+145,Junvadar ,1
+146,Kalsar ,1
+147,Kalyanpur ,1
+148,Kamlej ,1
+149,Kamlol Nani ,1
+150,Kanad ,1
+151,Kanjarda ,1
+152,Kanpar ,1
+153,Kantasar ,1
+154,Kanthariya ,1
+155,Kardej ,1
+156,Kariyani ,1
+157,Karla ,1
+158,Karmadiya ,1
+159,Katpar ,1
+160,Kerala ,1
+161,Kerala ,1
+162,Khadarpar ,1
+163,Khadsaliya ,1
+164,Khandhera ,1
+165,Kharakadi ,1
+166,Khared ,1
+167,Kharedi ,1
+168,Khari ,1
+169,Khari ,1
+170,Khijadiya ,1
+171,Khopala ,1
+172,Kinkariya ,1
+173,Koliyak ,1
+174,Konjli ,1
+175,Kukad ,1
+176,Kumbhan ,1
+177,Kumbhan ,1
+178,Kumbhara ,1
+179,Kumbhariya ,1
+180,Kundhada ,1
+181,Kundheli ,1
+182,Lakadiya ,1
+183,Lakhanka ,1
+184,Lakhanka ,1
+185,Lakheni ,1
+186,Langala ,1
+187,Lathidad ,1
+188,Limbdiya ,1
+189,Limda H ,1
+190,Loinga ,1
+191,Lokshala ,1
+192,Loliyana ,1
+193,Longdi ,1
+194,Lundhara ,1
+195,Lusdi ,1
+196,Luvara ,1
+197,Luvarvav ,1
+198,Madhada ,1
+199,Madhiya ,1
+200,Mahuva  Bhavnagar,1
+201,Makhania ,1
+202,Malanka ,1
+203,Malpara ,1
+204,Malpara ,1
+205,Malvav ,1
+206,Manar ,1
+207,Mandavdhar ,1
+208,Mandva ,1
+209,Mandvi ,1
+210,Mangadh ,1
+211,Melana ,1
+212,Mendha ,1
+213,Mevasa ,1
+214,Mokhada ,1
+215,Monpar ,1
+216,Monpar ,1
+217,Morba ,1
+218,Morchand ,1
+219,Morchupna ,1
+220,Mota Asrana ,1
+221,Mota Charodiya ,1
+222,Mota Khokhra ,1
+223,Mota Surka ,1
+224,Mota Umarda ,1
+225,Mota Zadra ,1
+226,Motakhuntavada ,1
+227,Moti Dharai ,1
+228,Moti Jagdhar ,1
+229,Moti Kundal ,1
+230,Moti Rajasthali ,1
+231,Moti Vavdi ,1
+232,Muldharai ,1
+233,Nagalpar ,1
+234,Nagdhaniba ,1
+235,Naip ,1
+236,Nana Asrana ,1
+237,Nana Jadra ,1
+238,Nana Khuntavada ,1
+239,Nana Surka ,1
+240,Nani Rajashtali ,1
+241,Nani Vavdi ,1
+242,Nanimal ,1
+243,Nari ,1
+244,Nava Ratanpar ,1
+245,Nava Sangana ,1
+246,Nava Sarod ,1
+247,Navagam ,1
+248,Navagam ,1
+249,Navagam ,1
+250,Navania ,1
+251,Nesda ,1
+252,Nesvad ,1
+253,Nincha Kotda ,1
+254,Ningala ,1
+255,Nonghanvadar ,1
+256,Otha ,1
+257,Pachhegam ,1
+258,Pachhegam ,1
+259,Padapan ,1
+260,Padri G ,1
+261,Padva ,1
+262,Padvadar ,1
+263,Paldi ,1
+264,Palitana ,1
+265,Palitana SR ,1
+266,Paliyad ,1
+267,Panchpipla ,1
+268,Panchtobra ,1
+269,Panchvada ,1
+270,Panvi ,1
+271,Parvadi ,1
+272,Parvala ,1
+273,Pasvi ,1
+274,Pati ,1
+275,Patna Bhal ,1
+276,Patna Malji ,1
+277,Pavthi ,1
+278,Pingli ,1
+279,Pipaliya ,1
+280,Pipaliya ,1
+281,Pipardi ,1
+282,Pipardi ,1
+283,Piprali ,1
+284,Pithalpur ,1
+285,Pratappara ,1
+286,Rajavadar ,1
+287,Rajgadh ,1
+288,Rajpara ,1
+289,Rajpara No 2 ,1
+290,Rajpipla ,1
+291,Ralgon ,1
+292,Ramanka ,1
+293,Ramdhari ,1
+294,Randola ,1
+295,Ranghola ,1
+296,Rangpur ,1
+297,Ranigam ,1
+298,Raniwada ,1
+299,Ranparda ,1
+300,Rasnal ,1
+301,Ratanpar ,1
+302,Ratanpur Bhal ,1
+303,Ratanvav ,1
+304,Ratol ,1
+305,Reliya ,1
+306,Reliyana ,1
+307,Reva ,1
+308,Rohishala ,1
+309,Rohishala ,1
+310,Rojiya ,1
+311,Royal ,1
+312,Rupavati ,1
+313,Sagwadi ,1
+314,Sakhpar Mota ,1
+315,Sakhvadar ,1
+316,Salaiya ,1
+317,Salangpur ,1
+318,Samadhiyala   Mulani ,1
+319,Samadhiyala ,1
+320,Samadhiyala No 1 ,1
+321,Samadhiyala No 2 ,1
+322,Sanala ,1
+323,Sandhkhakhara ,1
+324,Sanesh ,1
+325,Sangvadar ,1
+326,Sankhadasar No1 ,1
+327,Sankhdasar No2 ,1
+328,Sanodar ,1
+329,Sanosara ,1
+330,Sarera ,1
+331,Sartanpar ,1
+332,Sartanpar ,1
+333,Sarva ,1
+334,Sathra ,1
+335,Sathra ,1
+336,Satpada ,1
+337,Sedarda ,1
+338,Senjaliya ,1
+339,Shantinagar ,1
+340,Sherthali ,1
+341,Shetruji Dam ,1
+342,Shivendra Nagar ,1
+343,Shiyanagar ,1
+344,Shobhavad ,1
+345,Sidsar ,1
+346,Sihor ,1
+347,Songadh ,1
+348,Surka ,1
+349,Surnagar ,1
+350,Surnivas ,1
+351,Tajpar ,1
+352,Talaja ,1
+353,Talgajarda ,1
+354,Tana ,1
+355,Tansa ,1
+356,Tared ,1
+357,Targhara ,1
+358,Tarsara ,1
+359,Tatam ,1
+360,Tatania ,1
+361,Thadach ,1
+362,Thaliya ,1
+363,Thansa ,1
+364,Thordi ,1
+365,Timana ,1
+366,Timba ,1
+367,Timbi ,1
+368,Trapaj ,1
+369,Turkha ,1
+370,Ugalvan ,1
+371,Ugamedi ,1
+372,Ujalvav ,1
+373,Ukharla ,1
+374,Umrala ,1
+375,Unchadi ,1
+376,Usrad ,1
+377,Vadiya ,1
+378,Vadod ,1
+379,Vaghnagar ,1
+380,Valar ,1
+381,Vallabhipur ,1
+382,Valukad ,1
+383,Valukad ,1
+384,Varal ,1
+385,Vartej ,1
+386,Vav ,1
+387,Vavdi ,1
+388,Vavdi ,1
+389,Vavdi ,1
+390,Vavdi ,1
+391,Vejodari ,1
+392,Velavadar ,1
+393,Velavadar ,1
+394,Vikaliya ,1
+395,Zadakla ,1
+396,Zamrala ,1
+397,Zanjmer ,1
+398,Zinza Vadar Mota ,1
+399,Zinzavadar Nana ,1
+400,Ajmer ,2
+401,Akala ,2
+402,Amarnagar  Rajkot,2
+403,Ambardi ,2
+404,Ambardi ,2
+405,Amrapar ,2
+406,Amrapar ,2
+407,Anida Bhalodi ,2
+408,Anida Vachhra ,2
+409,Ardoi ,2
+410,Arni ,2
+411,Atkot ,2
+412,Bagadhra ,2
+413,Bakhalvad ,2
+414,Bandhiya ,2
+415,Bandra ,2
+416,Baradiya ,2
+417,Bava Pipaliya ,2
+418,Bhadajalia ,2
+419,Bhadala ,2
+420,Bhader ,2
+421,Bhadli ,2
+422,Bhadra ,2
+423,Bhadva ,2
+424,Bhankh ,2
+425,Bhayavadar ,2
+426,Bhimora ,2
+427,Bhola ,2
+428,Bhukhi ,2
+429,Bhunava ,2
+430,Bildi ,2
+431,Biliyala ,2
+432,Boria ,2
+433,Butavadar ,2
+434,Champabeda ,2
+435,Champrajpur ,2
+436,Chandli ,2
+437,Charakhadi ,2
+438,Charel ,2
+439,Chavandi ,2
+440,Chhadvavadar ,2
+441,Chhasiya ,2
+442,Chhatrasa ,2
+443,Chibhda ,2
+444,Chichod ,2
+445,Chikhaliya ,2
+446,Chitravad ,2
+447,Chordi ,2
+448,Dadar ,2
+449,Dadva Mota ,2
+450,Dadvi ,2
+451,Daiya ,2
+452,Dalia ,2
+453,Dedarva ,2
+454,Derdi ,2
+455,Derdi Kumbaji ,2
+456,Devchadi ,2
+457,Devdhari ,2
+458,Devki Galol ,2
+459,Devla ,2
+460,Dhank ,2
+461,Dholidhar ,2
+462,Dhoraji DG ND T,2
+463,Dhoraji GP NDT,2
+464,Dhoraji ,2
+465,Dhudasiya ,2
+466,Dodiyala ,2
+467,Dudhivadar ,2
+468,Dumiyani ,2
+469,Fareni ,2
+470,Gadhadia ,2
+471,Ganod ,2
+472,Garnara ,2
+473,Ghela Somnath ,2
+474,Ghoghavadar ,2
+475,Gokhlana ,2
+476,Gomta ,2
+477,Gondal Bhagvatpara ,2
+478,Gondal Bhojrajpara ,2
+479,Gondal Bhuvneshwari Pith ,2
+480,Gondal College Chowk ,2
+481,Gondal HO,2
+482,Gondal Market Yard ,2
+483,Gundala Jas ,2
+484,Gundasara ,2
+485,Gundasari ,2
+486,Hadamtala Kolithad ,2
+487,Hadamtala Shemla ,2
+488,Hariyasan ,2
+489,Hathasani ,2
+490,Ishavariya ,2
+491,Ishra ,2
+492,Jambudi ,2
+493,Jamkandorna ,2
+494,Jamnavad ,2
+495,Jamvadi ,2
+496,Jangvad ,2
+497,Jasapar ,2
+498,Jasdan ,2
+499,Jetalsar Gam ,2
+500,Jetalsar Jn ,2
+501,Jetpur FW ND T,2
+502,Jetpur ,2
+503,Jivapar ,2
+504,Juna Pipaliya ,2
+505,Juni Sankli ,2
+506,Kaduka ,2
+507,Kagvad ,2
+508,Kalana ,2
+509,Kalariya ,2
+510,Kalasar ,2
+511,Kamar Kotda ,2
+512,Kanpar ,2
+513,Kerali ,2
+514,Khadvanthali ,2
+515,Khajurda ,2
+516,Khakhijaliya ,2
+517,Khambha ,2
+518,Khandadhar ,2
+519,Khandhevadia ,2
+520,Kharachiya ,2
+521,Kharachiya ,2
+522,Khareda ,2
+523,Khatli ,2
+524,Khirasara ,2
+525,Khirsara Ghed ,2
+526,Kolithad ,2
+527,Kolki  Rajkot,2
+528,Kotda Sangani ,2
+529,Kotha Pipalia ,2
+530,Lakhavad Moti ,2
+531,Lath ,2
+532,Lilapur ,2
+533,Lodhika ,2
+534,Lunivav ,2
+535,Malanka ,2
+536,Mandan Kundla ,2
+537,Mandasan ,2
+538,Mandlikpur ,2
+539,Manekwada ,2
+540,Meghpar ,2
+541,Mekha Timbi ,2
+542,Mengni ,2
+543,Mervadar ,2
+544,Meta Khambhaliya ,2
+545,Mevasa ,2
+546,Modhuka ,2
+547,Mojira ,2
+548,Mota Gundala ,2
+549,Mota Mandva ,2
+550,Moti Khilori ,2
+551,Moti Marad ,2
+552,Moti Parabadi ,2
+553,Moti Vavdi ,2
+554,Moviya ,2
+555,Nagalkhada ,2
+556,Nagvadar ,2
+557,Nana Mandva ,2
+558,Nani Parabadi ,2
+559,Nani Vavdi ,2
+560,Nava Matravad ,2
+561,Navagadh ,2
+562,Navagam ,2
+563,Nilakha ,2
+564,Nonghanchora ,2
+565,Ori ,2
+566,Padavla ,2
+567,Panch Pipla ,2
+568,Panchavda ,2
+569,Paneli ,2
+570,Paradva ,2
+571,Patanvav ,2
+572,Patidad ,2
+573,Pedhla ,2
+574,Pipaliya ,2
+575,PipaliyaSadak ,2
+576,Pipalva ,2
+577,Pipardi ,2
+578,Pipardi ,2
+579,Pithadia ,2
+580,Pransla ,2
+581,Premgadh ,2
+582,Rabarika ,2
+583,Rabarika ,2
+584,Raidi ,2
+585,Rajapara ,2
+586,Ramod ,2
+587,Ravna ,2
+588,Reshamdi Galol ,2
+589,Rib ,2
+590,Ribda ,2
+591,Roghel ,2
+592,Rupavati ,2
+593,Sajadiyali ,2
+594,Sajadiyali ,2
+595,Samadhiyala ,2
+596,Samadhiyala ,2
+597,Sanali ,2
+598,Sanathali ,2
+599,Sandhvaya ,2
+600,Sanganva ,2
+601,Sardharpur ,2
+602,Satapar ,2
+603,Satodad ,2
+604,Semla ,2
+605,Shishak ,2
+606,Shivrajgadh ,2
+607,Shivrajpur ,2
+608,Shrinathgadh ,2
+609,Sodvadar ,2
+610,Sultanpur  Rajkot,2
+611,Supedi ,2
+612,Talagana ,2
+613,Tanasva ,2
+614,Thana Galol ,2
+615,Timbdi Arab ,2
+616,Timbdi Jam ,2
+617,Torania ,2
+618,Trakuda ,2
+619,Umrali ,2
+620,Upleta Lati Plot ,2
+621,Vachhra ,2
+622,Vadala ,2
+623,Vadali ,2
+624,Vadasada ,2
+625,Vadasada ,2
+626,Vadod ,2
+627,Vadodar ,2
+628,Valasan ,2
+629,Vangadhra ,2
+630,Varjang Jalia ,2
+631,Vasavad ,2
+632,Vavdi ,2
+633,Vavdi Station ,2
+634,Vekri ,2
+635,Vinchhiya ,2
+636,Vinzivad ,2
+637,Virpur ,2
+638,Vora Kotda ,2
+639,Zanzmer ,2
+640,Zundala ,2
+641,Kandla Free Trade Zone ,2
+642,Adbalka ,2
+643,Anandpar Navagam ,2
+644,AnandparMorbi ,2
+645,Baldhoi ,2
+646,BediRajkot ,2
+647,Bedla ,2
+648,Bhandaria ,2
+649,Bhupgadh ,2
+650,Bogharavadar ,2
+651,Dahisara ,2
+652,Devgam ,2
+653,Dholara ,2
+654,Dhulia Domda ,2
+655,Dungarka ,2
+656,Gadhaka ,2
+657,Gadhdiya ,2
+658,Gauridad ,2
+659,Ghunda Khanpar ,2
+660,Ghunda S ,2
+661,Hadmatia ,2
+662,Halenda ,2
+663,Haripar ,2
+664,Ishwariya ,2
+665,JaliyaDhrol ,2
+666,Jetpar M ,2
+667,Juna Rajpipala ,2
+668,Kagadadi ,2
+669,Kamalapur ,2
+670,Kanesara ,2
+671,Kankot ,2
+672,Kasturbadham ,2
+673,Khambhala ,2
+674,Khamta ,2
+675,Khandheri ,2
+676,KharchiyaJam ,2
+677,Kharechiya ,2
+678,Kherdi ,2
+679,Khirsara ,2
+680,Khodapipar ,2
+681,Khokhaddad ,2
+682,Khorana ,2
+683,Kotda Nayani ,2
+684,KOTHARIA  Rajkot,2
+685,KothariaTB Hosp ,2
+686,Kothi ,2
+687,Kuchiyadad ,2
+688,Kundani ,2
+689,KUVADAVA ,2
+690,LakhavadNani ,2
+691,Magharvada ,2
+692,Mahika ,2
+693,Maliyasan ,2
+694,Mavdi ,2
+695,Mesavada ,2
+696,Mota Mava ,2
+697,Mota Mava ,2
+698,Mota Vada ,2
+699,Motakhijadia ,2
+700,Motichanol ,2
+701,Nagar Pipaliya ,2
+702,Nana Khijadia ,2
+703,Padasan ,2
+704,Paddhara ,2
+705,Paddhari ,2
+706,Pal ,2
+707,Para  Pipaliya ,2
+708,Pardi ,2
+709,PipaliyaA ,2
+710,Rafala ,2
+711,Raiya ,2
+712,Rajkot Bedipara ,2
+713,Rajkot Bhaktinagar ,2
+714,Rajkot Bhomeswar NDT ,2
+715,Rajkot City ,2
+716,Rajkot D H College ,2
+717,Rajkot HO,2
+718,Rajkot Jn Plot ,2
+719,Rajkot Kalavad Road ,2
+720,Rajkot Madhapar D,2
+721,Rajkot Malviyanagar ,2
+722,Rajkot Marketing Yard ,2
+723,Rajkot Metoda Gidc ,2
+724,Rajkot Mochi Bazar ,2
+725,Rajkot Municipal Corporation ,2
+726,Rajkot Parsi Agiyari Chowk ,2
+727,Rajkot Popatpara ,2
+728,Rajkot Postal Colony ,2
+729,Rajkot Race Course Road ,2
+730,Rajkot Raiya Road ,2
+731,Rajkot Sau Uni Area ,2
+732,Rajkot Seva Sadan ,2
+733,Rajkot Sorathiawadi ,2
+734,Rajkot Udyognagar ,2
+735,Rajkot Vivekanandnagar ,2
+736,Rampar Mota ,2
+737,Rampar Pati ,2
+738,Ravki ,2
+739,Rupavati ,2
+740,Sal Pipalia ,2
+741,Samadhiyala ,2
+742,Sanosara ,2
+743,Sapar Veraval ,2
+744,Sarapdad ,2
+745,Sardhar ,2
+746,Shapar Halar ,2
+747,SRPF GrXIII  Ghanteshwar ,2
+748,Targhadia ,2
+749,Targhari ,2
+750,Thoriyali ,2
+751,Ukarda ,2
+752,Umrali ,2
+753,Vadali ,2
+754,Vavdi ,2
+755,Veraval Shapar ,2
+756,Virnagar ,2
+757,Visaman ,2
+758,Wankaner ,2
+759,Zilariya ,2
+760,Ziyana ,2
