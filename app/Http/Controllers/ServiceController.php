@@ -54,11 +54,11 @@ class ServiceController extends Controller
         $price_types = PriceType::get();
         $service_categories = ServiceCategory::get();
         // $areas = Area::get();
-        $cities = City::orderBy('name')->get();
+        $states = City::select('state')->distinct()->get();
         return view('services.create', compact(
             'price_types',
             'service_categories',
-            'cities'
+            'states'
         ));
     }
 
@@ -127,12 +127,13 @@ class ServiceController extends Controller
 
         $price_types = PriceType::get();
         $service_categories = ServiceCategory::get();
-        $cities = City::orderBy('name') -> get();
+
+        $states = City::select('state')->distinct()->get();
         return view('services.show', compact(
             'service',
             'price_types',
             'service_categories',
-            'cities'
+            'states'
         ));
     }
 

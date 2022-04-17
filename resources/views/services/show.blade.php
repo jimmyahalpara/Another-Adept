@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <th>Description </th>
-                <td>{!! nl2br(e($service->description))  !!}</td>
+                <td>{!! nl2br(e($service->description)) !!}</td>
                 <td>
                     <a class="m-1" data-bs-toggle="modal" data-bs-target="#editDescription">
                         <i class="fa-solid fa-pen"></i>
@@ -106,7 +106,8 @@
             </tr>
 
         </table>
-        <button onclick="document.location='{{ route('services.index') }}'" class="buttonRounded-outlined-light px-3 py-2">Back</button>
+        <button onclick="document.location='{{ route('services.index') }}'"
+            class="buttonRounded-outlined-light px-3 py-2">Back</button>
     </main>
 
     {{-- EDIT IMAGE --}}
@@ -339,33 +340,71 @@
                                 $num_area += 1;
                             @endphp
                             @foreach ($service->areas as $service_area)
-                                <div class="form-floating my-4" id="area_container_{{ $num_area }}">
-                                    <select name="area[]" id="area_id_1"
-                                        class="w-100 form-control @error('area_id_{{ $num_area }}') is-invalid @enderror"
-                                        @error('area_id_{{ $num_area }}') autofocus @enderror>
-                                        <option value="">Select Area</option>
-                                        @foreach ($cities as $city)
-                                            <optgroup label="{{ $city->name }}">
-                                                @foreach ($city->areas->sortBy('name') as $area)
-                                                    <option value="{{ $area->id }}"
-                                                        @if ($service_area->id == $area->id) selected @endif>
-                                                        {{ $area->name }}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        @endforeach
-                                    </select>
-                                    <div class="w-100 d-flex justify-content-end align-items-center">
-                                        <button onclick="$('#area_container_{{ $num_area }}').remove()" type="button"
-                                            class="buttonRounded-organization float-right mt-1 p-2 px-4">
-                                            Remove
-                                        </button>
+                                <div class="" id="area_container_{{ $num_area }}">
+                                    <hr>
+                                    <div class="form-floating my-4">
+                                        <select id="state_id_{{ $num_area }}"
+                                            class="w-100 form-control @error('state_id_{{ $num_area }}') is-invalid @enderror"
+                                            @error('state_id_{{ $num_area }}') autofocus @enderror
+                                            onchange="on_state_change({{ $num_area }});">
+                                            <option value="">Select State</option>
+                                            @foreach ($states as $state)
+                                                <option value="{{ $state->state }}" @if($service_area -> city -> state == $state -> state) selected @endif>{{ $state->state }}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="state_id_{{ $num_area }}">State</label>
+                                        @error('state_id_{{ $num_area }}')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                    <label for="area_id_{{ $num_area }}">Area</label>
-                                    @error('area_id_{{ $num_area }}')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+
+                                    <div class="form-floating my-4">
+                                        <select id="city_id_{{ $num_area }}"
+                                            class="w-100 form-control @error('city_id_{{ $num_area }}') is-invalid @enderror"
+                                            @error('city_id_{{ $num_area }}') autofocus @enderror
+                                            onchange="on_city_change({{ $num_area }})">
+                                            <option value="">Select District</option>
+                                            @php
+                                                $cities_current = \App\Models\City::where('state', $service_area -> city -> state)->get();
+                                            @endphp
+                                            @foreach ($cities_current as $city)
+                                                <option value="{{ $city->city }}" @if($service_area -> city -> id == $city -> id) selected @endif>{{ $city->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="city_id_{{ $num_area }}">District</label>
+                                        @error('city_id_{{ $num_area }}')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-floating my-4">
+                                        <select id="area_id_{{ $num_area }}" name="area[]"
+                                            class="w-100 form-control @error('area_id_{{ $num_area }}') is-invalid @enderror"
+                                            @error('area_id_{{ $num_area }}') autofocus @enderror>
+                                            <option value="">Select Area</option>
+                                            @php
+                                                $areas_current = \App\Models\Area::where('city_id', $service_area -> city -> id)->get();
+                                            @endphp
+                                            @foreach ($areas_current as $area)
+                                                <option value="{{ $area->id }}" @if($service_area -> id == $area -> id) selected @endif>{{ $area->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="area_id_{{ $num_area }}">Area</label>
+                                        @error('area_id_{{ $num_area }}')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger"
+                                        onclick="">Remove</button>
+                                    <button>
                                 </div>
                             @endforeach
                         </div>
@@ -404,34 +443,79 @@
             num_area += 1;
 
             $area_container = $('#area_container');
-            area_html = `<div class="form-floating my-4" id="area_container_` + num_area + `">
-                            <select name="area[]" id="area_id_` + num_area + `"
-                                class="w-100 form-control @error('area_id_`+num_area+`') is-invalid @enderror"
-                                @error('area_id_`+num_area+`') autofocus @enderror>
-                                <option value="">Select Area</option>
-                                @foreach ($cities as $city)
-                                    <optgroup label="{{ $city->name }}">
-                                        @foreach ($city->areas->sortBy('name') as $area)
-                                            <option value="{{ $area->id }}">{{ $area->name }}</option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
-                            <div class="w-100 d-flex justify-content-end align-items-center">
-                                <button onclick="$('#area_container_` + num_area + `').remove()" type="button"
-                                    class="buttonRounded-organization float-right mt-1 p-2 px-4">
-                                    Remove
-                                </button>
-                            </div>
-                            <label for="area_id_` + num_area + `">Area</label>
-                            @error('area_id_`+num_area+`')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>`;
+            area_html = `<div class="" id="area_container_` + num_area + `">
+                                    <hr>
+                                    <div class="form-floating my-4">
+                                        <select id="state_id_` + num_area + `"
+                                            class="w-100 form-control"
+                                            onchange="on_state_change(` + num_area + `);">
+                                            <option value="">Select State</option>
+                                            @foreach ($states as $state)
+                                                <option value="{{ $state->state }}">{{ $state->state }}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="state_id_` + num_area + `">State</label>
+                                    </div>
+
+                                    <div class="form-floating my-4">
+                                        <select id="city_id_` + num_area + `"
+                                            class="w-100 form-control"
+                                            onchange="on_city_change(` + num_area + `)">
+                                            <option value="">Select District</option>
+                                        </select>
+                                        <label for="city_id_` + num_area + `">District</label>
+                                    </div>
+
+                                    <div class="form-floating my-4">
+                                        <select id="area_id_` + num_area + `" name="area[]"
+                                            class="w-100 form-control">
+                                            <option value="">Select Area</option>
+                                        </select>
+                                        <label for="area_id_` + num_area + `">Area</label>
+                                    </div>
+                                </div>`;
             console.log($area_container);
             $area_container.append(area_html);
+        }
+
+        function on_state_change(num) {
+            var state = $('#state_id_' + num).val();
+            var url = "{{ route('get.cities') }}";
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {
+                    state: state
+                },
+                success: function(json) {
+                    $('#city_id_' + num).html('<option value="">Select District</option>');
+                    $.each(json, function(i, item) {
+                        $('#city_id_' + num).append('<option value="' + item.id + '">' + item.name +
+                            '</option>');
+                    });
+                }
+            });
+        }
+
+        function on_city_change(num) {
+            var city = $('#city_id_' + num).val();
+            var url = "{{ route('get.areas') }}";
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {
+                    city_id: city
+                },
+                success: function(json) {
+                    $('#area_id_' + num).html('<option value="">Select Area</option>');
+                    $.each(json, function(i, item) {
+                        $('#area_id_' + num).append('<option value="' + item.id + '">' + item.name +
+                            '</option>');
+                    });
+                }
+            });
         }
     </script>
 

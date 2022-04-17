@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrganizationController;
@@ -145,6 +146,8 @@ Route::get('search/{service}', [SearchController::class, 'show'])->name('search.
 
 Route::get('service-rating/', [UserRatingController::class, 'index'])->name('service.rating');
 
+Route::get('get/cities', [LocationController::class, 'getCities'])->name('get.cities');
+Route::get('get/areas', [LocationController::class, 'getAreas'])->name('get.areas');
 
 /**
  * ----------------------------------
@@ -180,31 +183,31 @@ Route::group(['prefix' => 'admin'], function () {
 //     return view('mails.order_cancelled_by_user', ['order' => ServiceOrder::find(3)]);
 // });
 
-Route::get('/sendMail', function(){
-    // $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
+// Route::get('/sendMail', function(){
+//     // $beautymail = app()->make(\Snowfire\Beautymail\Beautymail::class);
 
-	// $beautymail->send('mails.service_available', ['service' => Service::find(49), 'user' => User::find(1)], function($message)
-	// {
-	// 	$message
-	// 		->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
-	// 		->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
-	// 		->subject('Hurry!!');
-	// });
+// 	// $beautymail->send('mails.service_available', ['service' => Service::find(49), 'user' => User::find(1)], function($message)
+// 	// {
+// 	// 	$message
+// 	// 		->from('noreply.serviceadept.me@gmail.com', 'Service Adept Help Desk')
+// 	// 		->to('jimmyahalpara123@gmail.com', 'Jimmy Ahalpara')
+// 	// 		->subject('Hurry!!');
+// 	// });
 
-    $user_service_like = UserServiceLike::where('service_id', '=', 49) -> get();
-    dump($user_service_like);
+//     $user_service_like = UserServiceLike::where('service_id', '=', 49) -> get();
+//     dump($user_service_like);
     
     
-    $service = Service::find(49);
+//     $service = Service::find(49);
 
-    dump($service -> areas -> pluck('id') -> toArray());
+//     dump($service -> areas -> pluck('id') -> toArray());
     
-    dump(array_diff([1,2,5], [2,1,3]));
-    dd();
+//     dump(array_diff([1,2,5], [2,1,3]));
+//     dd();
 
 
 
-});
+// });
 
 // Route::get('/jobtest', function () {
 //     $job = new OrderCancelledByUserJob(['order' => ServiceOrder::find(3)]);

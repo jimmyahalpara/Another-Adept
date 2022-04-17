@@ -21,15 +21,18 @@
                 {{ $services->links() }}
             </div>
 
-            <div class="d-flex justify-content-center align-items-center">
-                <select name="num_rows" id="num_rows" class="form-control m-1 w-25">
-                    <option value="10" @if ($num_rows == 10) selected @endif>10</option>
-                    <option value="20" @if ($num_rows == 20) selected @endif>20</option>
-                    <option value="50" @if ($num_rows == 50) selected @endif>50</option>
-                    <option value="100" @if ($num_rows == 100) selected @endif>100</option>
-                    <option value="200" @if ($num_rows == 200) selected @endif>200</option>
-                </select>
-                <a class="btn btn-success" href="{{ route('services.create') }}">Add New Service</a>
+            <div class="d-flex align-items-center justify-content-between">
+                Num Rows: 
+                <div class="d-flex justify-content-center align-items-center">
+                    <select name="num_rows" id="num_rows" class="form-control m-1 w-25">
+                        <option value="10" @if ($num_rows == 10) selected @endif>10</option>
+                        <option value="20" @if ($num_rows == 20) selected @endif>20</option>
+                        <option value="50" @if ($num_rows == 50) selected @endif>50</option>
+                        <option value="100" @if ($num_rows == 100) selected @endif>100</option>
+                        <option value="200" @if ($num_rows == 200) selected @endif>200</option>
+                    </select>
+                    <a class="btn btn-success" href="{{ route('services.create') }}">Add New Service</a>
+                </div>
             </div>
 
         </div>

@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class RegisterController extends Controller
 {
@@ -29,10 +30,11 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         // $areas = Area::get();
-        $cities = City::orderBy('name') -> get();
+        $states = City::select('state') -> distinct() -> get(); 
+        // dd($states);
         return view('auth.register', compact(
             // 'areas',
-            'cities'
+            'states'
         ));
     }
 

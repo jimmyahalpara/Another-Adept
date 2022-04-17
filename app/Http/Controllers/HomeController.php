@@ -173,10 +173,10 @@ class HomeController extends Controller
     public function view_profile()
     {
         $user = Auth::user();
-        $cities = City::orderBy('name')->get();
+        $states = City::select('state') -> distinct() -> get();
         return view('home.profile', compact(
             'user',
-            'cities'
+            'states'
         ));
     }
 

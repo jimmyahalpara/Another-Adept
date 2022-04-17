@@ -124,11 +124,11 @@
                                         placeholder="Enter Full Name" value="{{ old('name') }}">
                                 </div>
                                 <div class="form-group">
-                                    
+
                                     <label for="email" class="sr-only">Email</label>
                                     <input type="email" name="email" id="email" class="form-control"
                                         placeholder="Email address" value="{{ old('email') }}">
-                                        
+
                                 </div>
                                 <div class="form-group mb-4">
                                     <label for="password" class="sr-only">Password</label>
@@ -150,17 +150,27 @@
                                     <input type="text" name="address" id="address" class="form-control"
                                         placeholder="Enter Your address" value="{{ old('address') }}">
                                 </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="state_id" class="sr-only">State</label>
+                                    <select class="form-control" name="state" id="state_id">
+                                        <option value="">Select State</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->state }}">{{ $state->state }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label for="city_id" class="sr-only">City - Area</label>
+                                    <select class="form-control" name="city_id" id="city_id">
+                                        <option value="">Select City</option>
+                                    </select>
+                                </div>
+
                                 <div class="form-group mb-4">
                                     <label for="area_id" class="sr-only">City - Area</label>
                                     <select class="form-control" name="area_id" id="area_id">
                                         <option value="">Select Area</option>
-                                        @foreach ($cities as $city)
-                                            <optgroup label="{{ $city -> name }}">
-                                                @foreach ($city->areas->sortBy('name') as $area)
-                                                    <option value="{{ $area -> id }}">{{ $area -> name }}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        @endforeach
                                     </select>
                                 </div>
                                 <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit"
@@ -187,8 +197,52 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-    {!! JsValidator::formRequest('App\Http\Requests\UserRegisterRequest', '#register-form'); !!}
+    {!! JsValidator::formRequest('App\Http\Requests\UserRegisterRequest', '#register-form') !!}
 
+
+    <script>
+        $(document).ready(function(e) {
+            $('body').on('change', '#state_id', function(e) {
+                $state = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('get.cities') }}",
+                    type: "GET",
+                    data: {
+                        state: $state
+                    },
+                    success: function(json) {
+                        $('#city_id').html('<option value="">Select City</option>');
+                        json.forEach(element => {
+                            $('#city_id').append(
+                                `<option value="${element.id}">${element.name}</option>`
+                            );
+                        });
+                    }
+                });
+            });
+
+            $('body').on('change', '#city_id', function(e) {
+                $city_id = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('get.areas') }}",
+                    type: "GET",
+                    data: {
+                        city_id: $city_id
+                    },
+                    success: function(json) {
+                        $('#area_id').html('<option value="">Select Area</option>');
+                        json.forEach(element => {
+                            $('#area_id').append(
+                                `<option value="${element.id}">${element.name}</option>`
+                            );
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
