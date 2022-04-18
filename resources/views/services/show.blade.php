@@ -82,7 +82,11 @@
                                     {{ $area->city->name }} - {{ $area->name }}
                                 </td>
                                 <td>
-                                    <a href="">
+                                    <form onsubmit="return confirm('Do you want to remove this area ?')" id="delete-area-form-{{ $area -> id }}" action="{{ route('services.area.delete', ['service' => $service -> id]) }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="area_id" value="{{ $area -> id }}">
+                                    </form>
+                                    <a href="#" onclick="$('#delete-area-form-{{ $area -> id }}').submit(); return false;">
                                         <i class="fa-solid fa-trash text-danger"></i>
                                     </a>
                                 </td>

@@ -137,28 +137,6 @@ class ServiceController extends Controller
         ));
     }
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  *
-    //  * @param  \App\Models\Service  $service
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function edit(Service $service)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Models\Service  $service
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, Service $service)
-    // {
-    //     //
-    // }
 
     /**
      * Remove the specified resource from storage.
@@ -330,14 +308,20 @@ class ServiceController extends Controller
 
         $service_id = $service->id;
 
-        $old_areas_ids = $service->areas->pluck('id')->toArray();
-        $new_areas_ids = $request->area;
-        // dd($old_areas_ids, $new_areas_ids);
 
-        ServiceAreaAvailablity::where('service_id', $service -> id) -> delete();
+        $new_array = [];
         foreach ($request -> area as $value) {
 
+            // check if service_id and area_id is already in the database.
+            $check = ServiceAreaAvailablity::where('service_id', $service_id)
+                ->where('area_id', $value)
+                ->first();
             
+            if ($check) {
+                continue;
+            } 
+            
+            $new_array[] = $value;
             $service_area = new ServiceAreaAvailablity();
             $service_area->area_id = $value;
             $service_area->service_id = $service->id;
@@ -346,13 +330,36 @@ class ServiceController extends Controller
 
         $job = new ServiceAvailableJob([
             'service' => Service::find($service_id),
-            'old_areas_ids' => $old_areas_ids,
-            'new_areas_ids' => $new_areas_ids
+            'old_areas_ids' => [],
+            'new_areas_ids' => $new_array
         ]);
         // dd($job);
         dispatch($job);
 
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Areas Updated Successfully!');
+    }
+
+    public function deleteAreaAvailablity(Request $request, Service $service)
+    {
+        // check if current service has same organiation id as the user making this request.
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+        $request -> validate([
+            'area_id' => ['required', 'numeric']
+        ]);
+
+        // delete service area
+        $service_area = ServiceAreaAvailablity::where('service_id', $service->id)
+            ->where('area_id', $request->area_id)
+            ->first();
+        
+        if ($service_area) {
+            $service_area->delete();
+        }
+
+        return redirect() -> route('services.show', ['service' => $service -> id]) -> with('message', 'Area Deleted Successfully!');
     }
 
     public function serviceLikeUnlike(Request $request)
@@ -399,7 +406,7 @@ class ServiceController extends Controller
         $user_service_rating -> save();
 
         return redirect() -> route('search.show', ['service' => $service -> id]) -> with('message', 'Heartly Thanks for your feedback');
-
-
     }
+
+
 }

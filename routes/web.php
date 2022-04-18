@@ -81,6 +81,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('service-category/update', 'updateServiceCategory')->name('service.category.update');
         Route::post('area/update', 'updateArea')->name('area.update');
         Route::post('rate', 'rate')->name('rate');
+        Route::post('area/delete', 'deleteAreaAvailablity')->name('area.delete');
     });
     Route::resource('services', ServiceController::class)->except(['update', 'edit']);
 
