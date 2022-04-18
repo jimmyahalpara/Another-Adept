@@ -81,6 +81,11 @@
                                 <td>
                                     {{ $area->city->name }} - {{ $area->name }}
                                 </td>
+                                <td>
+                                    <a href="">
+                                        <i class="fa-solid fa-trash text-danger"></i>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </table>
@@ -88,7 +93,7 @@
                 </td>
                 <td>
                     <a data-bs-toggle="modal" data-bs-target="#editArea" class="m-1">
-                        <i class="fa-solid fa-pen"></i>
+                        <i class="fa-solid fa-add"></i>
                     </a>
                 </td>
             </tr>
@@ -339,23 +344,22 @@
                             @php
                                 $num_area += 1;
                             @endphp
-                            @foreach ($service->areas as $service_area)
-                                <div class="" id="area_container_{{ $num_area }}">
+                            {{-- @foreach ($service->areas as $service_area) --}}
+                                <div class="" id="area_container_1">
                                     <hr>
                                     <div class="form-floating my-4">
-                                        <select id="state_id_{{ $num_area }}"
-                                            class="w-100 form-control @error('state_id_{{ $num_area }}') is-invalid @enderror"
-                                            @error('state_id_{{ $num_area }}') autofocus @enderror
-                                            onchange="on_state_change({{ $num_area }});">
+                                        <select id="state_id_1"
+                                            class="w-100 form-control @error('state_id_1') is-invalid @enderror"
+                                            @error('state_id_1') autofocus @enderror
+                                            onchange="on_state_change(1);">
                                             <option value="">Select State</option>
                                             @foreach ($states as $state)
-                                                <option value="{{ $state->state }}"
-                                                    @if ($service_area->city->state == $state->state) selected @endif>{{ $state->state }}
+                                                <option value="{{ $state->state }}">{{ $state->state }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <label for="state_id_{{ $num_area }}">State</label>
-                                        @error('state_id_{{ $num_area }}')
+                                        <label for="state_id_1">State</label>
+                                        @error('state_id_1')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -363,22 +367,14 @@
                                     </div>
 
                                     <div class="form-floating my-4">
-                                        <select id="city_id_{{ $num_area }}"
-                                            class="w-100 form-control @error('city_id_{{ $num_area }}') is-invalid @enderror"
-                                            @error('city_id_{{ $num_area }}') autofocus @enderror
-                                            onchange="on_city_change({{ $num_area }})">
+                                        <select id="city_id_1"
+                                            class="w-100 form-control @error('city_id_1') is-invalid @enderror"
+                                            @error('city_id_1') autofocus @enderror
+                                            onchange="on_city_change(1)">
                                             <option value="">Select District</option>
-                                            @php
-                                                $cities_current = \App\Models\City::where('state', $service_area->city->state)->get();
-                                            @endphp
-                                            @foreach ($cities_current as $city)
-                                                <option value="{{ $city->city }}"
-                                                    @if ($service_area->city->id == $city->id) selected @endif>{{ $city->name }}
-                                                </option>
-                                            @endforeach
                                         </select>
-                                        <label for="city_id_{{ $num_area }}">District</label>
-                                        @error('city_id_{{ $num_area }}')
+                                        <label for="city_id_1">District</label>
+                                        @error('city_id_1')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -386,34 +382,26 @@
                                     </div>
 
                                     <div class="form-floating my-4">
-                                        <select id="area_id_{{ $num_area }}" name="area[]"
-                                            class="w-100 form-control @error('area_id_{{ $num_area }}') is-invalid @enderror"
-                                            @error('area_id_{{ $num_area }}') autofocus @enderror>
+                                        <select id="area_id_1" name="area[]"
+                                            class="w-100 form-control @error('area_id_1') is-invalid @enderror"
+                                            @error('area_id_1') autofocus @enderror>
                                             <option value="">Select Area</option>
-                                            @php
-                                                $areas_current = \App\Models\Area::where('city_id', $service_area->city->id)->get();
-                                            @endphp
-                                            @foreach ($areas_current as $area)
-                                                <option value="{{ $area->id }}"
-                                                    @if ($service_area->id == $area->id) selected @endif>{{ $area->name }}
-                                                </option>
-                                            @endforeach
                                         </select>
-                                        <label for="area_id_{{ $num_area }}">Area</label>
-                                        @error('area_id_{{ $num_area }}')
+                                        <label for="area_id_1">Area</label>
+                                        @error('area_id_1')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                     <div class="w-100 d-flex justify-content-end align-items-center">
-                                        <button onclick="$('#area_container_{{ $num_area }}').remove()" type="button"
+                                        <button onclick="$('#area_container_1').remove()" type="button"
                                             class="buttonRounded-organization float-right mt-1 p-2 px-4">
                                             Remove
                                         </button>
                                     </div>
                                 </div>
-                            @endforeach
+                            {{-- @endforeach --}}
                         </div>
                         <button onclick="addArea()" type="button" class="buttonRounded-organization p-2 px-4">
                             Add Area
