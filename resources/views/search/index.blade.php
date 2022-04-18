@@ -114,7 +114,7 @@
                                     $current_city_areas = \App\Models\Area::where('city_id', $city_filter) -> get();
                                 @endphp
                                 @foreach ($current_city_areas as $area)
-                                    <option value="{{ $area -> id }}" @if () @endif>{{ $area -> name }}</option>
+                                    <option value="{{ $area -> id }}" @if (in_array($area->id, $areas)) selected @endif>{{ $area -> name }}</option>
                                 @endforeach
                             </select>
                         </div>
