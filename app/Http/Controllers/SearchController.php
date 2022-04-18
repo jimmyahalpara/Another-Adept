@@ -85,7 +85,8 @@ class SearchController extends Controller
 
         $services = $services->sortable('id')->simplePaginate($num_rows)->withQueryString();
 
-        $cities = City::orderBy('name')->get();
+        // $cities = City::orderBy('name')->get();
+        $states = City::select('state')->distinct()->orderBy('state')->get();
         $categories = ServiceCategory::orderBy('name')->get();
         $price_types = PriceType::orderBy('name')->get();
         $user = Auth::user();
@@ -94,7 +95,7 @@ class SearchController extends Controller
             'user',
             'services',
             'num_rows',
-            'cities',
+            'states',
             'search_text',
             'areas',
             'categories_filter',

@@ -81,17 +81,24 @@
                         </div>
                         {{-- Areas --}}
                         <div class="form-group">
-                            <label for="area">Select Areas</label><br>
-                            <select id="area" class="js-example-basic-multiple" name="areas[]" multiple="multiple">
-                                @foreach ($cities as $city)
-                                    <optgroup label="{{ $city->name }}">
-                                        @foreach ($city->areas->sortBy('name') as $area)
-                                            <option value="{{ $area->id }}"
-                                                @if (in_array($area->id, $areas)) selected @endif>{{ $area->name }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
+                            <label for="state_id">Select State</label><br>
+                            <select id="state_id" class="form-control">
+                                <option value="">Select State</option>
+                                @foreach ($states as $state)
+                                    <option value="{{ $state->state }}">{{ $state->state }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="city_id">Select Cities</label><br>
+                            <select id="city_id" class="form-control">
+                                <option value="">Select City</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="area">Select Areas</label><br>
+                            <select id="area_id" class="js-example-basic-multiple" name="areas[]" multiple="multiple">
+                                <option value="1">One</option>
                             </select>
                         </div>
 
@@ -293,7 +300,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         document.location = url;
-                    } 
+                    }
                 })
             } else {
                 document.location = url;
@@ -313,6 +320,49 @@
             child2 = element.find('i');
             child2.addClass('m-1')
             child2.detach().appendTo(child);
+        });
+
+
+        $(document).ready(function(e) {
+            $('body').on('change', '#state_id', function(e) {
+                $state = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('get.cities') }}",
+                    type: "GET",
+                    data: {
+                        state: $state
+                    },
+                    success: function(json) {
+                        $('#city_id').html('<option value="">Select City</option>');
+                        json.forEach(element => {
+                            $('#city_id').append(
+                                `<option value="${element.id}">${element.name}</option>`
+                            );
+                        });
+                    }
+                });
+            });
+
+            $('body').on('change', '#city_id', function(e) {
+                $city_id = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('get.areas') }}",
+                    type: "GET",
+                    data: {
+                        city_id: $city_id
+                    },
+                    success: function(json) {
+                        $('#area_id').html('');
+                        json.forEach(element => {
+                            $('#area_id').append(
+                                `<option value="${element.id}">${element.name}</option>`
+                            );
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endsection

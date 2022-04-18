@@ -285,6 +285,14 @@ a {
     min-width: 150px;
 }
 
+.select2-dropdown.select2-dropdown--below {
+    min-width: 27vh !important;
+}
+
+#select2-area_id-results {
+    min-width: 27vh !important;
+}
+
 .service-container {
     overflow: hidden;
     border-radius: 2vh;
