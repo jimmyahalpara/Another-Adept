@@ -82,23 +82,40 @@
                         {{-- Areas --}}
                         <div class="form-group">
                             <label for="state_id">Select State</label><br>
-                            <select id="state_id" class="form-control">
+                            <select id="state_id" name="state_filter" class="form-control">
                                 <option value="">Select State</option>
                                 @foreach ($states as $state)
-                                    <option value="{{ $state->state }}">{{ $state->state }}</option>
+                                    <option value="{{ $state->state }}"
+                                        @if($state -> state == $state_filter) selected @endif
+                                        >{{ $state -> state }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="city_id">Select Cities</label><br>
-                            <select id="city_id" class="form-control">
+                            <select id="city_id" name="city_filter" class="form-control">
                                 <option value="">Select City</option>
+                                @php 
+                                    $current_state_cities = \App\Models\City::where('state', $state_filter) -> orderBy('name') -> get();
+                                @endphp
+                                @if ($current_state_cities -> count() > 0)
+                                    @foreach ($current_state_cities as $city)
+                                        <option value="{{ $city -> id }}"
+                                        @if ($city_filter == $city -> id) selected @endif
+                                            >{{ $city -> name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="area">Select Areas</label><br>
                             <select id="area_id" class="js-example-basic-multiple" name="areas[]" multiple="multiple">
-                                <option value="1">One</option>
+                                @php
+                                    $current_city_areas = \App\Models\Area::where('city_id', $city_filter) -> get();
+                                @endphp
+                                @foreach ($current_city_areas as $area)
+                                    <option value="{{ $area -> id }}" @if () @endif>{{ $area -> name }}</option>
+                                @endforeach
                             </select>
                         </div>
 

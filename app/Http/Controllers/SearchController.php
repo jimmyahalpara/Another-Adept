@@ -28,6 +28,9 @@ class SearchController extends Controller
         $organization_filter = $request->input('organization_filter', []);
         $min_price = $request->input('min_price', '');
         $max_price = $request->input('max_price', '');
+        $city_filter = $request -> input('city_filter', '');
+        $area_filter = $request -> input('area_filter', '');
+        $state_filter = $request -> input('state_filter', '');
 
         // DB::enableQueryLog();
         $services = Service::select('*');
@@ -105,7 +108,10 @@ class SearchController extends Controller
             'min_price',
             'max_price',
             'organizations',
-            'organization_filter'
+            'organization_filter',
+            'city_filter',
+            'area_filter',
+            'state_filter'
         ));
     }
 
