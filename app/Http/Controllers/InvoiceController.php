@@ -11,8 +11,8 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {   
-        $this -> middleware('organization.role:manager', ['except' => ['index', 'view_pdf_admin']]);
-        $this -> middleware('permission:read_invoices', ['only' => ['view_pdf_admin']]);
+        $this -> middleware('organization.role:manager', ['only' => ['delete']]);
+        $this -> middleware('permission:read_invoices', ['only' => ['view_pdf_admin', 'generate_pdf']]);
     }
     /**
      * Method to Delete Invoice
