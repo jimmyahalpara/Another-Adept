@@ -10,6 +10,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PaytmController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\UserRatingController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Jobs\NewOrganizationRequestJob;
@@ -133,6 +134,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('{invoice}/pdf/view', 'view_pdf_admin')->name('pdf.view');
     });
 
+    
+
+    Route::resource('threads', ThreadController::class)->only(['index', 'show']);
 
 
     Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment')->withoutMiddleware([VerifyCsrfToken::class]);

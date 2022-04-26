@@ -81,6 +81,7 @@
                                 <li><a class="dropdown-item" href="{{ route('home.orders') }}">My Orders</a></li>
                                 <li><a href="{{ route('invoice.index') }}" class="dropdown-item">Invoices</a></li>
                                 <li><a class="dropdown-item" href="{{ route('home.profile') }}">My Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('threads.index') }}">Help Center</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
