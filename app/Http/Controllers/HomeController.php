@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
 use App\Jobs\OrderCancelledByUserJob;
+use App\Models\Area;
 use App\Models\City;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
@@ -173,9 +174,13 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $states = City::select('state') -> distinct() -> get();
+        $cities = City::where('state', $user->area->city->state) -> get();
+        $areas = Area::where('city_id', $user->area->city->id) -> get();
         return view('home.profile', compact(
             'user',
-            'states'
+            'states',
+            'cities',
+            'areas'
         ));
     }
 

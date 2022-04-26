@@ -97,7 +97,7 @@
                             <select class="form-control" name="state" id="state_id">
                                 <option value="">Select State</option>
                                 @foreach ($states as $state)
-                                    <option value="{{ $state->state }}">{{ $state->state }}</option>
+                                    <option value="{{ $state->state }}" @if ( $user -> area -> city -> state == $state -> state ) selected @endif>{{ $state->state }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -106,6 +106,9 @@
                             <label for="city_id" class="sr-only">City - Area</label>
                             <select class="form-control" name="city_id" id="city_id">
                                 <option value="">Select City</option>
+                                @foreach ($cities as $city)
+                                    <option value="{{ $city->id }}" @if ( $user -> area -> city -> id == $city -> id ) selected @endif>{{ $city->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <b>Area</b>
@@ -113,6 +116,9 @@
                             <label for="area_id" class="sr-only">City - Area</label>
                             <select class="form-control" name="area_id" id="area_id">
                                 <option value="">Select Area</option>
+                                @foreach ($areas as $area)
+                                    <option value="{{ $area->id }}" @if ( $user -> area -> id == $area -> id ) selected @endif>{{ $area->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </form>
