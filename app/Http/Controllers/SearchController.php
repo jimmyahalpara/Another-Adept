@@ -40,6 +40,13 @@ class SearchController extends Controller
             $services = $services->whereHas('areas', function ($query) use ($areas) {
                 $query->whereIn('areas.id', $areas);
             });
+        } else {
+            // select services from area with city_id equal to city_filter
+            if ($city_filter != '') {
+                $services = $services->whereHas('areas', function ($query) use ($city_filter) {
+                    $query->where('areas.city_id', $city_filter);
+                });
+            }
         }
 
         if ($categories_filter != []) {

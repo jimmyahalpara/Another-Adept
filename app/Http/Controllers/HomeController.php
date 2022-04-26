@@ -111,7 +111,6 @@ class HomeController extends Controller
 
         $services = $services->sortable('id')->simplePaginate($num_rows)->withQueryString();
 
-        $cities = City::orderBy('name')->get();
         $categories = ServiceCategory::orderBy('name')->get();
         $price_types = PriceType::orderBy('name')->get();
 
@@ -120,7 +119,7 @@ class HomeController extends Controller
             'user',
             'services',
             'num_rows',
-            'cities',
+            // 'cities',
             'search_text',
             'areas',
             'categories_filter',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegisterRequest;
+use App\Models\Area;
 use App\Models\City;
 use App\Models\OrganizationRole;
 use App\Models\User;
@@ -62,10 +63,11 @@ class MemberController extends Controller
      */
     public function create()
     {
-        $cities = City::orderBy('name')->get();
+        $states = City::select('state') -> distinct() -> orderBy('state') -> get();
+        
         $organization_roles = OrganizationRole::orderBy('id', 'DESC')->get();
         return view('members.create', compact(
-            'cities',
+            'states',
             'organization_roles'
         ));
     }
@@ -126,13 +128,16 @@ class MemberController extends Controller
         if (!$this->checkOrganization($member)) {
             return redirect()->route('home')->with('message', 'Unauthorized Action');
         }
-
-        $cities = City::orderBy('name')->get();
+        $states = City::select('state') -> distinct() -> orderBy('state') -> get();
+        $cities = City::where('id', $member -> area -> city -> id) -> orderBy('name') -> get();
+        $areas = Area::where('city_id' , $member -> area -> city -> id) -> orderBy('name') -> get();
         $user_states = UserState::get();
         return view('members.show', compact(
             'member',
             'cities',
-            'user_states'
+            'states',
+            'user_states',
+            'areas'
         ));
     }
 

@@ -47,7 +47,6 @@
                 <th>@sortablelink('created_at', 'Created At')</th>
                 <th>@sortablelink('updated_at', 'Updated At')</th>
                 <th>Rating</th>
-                <th>Areas</th>
                 <th>Action</th>
             </tr>
             @forelse ($services as $service)
@@ -74,13 +73,6 @@
                         <i class="fa-solid fa-star text-warning"></i>
                         {{ $service_stat ? round($service_stat -> average, 1) : 0 }}
 
-                    </td>
-                    <td>
-                        @forelse ($service -> areas as $area)
-                            <span class="badge bg-primary">{{ $area->city->name }} - {{ $area->name }}</span>
-                        @empty
-                            <span class="badge bg-danger">AVAILABLE NOWHERE</span>
-                        @endforelse
                     </td>
                     <td>
                         <form method="POST" onsubmit="return confirm('Do you really want to delete {{ $service -> name }} service ?')" action="{{ route('services.destroy', ['service' => $service -> id ]) }}" id="delete-form-{{ $service -> id }}">

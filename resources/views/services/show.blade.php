@@ -26,7 +26,7 @@
                 @endforeach
             </div>
         @endif
-        <table class="table w-50">
+        <table class="table w-75">
             <tr>
                 <th>Name </th>
                 <td>{{ $service->name }}</td>
@@ -74,30 +74,55 @@
             </tr>
             <tr>
                 <th>Areas </th>
-                <td>
-                    <table class="table">
-                        @foreach ($service->areas as $area)
+                <td class="border p-2 m-2" colspan="2">
+                    <table class="table border" id="areas-table">
+                        <thead>
                             <tr>
-                                <td>
-                                    {{ $area->city->name }} - {{ $area->name }}
-                                </td>
-                                <td>
-                                    <form onsubmit="return confirm('Do you want to remove this area ?')" id="delete-area-form-{{ $area -> id }}" action="{{ route('services.area.delete', ['service' => $service -> id]) }}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="area_id" value="{{ $area -> id }}">
-                                    </form>
-                                    <a href="#" onclick="$('#delete-area-form-{{ $area -> id }}').submit(); return false;">
-                                        <i class="fa-solid fa-trash text-danger"></i>
-                                    </a>
-                                </td>
+                                <th>
+                                    <input type="checkbox" name="select" id="all_select" onclick="all_select()">
+                                </th>
+                                <th>Area</th>
+                                <th>Action</th>
                             </tr>
-                        @endforeach
+                        </thead>
+                        <tbody>
+
+                            @foreach ($service->areas as $area)
+                                <tr>
+                                    <td>
+                                        <input class="form-checkbox area-select-checkbox" type="checkbox"
+                                            name="select-area-{{ $area->id }}"
+                                            id="select-area-id-{{ $area->id }}"
+                                            value="{{ $area -> id }}">
+                                    </td>
+                                    <td>
+                                        {{ $area->city->name }} - {{ $area->name }}
+                                    </td>
+                                    <td>
+                                        <form onsubmit="return confirm('Do you want to remove this area ?')"
+                                            id="delete-area-form-{{ $area->id }}"
+                                            action="{{ route('services.area.delete', ['service' => $service->id]) }}"
+                                            method="post">
+                                            @csrf
+                                            <input type="hidden" name="area_id" value="{{ $area->id }}">
+                                        </form>
+                                        <a href="#"
+                                            onclick="$('#delete-area-form-{{ $area->id }}').submit(); return false;">
+                                            <i class="fa-solid fa-trash text-danger"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
 
                 </td>
                 <td>
                     <a data-bs-toggle="modal" data-bs-target="#editArea" class="m-1">
-                        <i class="fa-solid fa-add"></i>
+                        <i class="fa-solid fa-add"></i> <br>
+                    </a>
+                    <a class="m-1 text-danger" onclick="mass_delete()">
+                        <i class="fa-solid fa-trash"></i> <br>
                     </a>
                 </td>
             </tr>
@@ -349,65 +374,62 @@
                                 $num_area += 1;
                             @endphp
                             {{-- @foreach ($service->areas as $service_area) --}}
-                                <div class="" id="area_container_1">
-                                    <hr>
-                                    <div class="form-floating my-4">
-                                        <select id="state_id_1"
-                                            class="w-100 form-control @error('state_id_1') is-invalid @enderror"
-                                            @error('state_id_1') autofocus @enderror
-                                            onchange="on_state_change(1);">
-                                            <option value="">Select State</option>
-                                            @foreach ($states as $state)
-                                                <option value="{{ $state->state }}">{{ $state->state }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <label for="state_id_1">State</label>
-                                        @error('state_id_1')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-floating my-4">
-                                        <select id="city_id_1"
-                                            class="w-100 form-control @error('city_id_1') is-invalid @enderror"
-                                            @error('city_id_1') autofocus @enderror
-                                            onchange="on_city_change(1)">
-                                            <option value="">Select District</option>
-                                        </select>
-                                        <label for="city_id_1">District</label>
-                                        @error('city_id_1')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-floating my-4">
-                                        <select id="area_id_1" name="area[]"
-                                            class="w-100 form-control @error('area_id_1') is-invalid @enderror"
-                                            @error('area_id_1') autofocus @enderror>
-                                            <option value="">Select Area</option>
-                                        </select>
-                                        <label for="area_id_1">Area</label>
-                                        @error('area_id_1')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="w-100 d-flex justify-content-end align-items-center">
-                                        <button onclick="$('#area_container_1').remove()" type="button"
-                                            class="buttonRounded-organization float-right mt-1 p-2 px-4">
-                                            Remove
-                                        </button>
-                                    </div>
+                            <div class="" id="area_container_1">
+                                <hr>
+                                <div class="form-floating my-4">
+                                    <select id="state_id_1"
+                                        class="w-100 form-control @error('state_id_1') is-invalid @enderror"
+                                        @error('state_id_1') autofocus @enderror onchange="on_state_change(1);">
+                                        <option value="">Select State</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->state }}">{{ $state->state }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="state_id_1">State</label>
+                                    @error('state_id_1')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
+
+                                <div class="form-floating my-4">
+                                    <select id="city_id_1" name="city_id"
+                                        class="w-100 form-control @error('city_id_1') is-invalid @enderror"
+                                        @error('city_id_1') autofocus @enderror onchange="on_city_change(1)">
+                                        <option value="">Select District</option>
+                                    </select>
+                                    <label for="city_id_1">District</label>
+                                    @error('city_id_1')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-floating my-4">
+                                    <select id="area_id_1" name="area[]"
+                                        class="w-100 form-control @error('area_id_1') is-invalid @enderror"
+                                        @error('area_id_1') autofocus @enderror>
+                                        <option value="">Select Area</option>
+                                    </select>
+                                    <label for="area_id_1">Area</label>
+                                    @error('area_id_1')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="w-100 form-group my-4">
+                                    <input type="checkbox" name="all_in_city" id="all_in_city" class="form-checkbox">
+                                    <label for="all_in_city">Add All Areas in the District/City?</label>
+                                </div>
+                            </div>
                             {{-- @endforeach --}}
                         </div>
-                        <button onclick="addArea()" type="button" class="buttonRounded-organization p-2 px-4">
+                        <button id="add-area-button" onclick="addArea()" type="button"
+                            class="buttonRounded-organization p-2 px-4">
                             Add Area
                         </button>
                     </form>
@@ -441,8 +463,12 @@
         function addArea() {
             num_area += 1;
 
+            // check if #all_in_city is not checked 
+            if ($('#all_in_city').is(':checked')) {
+                return;
+            }
             $area_container = $('#area_container');
-            area_html = `<div class="" id="area_container_` + num_area + `">
+            area_html = `<div class="inserted-later" id="area_container_` + num_area + `">
                                     <hr>
                                     <div class="form-floating my-4">
                                         <select id="state_id_` + num_area + `"
@@ -524,8 +550,85 @@
                 }
             });
         }
+
+        $('#all_in_city').on('change', function(e) {
+            $('#add-area-button')[0].toggleAttribute('disabled');
+            $('.inserted-later').toggleClass('d-none');
+            $('#area_id_1').val('1');
+            $('#area_id_1')[0].toggleAttribute('disabled');
+        })
+
+
+        function mass_delete(){
+            checked_list = [];
+            if (!confirm('Do you want delete all the selected areas ?')){
+                return;
+            }
+
+
+            $('input.area-select-checkbox:checked').each(function(){
+                checked_list.push($(this).val());
+            });
+
+
+            console.log(checked_list);
+            // return;
+
+            // create a form
+            var form = document.createElement('form');
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', '{{ route('services.area.delete.mass', ['service' => $service -> id]) }}');
+
+            // adding hidden input for csrf token 
+            var input = document.createElement('input');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', '_token');
+            input.setAttribute('value', '{{ csrf_token() }}');
+            form.appendChild(input);
+
+            // create a hidden input
+            var hiddenField = document.createElement('input');
+            hiddenField.setAttribute('type', 'hidden');
+            hiddenField.setAttribute('name', 'area_ids');
+            hiddenField.setAttribute('value', checked_list);
+
+            // submit the form 
+            form.appendChild(hiddenField);
+            document.body.appendChild(form);
+            form.submit();
+
+
+            
+        }
+
+        function all_select(e){
+            if ($('#all_select').is(':checked')){
+                $('input.area-select-checkbox').each(function(){
+                    this.setAttribute('checked', true);
+                });
+            } else {
+                $('input.area-select-checkbox').each(function(){
+                    this.removeAttribute('checked');
+                });
+            }
+
+        }
     </script>
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
     {!! JsValidator::formRequest('App\Http\Requests\ImageUploadRequest', '#image_form') !!}
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $('#areas-table').DataTable({
+            pagingType: "full",
+            columnDefs: [{
+                orderable: false,
+                targets: 0
+            }]
+        });
+    </script>
 @endsection

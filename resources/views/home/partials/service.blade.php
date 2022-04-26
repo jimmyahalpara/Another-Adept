@@ -55,7 +55,7 @@
                 </a>
             </span>
         </div>
-        <div class="mt-3">
+        {{-- <div class="mt-3">
 
             @if ($service->areas->contains($user ? $user->area_id : 0))
                 <span class="text-success">
@@ -74,7 +74,7 @@
                     Not Available in Any Area
                 </span>
             @endforelse
-        </div>
+        </div> --}}
 
         <div class="mt-2 py-3 d-flex justify-content-start align-items-center">
             <div class="col-lg-2 d-flex justify-content-start align-items-center">

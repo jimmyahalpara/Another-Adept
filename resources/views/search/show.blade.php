@@ -53,9 +53,11 @@
                 </div>
                 <div class="mt-3">
                     @if ($service->areas->contains($user ? $user->area_id : 0))
-                        <button class="btn btn-success w-100" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}')">Order</button>
+                        <button class="btn btn-success w-100"
+                            onclick="order('{{ route('order.place', ['service' => $service->id]) }}')">Order</button>
                     @else
-                        <button class="btn btn-outline-secondary w-100" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}', true)">Order</button>
+                        <button class="btn btn-outline-secondary w-100"
+                            onclick="order('{{ route('order.place', ['service' => $service->id]) }}', true)">Order</button>
                     @endif
                 </div>
                 <div class="mt-3 show-service-availablity">
@@ -85,12 +87,29 @@
                     @endguest
 
                 </div>
-                <div id="show-service-location" class="show-service-location d-flex">
+                <div id="show-service-location" class="mt-3 show-service-location d-flex border p-1 d-none d-md-inline-block">
                     <div>
                         <i class="fa-solid fa-location-dot"></i>
+                        <h5 class="d-inline-block">Locations</h5>
                     </div>
                     <div class="mx-1">
-                        @forelse ($service->areas as $area)
+                        <table class="table table-bordered" id="area-table">
+                            <thead>
+                                <tr>
+                                    <th>City</th>
+                                    <th>Area</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($service->areas as $area)
+                                    <tr>
+                                        <td>{{ $area->city->name }}</td>
+                                        <td>{{ $area->name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{-- @forelse ($service->areas as $area)
                             <span
                                 class="badge @if ($area->id == ($user ? $user->area_id : 0)) bg-success @else bg-dark @endif ">{{ $area->city->name }}
                                 - {{ $area->name }}</span>
@@ -98,7 +117,7 @@
                             <span class="badge bg-danger">
                                 Not Available in Any Area
                             </span>
-                        @endforelse
+                        @endforelse --}}
                     </div>
                 </div>
 
@@ -408,11 +427,11 @@
         }
         updateRatings(1, 'id', 'DESC');
 
-        $('#show-service-location').readmore({
-            speed: 75,
-            collapsedHeight: 100,
-            lessLink: '<a href="#">More Locations</a>'
-        });
+        // $('#show-service-location').readmore({
+        //     speed: 75,
+        //     collapsedHeight: 100,
+        //     lessLink: '<a href="#">More Locations</a>'
+        // });
 
 
         function order(url, show_warning = false) {
@@ -431,5 +450,29 @@
                 document.location = url;
             }
         }
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $('#area-table').DataTable({
+            pagingType: "full",
+            columnDefs: [{
+                orderable: false,
+                targets: 0
+            }]
+        });
+
+
+
+
+        $(document).ready(function() {
+            $('.dataTables_filter input[type="search"]').css({
+                'width': '100px',
+                'display': 'inline-block'
+            });
+        });
     </script>
 @endsection

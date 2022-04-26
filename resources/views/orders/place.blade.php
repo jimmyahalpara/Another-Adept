@@ -35,19 +35,29 @@
                         {{ $service->price }} - {{ $service->price_type->name }}
                         @if ($service->price_type->id == config('appconfig.variable_pricetype_id'))
                             <em class="text-danger ms-1">
-                                Cost is variable, means that amount which you'll have to pay will depend on your
+                                Cost is variable, means that amount which you'll have to pay will depends on your
                                 requirements of the service. It will be decided later by the Provider / Organization
                             </em>
                         @endif
                     </h6>
                     <h6>
+                        @php
+                            $count=0;
+                        @endphp
                         <i class="fa-solid fa-location-dot"></i>
-                        @forelse ($service -> areas as $area)
+                        @forelse ($service -> areas -> take(10) as $area)
+                            @php
+                                $count++;
+                            @endphp
                             <span class="badge @if ($user->area_id == $area->id) bg-success @else bg-dark @endif">
                                 {{ $area->city->name }} - {{ $area->name }}
                             </span>
                         @empty
+                            <span class="badge bg-danger">Not Available in Any Area</span>
                         @endforelse
+                        @if ($count >= 10)
+                            <span class="badge bg-warning">And More..</span>
+                        @endif
                     </h6>
                 </div>
                 <h1>User Details</h1>

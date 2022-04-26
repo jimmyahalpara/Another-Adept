@@ -95,7 +95,8 @@
 
 
         </table>
-        <button onclick="document.location='{{ route('members.index') }}'" class="buttonRounded-outlined-light px-3 py-2">Back</button>
+        <button onclick="document.location='{{ route('members.index') }}'"
+            class="buttonRounded-outlined-light px-3 py-2">Back</button>
     </main>
 
 
@@ -137,8 +138,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="phone_number_form"
-                        action="{{ route('members.phone.update', ['member' => $member->id]) }}" method="post">
+                    <form id="phone_number_form" action="{{ route('members.phone.update', ['member' => $member->id]) }}"
+                        method="post">
                         @csrf
 
                         <div class="form-floating">
@@ -206,9 +207,9 @@
                             <select name="state_id" class="w-100 form-control @error('state_id') is-invalid @enderror"
                                 @error('state_id') autofocus @enderror>
                                 @foreach ($user_states as $state)
-                                            <option value="{{ $state->id }}"
-                                                @if ($state->id == $member->user_state->id) selected @endif>{{ $state->name }}
-                                            </option>
+                                    <option value="{{ $state->id }}" @if ($state->id == $member->user_state->id) selected @endif>
+                                        {{ $state->name }}
+                                    </option>
                                 @endforeach
                             </select>
                             <label for="state_id">Select User State</label>
@@ -236,7 +237,7 @@
                     <form id="area_form" action="{{ route('members.area.update', ['member' => $member->id]) }}"
                         method="post">
                         @csrf
-                        <div class="form-floating my-4">
+                        {{-- <div class="form-floating my-4">
                             <select name="area_id" class="w-100 form-control @error('area_id') is-invalid @enderror"
                                 @error('area_id') autofocus @enderror>
                                 <option value="">Select Area</option>
@@ -251,7 +252,45 @@
                                 @endforeach
                             </select>
                             <label for="area_id">Select Area</label>
+                        </div> --}}
+
+                        <div class="form-floating mb-4">
+                            <label for="state_id" class="sr-only">State</label>
+                            <select class="form-control" name="state" id="state_id">
+                                <option value="">Select State</option>
+
+
+                                @foreach ($states as $state)
+                                    <option value="{{ $state->state }}"
+                                        @if ($member->area->city->state == $state->state) selected @endif>{{ $state->state }}</option>
+                                @endforeach
+                            </select>
+                            <label for="state_id">Select State</label>
                         </div>
+                        <div class="form-floating mb-4">
+                            <label for="city_id" class="sr-only">City - Area</label>
+                            <select class="form-control" name="city_id" id="city_id">
+                                <option value="">Select City</option>
+                                @foreach ($cities as $city)
+                                    <option value="{{ $city->id }}" @if ($member->area->city->id == $city->id) selected @endif>
+                                        {{ $city->name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="city_id">Select City</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <label for="area_id" class="sr-only">City - Area</label>
+                            <select class="form-control" name="area_id" id="area_id">
+                                <option value="">Select Area</option>
+                                @foreach ($areas as $area)
+                                    <option value="{{ $area->id }}" @if ($member->area->id == $area->id) selected @endif>
+                                        {{ $area->name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="area_id">Select Area</label>
+                        </div>
+
 
                     </form>
                 </div>
@@ -304,4 +343,48 @@
             </div>
         </div>
     </div> --}}
+
+    <script>
+        $(document).ready(function(e) {
+            $('body').on('change', '#state_id', function(e) {
+                $state = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('get.cities') }}",
+                    type: "GET",
+                    data: {
+                        state: $state
+                    },
+                    success: function(json) {
+                        $('#city_id').html('<option value="">Select City</option>');
+                        json.forEach(element => {
+                            $('#city_id').append(
+                                `<option value="${element.id}">${element.name}</option>`
+                            );
+                        });
+                    }
+                });
+            });
+
+            $('body').on('change', '#city_id', function(e) {
+                $city_id = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('get.areas') }}",
+                    type: "GET",
+                    data: {
+                        city_id: $city_id
+                    },
+                    success: function(json) {
+                        $('#area_id').html('<option value="">Select Area</option>');
+                        json.forEach(element => {
+                            $('#area_id').append(
+                                `<option value="${element.id}">${element.name}</option>`
+                            );
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

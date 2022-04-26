@@ -381,5 +381,12 @@
                 });
             });
         });
+
+        $('.service-location').readmore({
+            speed: 75,
+            collapsedHeight: 50,
+            morelink: '<a href="#">More Locations</a>',
+            lessLink: '<a href="#">Less Locations</a>'
+        });
     </script>
 @endsection

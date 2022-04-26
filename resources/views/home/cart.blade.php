@@ -79,21 +79,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- Areas --}}
-                        <div class="form-group">
-                            <label for="area">Select Areas</label><br>
-                            <select id="area" class="js-example-basic-multiple" name="areas[]" multiple="multiple">
-                                @foreach ($cities as $city)
-                                    <optgroup label="{{ $city->name }}">
-                                        @foreach ($city->areas->sortBy('name') as $area)
-                                            <option value="{{ $area->id }}"
-                                                @if (in_array($area->id, $areas)) selected @endif>{{ $area->name }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
-                        </div>
 
                         {{-- Categories --}}
                         <div class="form-group">

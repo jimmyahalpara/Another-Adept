@@ -56,7 +56,7 @@
                 </a>
             </span>
         </div>
-        <div class="mt-3">
+        <div class="mt-3 service-location">
 
             @if ($service->areas->contains($user ? $user->area_id : 0))
                 <span class="text-success">
@@ -66,7 +66,13 @@
             @else
                 <i class="fa-solid fa-location-dot"></i>
             @endif
-            @forelse ($service->areas as $area)
+            @php 
+                $count = 0;
+            @endphp
+            @forelse ($service->areas -> take(10) as $area)
+                @php
+                    $count ++;
+                @endphp
                 <span onclick="document.location='{{ route('search', ['areas' => [$area->id]]) }}'"
                     class="area-badge badge @if ($area->id == ($user ? $user->area_id : 0)) bg-success @else bg-dark @endif ">{{ $area->city->name }}
                     - {{ $area->name }}</span>
@@ -75,6 +81,11 @@
                     Not Available in Any Area
                 </span>
             @endforelse
+            @if ($count >= 10)
+                <span class="badge bg-warning">
+                    <i>And More..</i>
+                </span>
+            @endif
         </div>
 
         <div class="mt-2 py-3 d-flex justify-content-start align-items-center">
@@ -82,7 +93,7 @@
                 @if ($service->areas->contains($user ? $user->area_id : 0))
                     <button class="btn btn-success" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}')">Order</button>
                 @else
-                    <button class="btn btn-outline-secondary" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}', true)">Order</button>
+                    <button class="btn btn-outline-secondary" onclick="order('{{ route('order.place', ['service' => $service -> id]) }}')">Order</button>
                 @endif
 
 

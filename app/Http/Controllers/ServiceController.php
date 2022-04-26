@@ -300,17 +300,28 @@ class ServiceController extends Controller
             return redirect()->route('services.index')->with('message', 'Unauthorized Action');
         }
 
-
-        $request->validate([
-            'area' => ['required'],
-            'area.*' => ['required', 'numeric', 'min:1']
-        ]);
+        // dd($request -> all());
+        
 
         $service_id = $service->id;
 
+        $area_array = $request -> area;
+
+        if ($request -> has('all_in_city') && $request -> all_in_city == 'on'){
+            $request -> validate([
+                'city_id' => ['required', 'numeric']
+            ]);
+            $area_array = Area::where('city_id', $request -> city_id) -> pluck('id') -> toArray();
+        } else {
+            $request->validate([
+                'area' => ['required'],
+                'area.*' => ['required', 'numeric', 'min:1']
+            ]);
+        }
+
 
         $new_array = [];
-        foreach ($request -> area as $value) {
+        foreach ($area_array as $value) {
 
             // check if service_id and area_id is already in the database.
             $check = ServiceAreaAvailablity::where('service_id', $service_id)
@@ -360,6 +371,27 @@ class ServiceController extends Controller
         }
 
         return redirect() -> route('services.show', ['service' => $service -> id]) -> with('message', 'Area Deleted Successfully!');
+    }
+
+
+    public function massDeleteAreaAvailablity(Request $request, Service $service){
+        $request -> validate([
+            'area_ids' => ['required']
+        ]);
+
+        if (organization_id(true) != $service->organization_id) {
+            return redirect()->route('services.index')->with('message', 'Unauthorized Action');
+        }
+
+        $area_ids = $request -> area_ids;
+        // split comma seperated array 
+        $area_ids = explode(',', $area_ids);
+
+        $service_area = ServiceAreaAvailablity::whereIn('area_id', $area_ids)
+            ->where('service_id', $service->id)
+            ->delete();
+
+        return redirect() -> route('services.show', ['service' => $service -> id]) -> with('message', 'Areas Deleted Successfully!');
     }
 
     public function serviceLikeUnlike(Request $request)

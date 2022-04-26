@@ -355,6 +355,10 @@ a {
     top: 12vh;
 }
 
+.service-location {
+    overflow: hidden;
+}
+
 
 /* service landing page */
 
