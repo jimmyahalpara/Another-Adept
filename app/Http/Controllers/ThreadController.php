@@ -30,6 +30,13 @@ class ThreadController extends Controller
         ));
     }
 
+    public function threads_index_admin(){
+        $threads = Thread::all();
+        return view('threads.index_admin', compact(
+            'threads'
+        ));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

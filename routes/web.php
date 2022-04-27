@@ -135,6 +135,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     
+    Route::get('threads/index/admin', [ThreadController::class, 'threads_index_admin'])->name('threads.index.admin');
     Route::prefix('threads') -> name('threads.') -> controller(ThreadController::class) -> group(function () {
         Route::post('{thread}/reply', 'reply') -> name('reply');
         Route::get('{thread}/fetch', 'fetch') -> name('fetch');

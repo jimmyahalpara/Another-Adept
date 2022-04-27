@@ -537,7 +537,7 @@ a {
 
 #get-help-form {
     width: 18vw;
-    height: 50vh;
+    height: fit-content;
     border: 1px solid rgba(116, 116, 116, 0.142);
     background-color: rgba(0, 0, 0, 0.431);
     border-radius: 1vh;
