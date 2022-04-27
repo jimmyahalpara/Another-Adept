@@ -80,6 +80,12 @@ class ThreadController extends Controller
         ));
     }
 
+    public function admin_show(Thread $thread){
+        return view('threads.show_admin', compact(
+            'thread'
+        ));
+    }
+
 
     public function reply(Request $request, Thread $thread)
     {
@@ -131,7 +137,7 @@ class ThreadController extends Controller
     {
         $user_id = Auth::id();
         // only if thread is created by the current user 
-        if ($thread -> user_id == Auth::id()) {
+        if ($thread -> user_id == Auth::id() || Auth::user() -> hasRole('helper') || Auth::user() -> hasRole('admin')){
             $replies = $thread->thread_replies()->where('id','>', $request -> input('last_data_id', 0)) -> get();
             $response = '';
             foreach ($replies as $reply) {

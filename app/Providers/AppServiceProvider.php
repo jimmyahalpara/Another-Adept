@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Actions\MyAction;
 use App\Actions\PayoutAction;
 use App\Actions\ViewInvoicePDF;
+use App\Actions\ViewThread;
+use App\Actions\ThreadReplyCount;
 use App\Models\OrganizationRole;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -87,5 +89,7 @@ class AppServiceProvider extends ServiceProvider
         Voyager::addAction(MyAction::class);
         Voyager::addAction(ViewInvoicePDF::class);
         Voyager::addAction(PayoutAction::class);
+        Voyager::addAction(ViewThread::class);
+        Voyager::addAction(ThreadReplyCount::class);
     }
 }
