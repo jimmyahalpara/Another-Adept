@@ -135,8 +135,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     
-
-    Route::resource('threads', ThreadController::class)->only(['index', 'show']);
+    Route::prefix('threads') -> name('threads.') -> controller(ThreadController::class) -> group(function () {
+        Route::post('{thread}/reply', 'reply') -> name('reply');
+        Route::get('{thread}/fetch', 'fetch') -> name('fetch');
+    });
+    Route::resource('threads', ThreadController::class)->only(['index', 'show', 'store']);
 
 
     Route::post('{invoice}/payment', [PaytmController::class, 'pay'])->name('make.payment')->withoutMiddleware([VerifyCsrfToken::class]);

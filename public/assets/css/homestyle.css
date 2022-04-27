@@ -476,4 +476,109 @@ a {
 }
 
 
-/*  */
+/* helpenter */
+
+.chat-message {
+    border: 1px solid rgba(0, 0, 0, 0.167);
+    margin: 10px 10px;
+    background-color: rgba(249, 231, 194, 0.312);
+    border-radius: 3px;
+}
+
+.chat-message-content-header {
+    font-weight: bold;
+    background-color: rgba(249, 231, 194, 0.312);
+    padding: 10px 20px 10px 20px;
+}
+
+.chat-message-content-header-time {
+    font-size: 0.8em;
+}
+
+.chat-message-content-body {
+    padding: 10px 20px 10px 20px;
+}
+
+
+/* styling help buttons */
+
+#help-button {
+    padding: 1vh 1.2vw;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 100%;
+    font-size: 1.5em;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.444);
+    color: black !important;
+    /* border: 2px solid black; */
+    border: 1px solid black;
+    transition: 0.2s ease-in-out;
+    z-index: 200;
+}
+
+#help-button:hover {
+    background-color: black;
+    color: white !important;
+    border: 2px solid white;
+}
+
+#help-helper {
+    position: fixed;
+    bottom: 4vh;
+    right: 5vw;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 2vh;
+}
+
+#get-help-form {
+    width: 18vw;
+    height: 50vh;
+    border: 1px solid rgba(116, 116, 116, 0.142);
+    background-color: rgba(0, 0, 0, 0.431);
+    border-radius: 1vh;
+    position: fixed;
+    bottom: 12vh;
+    right: 1vw;
+    z-index: 100;
+    backdrop-filter: blur(15px);
+    transition: background-color 1s ease-in-out;
+    color: white;
+    padding: 1vh 1vw;
+}
+
+#get-help-form:hover {
+    background-color: rgba(0, 0, 0, 0.687);
+}
+
+#get-help-form textarea {
+    background-color: rgba(0, 0, 0, 0.591);
+    outline: none;
+    border: none;
+    color: white;
+    height: 200px;
+}
+
+#get-help-form a {
+    color: rgb(169, 169, 240);
+    /* text-decoration: none; */
+}
+
+#get-help-form button.login-button {
+    border: none;
+    padding: 1vh 1vw;
+    background-color: rgba(0, 0, 0, 0.431);
+    color: white;
+    transition: all 0.3s ease-in-out;
+    border-radius: 1.5em;
+    margin: 2vh;
+    border: 0.2px solid rgba(255, 255, 255, 0.261);
+}
+
+#get-help-form button.login-button:hover {
+    background-color: rgba(0, 0, 0, 0.687);
+}

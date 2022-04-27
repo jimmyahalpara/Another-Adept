@@ -66,16 +66,52 @@
 </head>
 
 <body>
-    
+
     <div id="app">
         @include('layouts.navbar')
 
         <main class="pb-4">
             @yield('content')
         </main>
-
-
     </div>
+
+    <div class="d-none d-md-block">
+        <div id="get-help-form">
+            @auth
+                <div class="w-100 d-flex justify-content-between align-items-center ">
+                    <h3 class="w-100">Get Help</h3>
+                    <button style="" class="text-light btn btn-sm btn-outline-secondary"
+                        onclick="$('#get-help-form').hide()">X</button>
+                </div>
+                <form action="{{ route('threads.store') }}" method="post" id="global-help-form">
+                    @csrf
+                    <div class="form-floating mt-4">
+                        <textarea name="message" id="message_id" cols="30" rows="10" class="form-control"
+                            placeholder="Enter Message"></textarea>
+                        <label for="message_id">Enter Your Query Here</label>
+                    </div>
+                </form>
+                <div class="mt-3 d-flex justify-content-center align-items-center flex-column">
+                    <button class="btn btn-success" onclick="$('#global-help-form').submit()">
+                        Submit
+                    </button>
+                    <a href="{{ route('threads.index') }}" class="mt-2">View All Threads</a>
+                </div>
+            @endauth
+            @guest
+                <h3 class="text-center mt-2">Get Help</h3>
+                <div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
+                    <button class="login-button">Login</button>
+                    or
+                    <button class="login-button">Sign Up</button>
+
+                </div>
+            @endguest
+        </div>
+
+        <button id="help-button"><i class="fa-solid fa-question"></i></button>
+    </div>
+
     @include('layouts.footer')
     @if (session('message'))
         {{-- {{ displayErrorMessage() }} --}}
@@ -97,20 +133,53 @@
 
     </style>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+        integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        $('#price_type_id').on('change', function (e) {
+        $('#price_type_id').on('change', function(e) {
             selection_id = $(this).val();
             console.log(selection_id);
-            if (selection_id == {{ config('appconfig.variable_pricetype_id') }}){
+            if (selection_id == {{ config('appconfig.variable_pricetype_id') }}) {
                 $('#price').val('0');
                 $('#price').attr('disabled', 'true');
-                
+
             } else {
                 $('#price').removeAttr('disabled')
             }
         })
 
+        $('#help-helper').hide();
+        $('#get-help-form').hide();
+        // $('#help-button').on('mouseout',function() {
+        //     $('#help-helper').hide();
+        // })
+
+        $('#help-button').on('mouseover', function() {
+            $('#get-help-form').show(200);
+        });
+
+        $('#get-help-form').on('mouseleave', function() {
+            $('#get-help-form').hide(200);
+        });
+
+        $('#global-help-form').validate({
+            rules: {
+                message: {
+                    required: true,
+                    maxlength: 1000,
+                    minlength: 10
+                }
+            },
+            messages: {
+                message: {
+                    required: "Please enter your message",
+                    minlength: "Your message must be at least 10 characters long"
+                }
+            },
+            errorElement: 'span',
+            errorClass: 'text-danger is-invalid'
+        });
     </script>
 </body>
 
