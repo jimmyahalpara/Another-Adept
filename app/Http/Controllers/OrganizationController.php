@@ -12,6 +12,7 @@ use App\Models\Organization;
 use App\Models\OrganizationPaymentInformation;
 use App\Models\OrganizationPayout;
 use App\Models\OrganizationRole;
+use App\Models\Service;
 use App\Models\User;
 use App\Models\UserOrganizationMembership;
 use App\Models\UserOrganizationMembershipRole;
@@ -24,7 +25,7 @@ class OrganizationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('organization.role:admin', ['except' => ['create', 'store', 'active_confirmation_form', 'active_confirmation', 'payout_form', 'payout_confirm']]);
+        $this->middleware('organization.role:admin', ['except' => ['create', 'store', 'active_confirmation_form', 'active_confirmation', 'payout_form', 'payout_confirm', 'index', 'details']]);
         $this->middleware('permission:edit_organizations', ['only' => ['active_confirmation', 'active_confirmation_form']]);
         $this->middleware('permission:edit_organization_payouts', ['only' => ['payout_form', 'payout_confirm']]);
     }
@@ -230,7 +231,7 @@ class OrganizationController extends Controller
 
             // mailing 
             $user_organization_membership = UserOrganizationMembership::where('organization_id', $organization->id)->first();
-            $job = new NewOrganizationRequestAcceptJob(['user' => $user_organization_membership -> user, 'organization' => $organization]);
+            $job = new NewOrganizationRequestAcceptJob(['user' => $user_organization_membership->user, 'organization' => $organization]);
             dispatch($job);
 
 
@@ -245,13 +246,13 @@ class OrganizationController extends Controller
             $reason = $request->reason;
 
 
-            
+
             // get first UserOrganizationMembership for organization id 
             $user_organization_membership = UserOrganizationMembership::where('organization_id', $organization->id)->first();
 
 
             // mailing 
-            $job = new NewOrganizationRequestRejectJob(['user' => $user_organization_membership -> user, 'organization' => $organization, 'reason' => $reason]);
+            $job = new NewOrganizationRequestRejectJob(['user' => $user_organization_membership->user, 'organization' => $organization, 'reason' => $reason]);
             dispatch($job);
 
 
@@ -324,12 +325,27 @@ class OrganizationController extends Controller
 
 
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $organizations  = Organization::get();
 
 
         return view('organizations.index', compact(
             'organizations'
+        ));
+    }
+
+    public function details(Request $request, Organization $organization)
+    {
+        $organization_admins = UserOrganizationMembership::with('user')->where('organization_id', $organization->id)->get();
+        $services = Service::where('organization_id', $organization->id)->take(20)->get();
+        $service_stat = null;
+
+        // dd($organization_admins);
+        return view('organizations.details', compact(
+            'organization',
+            'organization_admins',
+            'services'
         ));
     }
 }

@@ -146,7 +146,7 @@
                         </div>
                         <div class="button-container d-flex justify-content-center align-items-center flex-column">
                             <button class="btn btn-secondary my-1 w-50" type="submit">Filter</button>
-                            <a class="btn btn-outline-secondary my-1 w-75" href="{{ route('search') }}">Reset Filters</a>
+                            <a class="link-heading" href="{{ route('search') }}">Reset Filters</a>
                         </div>
 
 
@@ -382,11 +382,5 @@
             });
         });
 
-        $('.service-location').readmore({
-            speed: 75,
-            collapsedHeight: 50,
-            morelink: '<a href="#">More Locations</a>',
-            lessLink: '<a href="#">Less Locations</a>'
-        });
     </script>
 @endsection

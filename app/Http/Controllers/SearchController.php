@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\City;
 use App\Models\Organization;
 use App\Models\PriceType;
@@ -31,6 +32,22 @@ class SearchController extends Controller
         $city_filter = $request -> input('city_filter', '');
         $area_filter = $request -> input('area_filter', '');
         $state_filter = $request -> input('state_filter', '');
+
+        $categories_filter = (is_array($categories_filter)) ? $categories_filter : [];
+        $price_types_filter = (is_array($price_types_filter)) ? $price_types_filter : [];
+        $organization_filter = (is_array($organization_filter)) ? $organization_filter : [];
+
+
+        if ($areas != []){
+            $one_area = $areas[0];
+
+            $tmp_area = Area::where('id', $one_area)->first();
+            $city_filter = $tmp_area->city_id;
+            $state_filter = $tmp_area->city->state;
+        }
+
+
+
 
         // DB::enableQueryLog();
         $services = Service::select('*');

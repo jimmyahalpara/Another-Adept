@@ -48,7 +48,7 @@
     </script>
     <style>
         body {
-            font-family: "Karla", sans-serif;
+            font-family: "Karla", sans-serif !important;
             /* background-color: #d0d0ce; */
         }
 
@@ -101,9 +101,9 @@
             @guest
                 <h3 class="text-center mt-2">Get Help</h3>
                 <div class="w-100 h-100 d-flex justify-content-center align-items-center flex-column">
-                    <button class="login-button">Login</button>
+                    <button class="login-button" onclick="document.location='{{ route('login') }}'">Login</button>
                     or
-                    <button class="login-button">Sign Up</button>
+                    <button class="login-button" onclick="document.location='{{ route('register') }}'">Sign Up</button>
 
                 </div>
             @endguest

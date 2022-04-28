@@ -64,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('active/confirmation', 'active_confirmation_form')->name('active.confirmation');
         Route::post('active/confirmation', 'active_confirmation')->name('active.confirmation.post');
+        Route::get('details', 'details')->name('details');
     });
     
     Route::get('organizations/payout/{payout}/confirmation',[OrganizationController::class, 'payout_form'])->name('organizations.payout.confirmation');

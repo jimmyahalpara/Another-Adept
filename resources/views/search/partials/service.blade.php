@@ -7,7 +7,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="small-text">
                 <a class="link-heading"
-                    href="{{ route('search', ['organization_filter' => [$service->organization->id], 'areas' => []]) }}">
+                    href="{{ route('organizations.details', ['organization' => $service  -> organization_id]) }}">
                     {{ $service->organization->name }}
                 </a>
             </div>
@@ -56,7 +56,7 @@
                 </a>
             </span>
         </div>
-        <div class="mt-3 service-location">
+        <div class="mt-3 p-1 service-location">
 
             @if ($service->areas->contains($user ? $user->area_id : 0))
                 <span class="text-success">

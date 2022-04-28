@@ -22,6 +22,9 @@ class Organization extends Model
         'organization_state_id'
     ];
 
+    public function services(){
+        return $this->hasMany(Service::class);
+    }
     
     public function organization_state(){
         return $this -> belongsTo(OrganizationState::class);

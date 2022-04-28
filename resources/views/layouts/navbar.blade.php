@@ -18,7 +18,7 @@
                             href="{{ route('search', ['city_filter' => Auth::user() ? Auth::user()-> area -> city -> id : '']) }}">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#!">Organizations</a>
+                        <a class="nav-link" href="{{ route('organizations.index') }}">Organizations</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#!">About</a>
