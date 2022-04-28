@@ -66,7 +66,7 @@
 
         <h2>Services</h2>
         <div class="services-container w-100 p-2 m-2 d-flex justify-content-center align-items-center">
-            @foreach ($services as $service)
+            @forelse ($services as $service)
                 @php
                     if ($service->user_service_ratings_stat()) {
                         $service_stat = $service->user_service_ratings_stat();
@@ -102,7 +102,11 @@
                         @endif
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <span class="p-1 m-1">
+                    No Services Yet
+                </span>
+            @endforelse
         </div>
         <div class="d-flex justify-content-center align-items-center">
             <button onclick="document.location='{{ route('search', ['organization_filter' => [$organization -> id]]) }}'" class="buttonRounded-outlined-light px-3 py-2 m-1">

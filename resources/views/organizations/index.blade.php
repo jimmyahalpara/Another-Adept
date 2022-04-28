@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($organizations as $organization)
+                @forelse ($organizations as $organization)
                     <tr>
                         <td>
                             <div class="">
@@ -44,7 +44,9 @@
                             </div>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <span class="p-1 m-1">No Organization Available</span>
+                @endforelse
             </tbody>
         </table>
     </main>
