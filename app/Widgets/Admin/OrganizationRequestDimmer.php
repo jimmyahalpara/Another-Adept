@@ -29,14 +29,14 @@ class OrganizationRequestDimmer extends BaseDimmer
         $string = 'Organization Requests';
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-group',
+            'icon'   => 'voyager-company',
             'title'  => "{$count} {$string}",
             'text'   => "You have {$count} {$string} ",
             'button' => [
                 'text' => 'View Requests',
                 'link' => route('voyager.organizations.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/01.jpg'),
+            'image' => voyager_asset('images/widget-backgrounds/03.jpg'),
         ]));
     }
 

@@ -30,7 +30,7 @@ class PayoutRequestDimmer extends BaseDimmer
         $string = 'Payout Requests';
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-group',
+            'icon'   => 'voyager-dollar',
             'title'  => "{$count} {$string}",
             'text'   => "You have {$count} {$string} ",
             'button' => [

@@ -148,6 +148,7 @@ return [
             'App\\Widgets\\Admin\\OrganizationDimmer',
             'App\\Widgets\\Admin\\PayoutRequestDimmer',
             'App\\Widgets\\Admin\\OrganizationRequestDimmer',
+            'App\\Widgets\\Admin\\UnansweredThreadDimmer',
             // 'TCG\\Voyager\\Widgets\\PageDimmer',
         ],
 

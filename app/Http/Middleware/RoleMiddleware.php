@@ -17,7 +17,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, String $role)
     {
-        if (Auth::user()->hasRole($role)) {
+        if (Auth::user()->hasRole($role) || Auth::user()->hasRole('admin')) {
             return $next($request);
         }
 

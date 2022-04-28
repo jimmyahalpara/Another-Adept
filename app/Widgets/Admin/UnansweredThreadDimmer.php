@@ -3,6 +3,9 @@
 namespace App\Widgets\Admin;
 
 use App\Models\Organization;
+use App\Models\OrganizationPayout;
+use App\Models\Thread;
+use App\Models\ThreadReply;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
@@ -10,7 +13,7 @@ use TCG\Voyager\Widgets\BaseDimmer;
 
 
 
-class OrganizationDimmer extends BaseDimmer
+class UnansweredThreadDimmer extends BaseDimmer
 {
     /**
      * The configuration array.
@@ -25,18 +28,18 @@ class OrganizationDimmer extends BaseDimmer
      */
     public function run()
     {
-        $count = Organization::count();
-        $string = 'Organizations';
+        $count = Thread::count() -  ThreadReply::select('thread_id') -> distinct() -> get() -> count();
+        $string = 'Unanswered Help Threads';
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-company',
+            'icon'   => 'voyager-question',
             'title'  => "{$count} {$string}",
-            'text'   => "You have {$count} {$string} in your database",
+            'text'   => "You have {$count} {$string} ",
             'button' => [
-                'text' => 'View all organizations',
-                'link' => route('voyager.organizations.index'),
+                'text' => 'View Requests',
+                'link' => route('voyager.threads.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/01.jpg'),
+            'image' => voyager_asset('images/widget-backgrounds/02.jpg'),
         ]));
     }
 
@@ -47,6 +50,6 @@ class OrganizationDimmer extends BaseDimmer
      */
     public function shouldBeDisplayed()
     {
-        return Auth::user()->hasPermission('browse_organizations');
+        return Auth::user()->hasRole('helper') || Auth::user() -> hasRole('admin');
     }
 }

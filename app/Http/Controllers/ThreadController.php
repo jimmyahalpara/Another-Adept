@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller
 {
+
+    public function __construct()
+    {
+        $this -> middleware('role:helper', ['only' => ['threads_admin_index', 'admin_show']]);
+    }
     /**
      * Display a listing of the resource.
      *

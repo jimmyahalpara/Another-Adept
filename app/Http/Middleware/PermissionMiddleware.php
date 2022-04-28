@@ -17,7 +17,7 @@ class PermissionMiddleware
      */
     public function handle(Request $request, Closure $next, String $permission)
     {
-        if (Auth::user()->hasPermission($permission)) {
+        if (Auth::user()->hasPermission($permission) || Auth::user()->hasRole('admin')) {
             return $next($request);
         }
 
