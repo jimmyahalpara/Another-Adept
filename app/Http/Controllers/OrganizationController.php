@@ -321,4 +321,15 @@ class OrganizationController extends Controller
             return redirect()->route('voyager.organization-payouts.index')->with('message', 'Payout request deleted.');
         }
     }
+
+
+
+    public function index(Request $request){
+        $organizations  = Organization::get();
+
+
+        return view('organizations.index', compact(
+            'organizations'
+        ));
+    }
 }

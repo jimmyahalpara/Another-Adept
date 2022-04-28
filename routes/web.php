@@ -68,8 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::get('organizations/payout/{payout}/confirmation',[OrganizationController::class, 'payout_form'])->name('organizations.payout.confirmation');
     Route::post('organizations/payout/{payout}/confirmation',[OrganizationController::class, 'payout_confirm'])->name('organizations.payout.confirmation.post');
-    
-    Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show']);
+    Route::resource('organizations', OrganizationController::class)->only(['create', 'store', 'show', 'index']);
 
 
     Route::post('service/like-dislike', [ServiceController::class, 'serviceLikeUnlike'])->name('services.like-dislike');
