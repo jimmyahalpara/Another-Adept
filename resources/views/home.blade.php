@@ -60,7 +60,7 @@
                             </g>
                         </svg>
                     </div>
-                    <h6 class="font-weight-bold mb-3">27x7 Help Support</h6>
+                    <h6 class="font-weight-bold mb-3">24x7 Help Support</h6>
                     <p class="text-muted mb-0">Take our help anytime</p>
                 </div>
             </div>
