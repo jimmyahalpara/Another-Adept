@@ -52,6 +52,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout.get');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/team', [HomeController::class, 'team']) -> name('team');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -159,6 +160,8 @@ Route::get('service-rating/', [UserRatingController::class, 'index'])->name('ser
 
 Route::get('get/cities', [LocationController::class, 'getCities'])->name('get.cities');
 Route::get('get/areas', [LocationController::class, 'getAreas'])->name('get.areas');
+
+
 
 /**
  * ----------------------------------

@@ -203,4 +203,8 @@ class HomeController extends Controller
 
         return redirect()->back()->with('message', $message);
     }
+
+    public function team(){
+        return view('home.team');
+    }
 }

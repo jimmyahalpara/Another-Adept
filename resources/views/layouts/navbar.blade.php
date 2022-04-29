@@ -21,13 +21,10 @@
                         <a class="nav-link" href="{{ route('organizations.index') }}">Organizations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#!">About</a>
+                        <a class="nav-link" href="{{ route('team') }}">Team</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#!">Team</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#!">Contact us</a>
+                        <a class="nav-link" href="{{ route('threads.index') }}">Help Center</a>
                     </li>
 
                     @organization_member(true)
@@ -81,7 +78,6 @@
                                 <li><a class="dropdown-item" href="{{ route('home.orders') }}">My Orders</a></li>
                                 <li><a href="{{ route('invoice.index') }}" class="dropdown-item">Invoices</a></li>
                                 <li><a class="dropdown-item" href="{{ route('home.profile') }}">My Profile</a></li>
-                                <li><a class="dropdown-item" href="{{ route('threads.index') }}">Help Center</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

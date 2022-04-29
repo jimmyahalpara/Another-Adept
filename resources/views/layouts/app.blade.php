@@ -155,7 +155,7 @@
         //     $('#help-helper').hide();
         // })
 
-        $('#help-button').on('mouseover', function() {
+        var get_help_form_event = $('#help-button').on('mouseover', function() {
             $('#get-help-form').show(200);
         });
 
