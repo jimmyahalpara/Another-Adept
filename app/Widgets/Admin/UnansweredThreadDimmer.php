@@ -37,7 +37,8 @@ class UnansweredThreadDimmer extends BaseDimmer
             'text'   => "You have {$count} {$string} ",
             'button' => [
                 'text' => 'View Requests',
-                'link' => route('voyager.threads.index'),
+                // 'link' => route('voyager.threads.index'),
+                'link' => '#',
             ],
             'image' => voyager_asset('images/widget-backgrounds/02.jpg'),
         ]));
