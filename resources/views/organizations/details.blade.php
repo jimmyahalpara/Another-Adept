@@ -38,34 +38,37 @@
                 </th>
                 <td>
                     @foreach ($organization_admins as $admins)
-                        <table class='table'>
-                            <tr>
-                                <th>
-                                    {{ $admins->user->name }}
-                                </th>
-                                <td>
-                                    <table class="table">
-                                        <tr>
-                                            <td>
-                                                {{ $admins->user->email }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                {{ $admins->user->address }}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
+                        {{-- @dump($admins -> organization_roles); --}}
+                        @if ($admins->organization_roles[0] -> id == 1)
+                            <table class='table'>
+                                <tr>
+                                    <th>
+                                        {{ $admins->user->name }}
+                                    </th>
+                                    <td>
+                                        <table class="table">
+                                            <tr>
+                                                <td>
+                                                    {{ $admins->user->email }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{ $admins->user->address }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        @endif
                     @endforeach
                 </td>
             </tr>
         </table>
 
         <h2>Services</h2>
-        <div class="services-container w-100 p-2 m-2 d-flex justify-content-center align-items-center">
+        <div class="services-container w-100 p-2 m-2 d-flex justify-content-center align-items-center flex-wrap">
             @forelse ($services as $service)
                 @php
                     if ($service->user_service_ratings_stat()) {
@@ -79,7 +82,8 @@
                     <div class="p-2">
                         <h6>
                             <b>
-                                <a href="{{ route('search.show', ['service' => $service -> id]) }}" class="link-heading stretched-link">
+                                <a href="{{ route('search.show', ['service' => $service->id]) }}"
+                                    class="link-heading stretched-link">
                                     {{ $service->name }}
                                 </a>
                             </b>
@@ -95,8 +99,8 @@
                             @if ($rating - (int) $rating != 0)
                                 <i class="text-warning fa-solid fa-star-half"></i>
                             @endif
-                            (<i class="fa-solid fa-user"></i><span id="service-rating-number" class="ms-1">{{ $service_stat->count }}</span>)
-                            
+                            (<i class="fa-solid fa-user"></i><span id="service-rating-number"
+                                class="ms-1">{{ $service_stat->count }}</span>)
                         @else
                             No Ratings Yet
                         @endif
@@ -109,10 +113,12 @@
             @endforelse
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            <button onclick="document.location='{{ route('search', ['organization_filter' => [$organization -> id]]) }}'" class="buttonRounded-outlined-light px-3 py-2 m-1">
+            <button onclick="document.location='{{ route('search', ['organization_filter' => [$organization->id]]) }}'"
+                class="buttonRounded-outlined-light px-3 py-2 m-1">
                 View More
             </button>
-            <button onclick="document.location='{{ route('organizations.index') }}'" class="buttonRounded-outlined-light px-3 py-2 m-1">
+            <button onclick="document.location='{{ route('organizations.index') }}'"
+                class="buttonRounded-outlined-light px-3 py-2 m-1">
                 Back
             </button>
         </div>
