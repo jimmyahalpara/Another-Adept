@@ -87,7 +87,7 @@
                     @endguest
 
                 </div>
-                <div id="show-service-location" class="mt-3 show-service-location d-flex border p-1 d-none d-md-inline-block">
+                <div id="show-service-location" class="mt-3 show-service-location d-flex p-1 d-none d-md-inline-block">
                     <div>
                         <i class="fa-solid fa-location-dot"></i>
                         <h5 class="d-inline-block">Locations</h5>
