@@ -15,7 +15,8 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="{{ route('search', ['city_filter' => Auth::user() ? Auth::user()-> area -> city -> id : '']) }}">Services</a>
+                            {{-- href="{{ route('search', ['city_filter' => Auth::user() ? Auth::user()-> area -> city -> id : '']) }}">Services</a> --}}
+                            href="{{ route('search') }}">Services</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('organizations.index') }}">Organizations</a>
