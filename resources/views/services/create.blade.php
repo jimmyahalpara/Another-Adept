@@ -140,7 +140,7 @@
                         <label for="service_category_id">Service Category</label>
                         <p class="small-note"><small>
                                 Note: If the service that you provide does not lie in the above mentioned categories, then
-                                send us a request theough help center. We would love to include more service types to our
+                                send us a request through help center. We would love to include more service types to our
                                 platform.
                             </small></p>
                         @error('service_category_id')
