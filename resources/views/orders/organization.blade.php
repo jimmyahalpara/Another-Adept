@@ -15,7 +15,7 @@
         </div>
     </section>
 
-    <main class="p-3 px-3" style="width: 98vw; overflow-x: scroll">
+    <main class="p-3 px-3" style="width: 98vw; overflow-x: scroll; overflow-y:visible">
         <div class="links m-1 d-flex align-items-center justify-content-between">
             <div>
                 {{ $orders->links() }}
