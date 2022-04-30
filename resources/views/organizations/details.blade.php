@@ -88,7 +88,7 @@
                                 </a>
                             </b>
                         </h6>
-                        @if (isset($service_stat) && $service_stat)
+                        {{-- @if (isset($service_stat) && $service_stat)
                             @php
                                 $rating = $service_stat->average;
                             @endphp
@@ -103,7 +103,7 @@
                                 class="ms-1">{{ $service_stat->count }}</span>)
                         @else
                             No Ratings Yet
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
             @empty
