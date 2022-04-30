@@ -4,8 +4,8 @@
             <p class="no-margins smallText">
                 <img id="footer-logo" class="border border-light bg-light" src="{{ asset('assets/images/logo.svg') }}" alt="">
             </p>
-            <p class="smallText">help@serviceadept.me</p>
-            <p class="smallText">+1-111-111-1111</p>
+            {{-- <p class="smallText">help@serviceadept.me</p>
+            <p class="smallText">+1-111-111-1111</p> --}}
         </div>
         <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem2">
             <p class="mediumBoldText">Service & Categories</p>
@@ -16,13 +16,12 @@
         <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem3">
             <p class="mediumBoldText">Useful Links</p>
             <p class="smallText"><a href="{{ route('home') }}">Homepage</a></p>
-            <p class="smallText"><a href="">About Us</a></p>
-            <p class="smallText"><a href="">Help</a></p>
-            <p class="smallText"><a href="">Contact Us</a></p>
+            <p class="smallText"><a href="{{ route('team') }}" >About Us</a></p>
+            {{-- <p class="smallText"><a href="">Help</a></p> --}}
+            <p class="smallText"><a href="" onclick="$('#get-help-form').show(200);">Contact Us</a></p>
         </div>
         <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem4">
             <p class="mediumBoldText">Help & Information</p>
-            <p class="smallText"><a href="">Help</a></p>
             <p class="smallText"><a href="">FAQ's</a></p>
             <p class="smallText"><a href="">Terms and Condition</a></p>
         </div>
