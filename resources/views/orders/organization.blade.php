@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/homestyle.css') }}">
     <section>
         <!-- Intro -->
-        <div id="introServiceOrders" class="bg-image d-flex justify-content-center align-items-center"
+        <div id="introServiceOrders" class="w-100 bg-image d-flex justify-content-center align-items-center"
             style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0.15);">
@@ -15,7 +15,7 @@
         </div>
     </section>
 
-    <main class="p-3 px-3">
+    <main class="p-3 px-3" style="width: 98vw; overflow-x: scroll">
         <div class="links m-1 d-flex align-items-center justify-content-between">
             <div>
                 {{ $orders->links() }}
@@ -46,7 +46,7 @@
                 @endforeach
             </div>
         @endif
-        <table class="table table-striped" style="width: 80vw">
+        <table class="table table-striped">
             <tr>
                 <th>@sortablelink('id', 'Order ID')</th>
                 <th>@sortablelink('service_id', 'Service ID')</th>
