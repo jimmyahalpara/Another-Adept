@@ -39,7 +39,7 @@
                 <td>
                     @foreach ($organization_admins as $admins)
                         {{-- @dump($admins -> organization_roles); --}}
-                        @if ($admins->organization_roles[0] -> id == 1)
+                        @if ($admins->organization_roles[0]->id == 1)
                             <table class='table'>
                                 <tr>
                                     <th>
@@ -88,9 +88,10 @@
                                 </a>
                             </b>
                         </h6>
-                        {{-- @if (isset($service_stat) && $service_stat)
+                        @if ($service->user_service_ratings_stat())
                             @php
-                                $rating = $service_stat->average;
+                                $stat = $service->user_service_ratings_stat();
+                                $rating = $stat->average;
                             @endphp
 
                             @for ($i = 0; $i < (int) $rating; $i++)
@@ -99,11 +100,13 @@
                             @if ($rating - (int) $rating != 0)
                                 <i class="text-warning fa-solid fa-star-half"></i>
                             @endif
-                            (<i class="fa-solid fa-user"></i><span id="service-rating-number"
-                                class="ms-1">{{ $service_stat->count }}</span>)
+                            <span class="mx-1">(
+                                <i class="fa-solid fa-user"></i>
+                                {{ $stat->count }}
+                                )</span>
                         @else
-                            No Ratings Yet
-                        @endif --}}
+                            No Ratings
+                        @endif
                     </div>
                 </div>
             @empty
