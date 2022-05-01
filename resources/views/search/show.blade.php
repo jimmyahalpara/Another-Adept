@@ -6,11 +6,11 @@
     <section>
         <!-- Intro -->
         <div id="introServiceSearch" class="bg-image d-flex justify-content-center align-items-center"
-            style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
+            style="background-image: url('{{ asset('assets/images/background (2).jpg') }}'); background-position: 0% 65%">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
-                style="background-color: rgba(250, 182, 162, 0.15);">
-                <h1>{{ $service->name }}</h1>
-                <h3>{{ $service->organization->name }}</h3>
+                style="background-color: rgba(250, 182, 162, 0);">
+                <h1 style="text-shadow: 0px 0px 13px white">{{ $service->name }}</h1>
+                <h3 style="text-shadow: 0px 0px 13px white">{{ $service->organization->name }}</h3>
             </div>
         </div>
     </section>

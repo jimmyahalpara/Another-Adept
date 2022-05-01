@@ -6,9 +6,9 @@
     <section>
         <!-- Intro -->
         <div id="introServiceSearch" class="bg-image d-flex justify-content-center align-items-center"
-            style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
+            style="background-image: url('{{ asset('assets/images/background (2).jpg') }}'); background-position: 0% 65%">
             <div class="mask d-flex justify-content-center align-items-center flex-column" style="">
-                <h1>Services</h1>
+                <h1 style="text-shadow: 0px 0px 13px white">Services</h1>
 
             </div>
         </div>
