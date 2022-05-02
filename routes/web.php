@@ -85,6 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('rate', 'rate')->name('rate');
         Route::post('area/delete', 'deleteAreaAvailablity')->name('area.delete');
         Route::post('area/delete/mass', 'massDeleteAreaAvailablity')->name('area.delete.mass');
+        Route::get('area/get/ajax', 'getServiceAreaAjax') -> name('area.get.ajax');
     });
     Route::resource('services', ServiceController::class)->except(['update', 'edit']);
 

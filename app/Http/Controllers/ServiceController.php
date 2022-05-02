@@ -15,6 +15,7 @@ use App\Models\ServiceCategory;
 use App\Models\User;
 use App\Models\UserServiceLike;
 use App\Models\UserServiceRating;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,7 +79,7 @@ class ServiceController extends Controller
         $service = new Service();
         $service->name = $data['name'];
         $service->description = $data['description'];
-        $service->price = $data['price_type_id'] != config('appconfig.variable_pricetype_id') ? $data['price']: 0;
+        $service->price = $data['price_type_id'] != config('appconfig.variable_pricetype_id') ? $data['price'] : 0;
         $service->price_type_id = $data['price_type_id'];
         $service->service_category_id = $data['service_category_id'];
         $service->organization_id = Auth::user()->user_organization_memberships[0]->organization_id;
@@ -150,8 +151,8 @@ class ServiceController extends Controller
             return redirect()->route('services.index')->with('message', 'UnAuthorized Action');
         }
 
-        $service -> delete();
-        return redirect() -> route('services.index') -> with('message', 'Service Deleted Successfully.');
+        $service->delete();
+        return redirect()->route('services.index')->with('message', 'Service Deleted Successfully.');
     }
 
     /**
@@ -260,7 +261,7 @@ class ServiceController extends Controller
         ]);
 
         $service->price_type_id = $request->price_type_id;
-        $service->price = $request->price_type_id == config('appconfig.variable_pricetype_id') ? 0 : $service -> price;
+        $service->price = $request->price_type_id == config('appconfig.variable_pricetype_id') ? 0 : $service->price;
         $service->save();
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Price Type Updated Successfully!');
     }
@@ -301,17 +302,17 @@ class ServiceController extends Controller
         }
 
         // dd($request -> all());
-        
+
 
         $service_id = $service->id;
 
-        $area_array = $request -> area;
+        $area_array = $request->area;
 
-        if ($request -> has('all_in_city') && $request -> all_in_city == 'on'){
-            $request -> validate([
+        if ($request->has('all_in_city') && $request->all_in_city == 'on') {
+            $request->validate([
                 'city_id' => ['required', 'numeric']
             ]);
-            $area_array = Area::where('city_id', $request -> city_id) -> pluck('id') -> toArray();
+            $area_array = Area::where('city_id', $request->city_id)->pluck('id')->toArray();
         } else {
             $request->validate([
                 'area' => ['required'],
@@ -327,11 +328,11 @@ class ServiceController extends Controller
             $check = ServiceAreaAvailablity::where('service_id', $service_id)
                 ->where('area_id', $value)
                 ->first();
-            
+
             if ($check) {
                 continue;
-            } 
-            
+            }
+
             $new_array[] = $value;
             $service_area = new ServiceAreaAvailablity();
             $service_area->area_id = $value;
@@ -357,7 +358,7 @@ class ServiceController extends Controller
             return redirect()->route('services.index')->with('message', 'Unauthorized Action');
         }
 
-        $request -> validate([
+        $request->validate([
             'area_id' => ['required', 'numeric']
         ]);
 
@@ -365,17 +366,18 @@ class ServiceController extends Controller
         $service_area = ServiceAreaAvailablity::where('service_id', $service->id)
             ->where('area_id', $request->area_id)
             ->first();
-        
+
         if ($service_area) {
             $service_area->delete();
         }
 
-        return redirect() -> route('services.show', ['service' => $service -> id]) -> with('message', 'Area Deleted Successfully!');
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Area Deleted Successfully!');
     }
 
 
-    public function massDeleteAreaAvailablity(Request $request, Service $service){
-        $request -> validate([
+    public function massDeleteAreaAvailablity(Request $request, Service $service)
+    {
+        $request->validate([
             'area_ids' => ['required']
         ]);
 
@@ -383,7 +385,7 @@ class ServiceController extends Controller
             return redirect()->route('services.index')->with('message', 'Unauthorized Action');
         }
 
-        $area_ids = $request -> area_ids;
+        $area_ids = $request->area_ids;
         // split comma seperated array 
         $area_ids = explode(',', $area_ids);
 
@@ -391,34 +393,35 @@ class ServiceController extends Controller
             ->where('service_id', $service->id)
             ->delete();
 
-        return redirect() -> route('services.show', ['service' => $service -> id]) -> with('message', 'Areas Deleted Successfully!');
+        return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Areas Deleted Successfully!');
     }
 
     public function serviceLikeUnlike(Request $request)
     {
-        $request -> validate([
+        $request->validate([
             'id' => ['required', 'numeric'],
             'action' => ['required', 'numeric']
         ]);
 
         $user = Auth::user();
-        $service = Service::findOrFail($request -> id);
+        $service = Service::findOrFail($request->id);
 
-        if ($request -> action == '1' && UserServiceLike::where('user_id', $user -> id) -> where('service_id', $service -> id) -> count() <= 0 ){
+        if ($request->action == '1' && UserServiceLike::where('user_id', $user->id)->where('service_id', $service->id)->count() <= 0) {
             $user_service_like = new UserServiceLike();
-            $user_service_like -> user_id = $user -> id;
-            $user_service_like -> service_id = $service -> id;
-            $user_service_like -> save();
+            $user_service_like->user_id = $user->id;
+            $user_service_like->service_id = $service->id;
+            $user_service_like->save();
 
-            return $user -> services() -> count();
+            return $user->services()->count();
         } else {
-            UserServiceLike::where('user_id', $user -> id) -> where('service_id', $service -> id) -> delete();
-            return $user -> services() -> count();
+            UserServiceLike::where('user_id', $user->id)->where('service_id', $service->id)->delete();
+            return $user->services()->count();
         }
     }
 
-    public function rate(Request $request, Service $service){
-        $request -> validate([
+    public function rate(Request $request, Service $service)
+    {
+        $request->validate([
             'rating' => 'required',
             'feedback' => 'max:1000'
         ]);
@@ -428,18 +431,68 @@ class ServiceController extends Controller
 
         $user_service_rating = UserServiceRating::firstOrNew([
             'user_id' => $user_id,
-            'service_id' => $service -> id
+            'service_id' => $service->id
         ]);
-        $user_service_rating -> user_id = $user_id;
-        $user_service_rating -> service_id = $service -> id;
-        $user_service_rating -> rating = $request -> rating;
-        $user_service_rating -> feedback = $request -> input('feedback', null);
+        $user_service_rating->user_id = $user_id;
+        $user_service_rating->service_id = $service->id;
+        $user_service_rating->rating = $request->rating;
+        $user_service_rating->feedback = $request->input('feedback', null);
 
-        $user_service_rating -> save();
+        $user_service_rating->save();
 
-        return redirect() -> route('search.show', ['service' => $service -> id]) -> with('message', 'Heartly Thanks for your feedback');
+        return redirect()->route('search.show', ['service' => $service->id])->with('message', 'Heartly Thanks for your feedback');
     }
 
-
-
+    public function getServiceAreaAjax(Request $request, Service $service)
+    {
+        try {
+            $req_start = $request->input('start', 1);
+            $req_length = $request->input('length', 10); //number of records a table can display in current draw
+            $search_text = $request -> input('search', ['value' => ''])['value'];
+            $orders = $request -> input('order', []);
+    
+    
+            $records_total = $service->areas()->count();
+    
+            $areas = $service->areas()->leftJoin('cities as c', 'areas.city_id', 'c.id');
+            
+            if (!empty($search_text)){
+                $areas = $areas -> where('name', 'LIKE', '%' . $search_text . '%' );
+                $areas = $areas -> orWhereHas('city', function($q) use ($search_text){
+                    $q -> where('name','LIKE', '%' . $search_text . '%');
+                });
+            }
+            
+            foreach ($orders as $order) {
+                if ($order['column'] == 'area' || $order['column'] == '1'){
+                    $areas -> orderBy('c.name', $order['dir']);
+                    $areas -> orderBy('areas.name', $order['dir']);
+                }
+            }
+            
+    
+            $records_filtered = $areas -> count();
+    
+            $areas = $areas->skip($req_start)->take($req_length)->get();
+    
+            $records = [];
+            $count = 0;
+            foreach ($areas as $area) {
+                $records[$count]['checkbox'] = '<input class="form-checkbox area-select-checkbox" type="checkbox" name="select-area-'. $area -> id .'" id="select-area-id-'. $area -> id .'"value="{{ $area -> id }}">';
+                $records[$count]['area'] = $area->city->name . " - " . $area->name;
+                $records[$count]['action'] = 'some action';
+                $count++;
+            }
+            return [
+                'draw' => $request->input('draw', 1),
+                'data' => $records,
+                'recordsTotal' => $records_total,
+                'recordsFiltered' => $records_filtered,
+            ];
+        } catch (Exception $e) {
+            return response([
+                'message' => $e -> getMessage()
+            ], 500);
+        }
+    }
 }
