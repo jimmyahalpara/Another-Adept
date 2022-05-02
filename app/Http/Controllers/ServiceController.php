@@ -18,6 +18,7 @@ use App\Models\UserServiceRating;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -453,34 +454,38 @@ class ServiceController extends Controller
     
     
             $records_total = $service->areas()->count();
-    
-            $areas = $service->areas()->leftJoin('cities as c', 'areas.city_id', 'c.id');
+            
+            $areas = $service->areas() -> join('cities', 'areas.city_id', 'cities.id');
             
             if (!empty($search_text)){
-                $areas = $areas -> where('name', 'LIKE', '%' . $search_text . '%' );
-                $areas = $areas -> orWhereHas('city', function($q) use ($search_text){
-                    $q -> where('name','LIKE', '%' . $search_text . '%');
+                $areas = $areas -> where(function($q) use ($search_text){
+                    $q -> orWhere('areas.name', 'like', '%'.$search_text.'%')
+                       -> orWhere('cities.name', 'like', '%'.$search_text.'%');
                 });
             }
             
             foreach ($orders as $order) {
                 if ($order['column'] == 'area' || $order['column'] == '1'){
-                    $areas -> orderBy('c.name', $order['dir']);
+
+                    $areas -> orderBy('cities.name', $order['dir']);
                     $areas -> orderBy('areas.name', $order['dir']);
                 }
             }
             
-    
+            
             $records_filtered = $areas -> count();
     
             $areas = $areas->skip($req_start)->take($req_length)->get();
-    
+            // return DB::getQueryLog();
+
             $records = [];
             $count = 0;
             foreach ($areas as $area) {
-                $records[$count]['checkbox'] = '<input class="form-checkbox area-select-checkbox" type="checkbox" name="select-area-'. $area -> id .'" id="select-area-id-'. $area -> id .'"value="{{ $area -> id }}">';
+                $records[$count]['checkbox'] = '<input class="form-checkbox area-select-checkbox" type="checkbox" name="select-area-'. $area -> id .'" id="select-area-id-'. $area -> id .'" value="'.$area -> id.'">';
                 $records[$count]['area'] = $area->city->name . " - " . $area->name;
-                $records[$count]['action'] = 'some action';
+                $records[$count]['action'] = '<form onsubmit="return confirm(\'Do you want to remove this area ?\')"
+                id="delete-area-form-'.$area -> id.'" action="'. route('services.area.delete', ['service' => $service->id]) .'" method="POST"> '.csrf_field().' <input type="hidden" name="area_id" value="'.$area -> id.'"> </form> <a href="#"
+                onclick="$(\'#delete-area-form-'.$area -> id.'\').submit(); return false;"><i class="fa-solid fa-trash text-danger"></i></a>';
                 $count++;
             }
             return [

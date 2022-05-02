@@ -704,12 +704,23 @@ a {
 
 .dataTables_processing {
     position: fixed !important;
-    background-color: black;
-    color: black !important;
+    background-color: rgba(0, 0, 0, 0);
+    /* color: black !important; */
     display: block;
-    top: 50% !important;
-    left: 50% !important;
+    top: 40% !important;
+    left: 45% !important;
+    
     font-size: 2em;
     background-color: transparent !important;
     border: none;
 }
+
+.dataTables_processing img {
+    height: 160px !important;
+    width: 320px !important;
+}
+
+#area-table_info {
+    width: 120px;   
+}
+

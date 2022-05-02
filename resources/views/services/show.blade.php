@@ -644,7 +644,8 @@
             }],
             processing: true,
             "language": {
-                "processing": "<i class='fa-solid fa-spinner fa-spin'></i>",
+                // "processing": "<i class='fa-solid fa-spinner fa-spin'></i>",
+                "processing" : '<img src="{{ asset('assets/images/loader.svg') }}">',
             }
 
         });
