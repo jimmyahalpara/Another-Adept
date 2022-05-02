@@ -24,7 +24,7 @@ class ServiceController extends Controller
 
     public function __construct()
     {
-        $this->middleware('organization.role:manager');
+        $this->middleware('organization.role:manager', ['except' => ['rate', 'serviceLikeUnlike']]);
     }
 
     /**
@@ -439,6 +439,7 @@ class ServiceController extends Controller
 
         return redirect() -> route('search.show', ['service' => $service -> id]) -> with('message', 'Heartly Thanks for your feedback');
     }
+
 
 
 }
