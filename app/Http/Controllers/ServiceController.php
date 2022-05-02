@@ -446,6 +446,9 @@ class ServiceController extends Controller
 
     public function getServiceAreaAjax(Request $request, Service $service)
     {
+        if (organization_id(true) != $service->organization_id) {
+            return ['message'=> 'Unauthorized Action'];
+        }
         try {
             $req_start = $request->input('start', 1);
             $req_length = $request->input('length', 10); //number of records a table can display in current draw
