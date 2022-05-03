@@ -101,12 +101,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($service->areas as $area)
+                                {{-- @foreach ($service->areas as $area)
                                     <tr>
                                         <td>{{ $area->city->name }}</td>
                                         <td>{{ $area->name }}</td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
+
+
                             </tbody>
                         </table>
                         {{-- @forelse ($service->areas as $area)
@@ -459,10 +461,17 @@
     <script>
         $('#area-table').DataTable({
             pagingType: "full",
-            columnDefs: [{
-                orderable: false,
-                targets: 0
-            }]
+            serverSide: true,
+            ajax: "{{ route('search.area.ajax', ['service' => $service -> id]) }}",
+            columns: [
+                {'data': 'cname'},
+                {'data': 'aname'}
+            ],
+            processing: true,
+            "language": {
+                // "processing": "<i class='fa-solid fa-spinner fa-spin'></i>",
+                "processing" : '<img src="{{ asset('assets/images/loader.svg') }}">',
+            }
         });
 
 

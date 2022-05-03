@@ -80,6 +80,7 @@
                             <tr>
                                 <th>
                                     <input type="checkbox" name="select" id="all_select" onclick="all_select()">
+                                    {{-- Checkbox --}}
                                 </th>
                                 <th>Area</th>
                                 <th>Action</th>
@@ -87,7 +88,7 @@
                         </thead>
                         <tbody>
 
-                            @foreach ($service->areas as $area)
+                            {{-- @foreach ($service->areas as $area)
                                 <tr>
                                     <td>
                                         <input class="form-checkbox area-select-checkbox" type="checkbox"
@@ -112,7 +113,7 @@
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
 
@@ -559,14 +560,14 @@
         })
 
 
-        function mass_delete(){
+        function mass_delete() {
             checked_list = [];
-            if (!confirm('Do you want delete all the selected areas ?')){
+            if (!confirm('Do you want delete all the selected areas ?')) {
                 return;
             }
 
 
-            $('input.area-select-checkbox:checked').each(function(){
+            $('input.area-select-checkbox:checked').each(function() {
                 checked_list.push($(this).val());
             });
 
@@ -577,7 +578,7 @@
             // create a form
             var form = document.createElement('form');
             form.setAttribute('method', 'post');
-            form.setAttribute('action', '{{ route('services.area.delete.mass', ['service' => $service -> id]) }}');
+            form.setAttribute('action', '{{ route('services.area.delete.mass', ['service' => $service->id]) }}');
 
             // adding hidden input for csrf token 
             var input = document.createElement('input');
@@ -598,16 +599,16 @@
             form.submit();
 
 
-            
+
         }
 
-        function all_select(e){
-            if ($('#all_select').is(':checked')){
-                $('input.area-select-checkbox').each(function(){
+        function all_select(e) {
+            if ($('#all_select').is(':checked')) {
+                $('input.area-select-checkbox').each(function() {
                     this.setAttribute('checked', true);
                 });
             } else {
-                $('input.area-select-checkbox').each(function(){
+                $('input.area-select-checkbox').each(function() {
                     this.removeAttribute('checked');
                 });
             }
@@ -625,10 +626,28 @@
     <script>
         $('#areas-table').DataTable({
             pagingType: "full",
+            serverSide: true,
+            ajax: '{{ route('services.area.get.ajax', ['service' => $service->id]) }}',
+            columns: [{
+                    'data': 'checkbox'
+                },
+                {
+                    'data': 'area'
+                },
+                {
+                    'data': 'action'
+                },
+            ],
             columnDefs: [{
                 orderable: false,
                 targets: 0
-            }]
+            }],
+            processing: true,
+            "language": {
+                // "processing": "<i class='fa-solid fa-spinner fa-spin'></i>",
+                "processing" : '<img src="{{ asset('assets/images/loader.svg') }}">',
+            }
+
         });
     </script>
 @endsection

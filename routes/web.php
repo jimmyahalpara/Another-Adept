@@ -85,6 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('rate', 'rate')->name('rate');
         Route::post('area/delete', 'deleteAreaAvailablity')->name('area.delete');
         Route::post('area/delete/mass', 'massDeleteAreaAvailablity')->name('area.delete.mass');
+        Route::get('area/get/ajax', 'getServiceAreaAjax') -> name('area.get.ajax');
     });
     Route::resource('services', ServiceController::class)->except(['update', 'edit']);
 
@@ -154,6 +155,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::post('paytm/callback', [PaytmController::class, 'paymentCallback'])->name('paytm.callback')->withoutMiddleware([VerifyCsrfToken::class]);
 Route::get('search', [SearchController::class, 'index'])->name('search');
 Route::get('search/{service}', [SearchController::class, 'show'])->name('search.show');
+Route::get('search/{service}/areas', [SearchController::class, 'serviceAreasAjax'])->name('search.area.ajax');
 
 
 Route::get('service-rating/', [UserRatingController::class, 'index'])->name('service.rating');

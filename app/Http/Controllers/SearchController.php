@@ -9,6 +9,7 @@ use App\Models\PriceType;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\UserServiceRating;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,16 +30,16 @@ class SearchController extends Controller
         $organization_filter = $request->input('organization_filter', []);
         $min_price = $request->input('min_price', '');
         $max_price = $request->input('max_price', '');
-        $city_filter = $request -> input('city_filter', '');
-        $area_filter = $request -> input('area_filter', '');
-        $state_filter = $request -> input('state_filter', '');
+        $city_filter = $request->input('city_filter', '');
+        $area_filter = $request->input('area_filter', '');
+        $state_filter = $request->input('state_filter', '');
 
         $categories_filter = (is_array($categories_filter)) ? $categories_filter : [];
         $price_types_filter = (is_array($price_types_filter)) ? $price_types_filter : [];
         $organization_filter = (is_array($organization_filter)) ? $organization_filter : [];
 
 
-        if ($areas != []){
+        if ($areas != []) {
             $one_area = $areas[0];
 
             $tmp_area = Area::where('id', $one_area)->first();
@@ -144,13 +145,13 @@ class SearchController extends Controller
     {
         $user = Auth::user();
         $current_user_rating = null;
-        if ($user){
-            $current_user_rating = $service -> user_service_ratings -> where('user_id', $user -> id) -> first();
+        if ($user) {
+            $current_user_rating = $service->user_service_ratings->where('user_id', $user->id)->first();
         }
 
         $service_stat = null;
-        if ($service -> user_service_ratings_stat()){
-            $service_stat = $service -> user_service_ratings_stat();
+        if ($service->user_service_ratings_stat()) {
+            $service_stat = $service->user_service_ratings_stat();
         }
 
 
@@ -160,5 +161,55 @@ class SearchController extends Controller
             'current_user_rating',
             'service_stat'
         ));
+    }
+
+
+    public function serviceAreasAjax(Request $request, Service $service)
+    {
+        try {
+            $req_start = $request->input('start', 1);
+            $req_length = $request->input('length', 10); //number of records a table can display in current draw
+            $search_text = $request->input('search', ['value' => ''])['value'];
+            $orders = $request->input('order', []);
+
+
+            $records_total = $service->areas()->count();
+
+            $areas = $service->areas() -> select('areas.name as aname', 'cities.name as cname') -> join('cities', 'areas.city_id', 'cities.id');
+            // return $areas -> get();
+            if (!empty($search_text)) {
+                $areas = $areas->where(function ($q) use ($search_text) {
+                    $q->orWhere('areas.name', 'like', '%' . $search_text . '%')
+                        ->orWhere('cities.name', 'like', '%' . $search_text . '%');
+                });
+            }
+
+            $records_filtered = $areas->count();
+
+            foreach ($orders as $order) {
+                if ($order['column'] == 'cname' || $order['column'] == '0') {
+
+                    $areas->orderBy('cname', $order['dir']);
+                    $areas->orderBy('aname', $order['dir']);
+                } else if ($order['column'] == 'aname' || $order['column'] == '1') {
+                    $areas->orderBy('aname', $order['dir']);
+                    $areas -> orderBy('cname', $order['dir']);
+                }
+            }
+
+
+
+            $areas = $areas->skip($req_start)->take($req_length)->get();
+            return [
+                'draw' => $request->input('draw', 1),
+                'data' => $areas,
+                'recordsTotal' => $records_total,
+                'recordsFiltered' => $records_filtered,
+            ];
+        } catch (Exception $e) {
+            return response([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
