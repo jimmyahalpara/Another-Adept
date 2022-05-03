@@ -18,12 +18,14 @@
             <p class="smallText"><a href="{{ route('home') }}">Homepage</a></p>
             <p class="smallText"><a href="{{ route('team') }}" >About Us</a></p>
             {{-- <p class="smallText"><a href="">Help</a></p> --}}
-            <p class="smallText"><a href="" onclick="$('#get-help-form').show(200);">Contact Us</a></p>
+            <p class="smallText"><a href="#" onclick="$('#get-help-form').show(200);">Contact Us</a></p>
         </div>
         <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem4">
             <p class="mediumBoldText">Help & Information</p>
             <p class="smallText"><a href="">FAQ's</a></p>
             <p class="smallText"><a href="">Terms and Condition</a></p>
+            <p class="smallText"><a href="">Privacy Policy</a></p>
+            <p class="smallText"><a href="">Refund Policy</a></p>
         </div>
     </div>
     <div>
