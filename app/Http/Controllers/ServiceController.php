@@ -235,6 +235,9 @@ class ServiceController extends Controller
             return redirect()->route('services.index')->with('message', 'Unauthorized Action');
         }
 
+        if ($service -> price_type_id == config('appconfig.variable_pricetype_id')){
+            return redirect()->route('services.show', ['service' => $service -> id])->with('message', 'Cannot set price of service which has price type variable.');
+        }
 
         $request->validate([
             'price' => ['required', 'numeric'],

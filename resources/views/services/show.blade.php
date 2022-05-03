@@ -49,9 +49,11 @@
                 <th>Price </th>
                 <td>{{ $service->price }}</td>
                 <td>
-                    <a class="m-1" data-bs-toggle="modal" data-bs-target="#editPrice">
-                        <i class="fa-solid fa-pen"></i>
-                    </a>
+                    @if ($service->price_type_id != config('appconfig.variable_pricetype_id'))
+                        <a class="m-1" data-bs-toggle="modal" data-bs-target="#editPrice">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                    @endif
                 </td>
             </tr>
             <tr>
@@ -645,7 +647,7 @@
             processing: true,
             "language": {
                 // "processing": "<i class='fa-solid fa-spinner fa-spin'></i>",
-                "processing" : '<img src="{{ asset('assets/images/loader.svg') }}">',
+                "processing": '<img src="{{ asset('assets/images/loader.svg') }}">',
             }
 
         });
