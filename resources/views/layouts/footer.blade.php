@@ -7,26 +7,51 @@
             {{-- <p class="smallText">help@serviceadept.me</p>
             <p class="smallText">+1-111-111-1111</p> --}}
         </div>
-        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem2">
+        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3 d-none d-md-block" id="userfulLinkItem2">
             <p class="mediumBoldText">Service & Categories</p>
             <p class="smallText"><a href="{{ route('search', ['categories_filter' => [2]]) }}">Handy Man</a></p>
             <p class="smallText"><a href="{{ route('search', ['categories_filter' => [5]]) }}">Maid</a></p>
             <p class="smallText"><a href="{{ route('search', ['categories_filter' => [7]]) }}">AC Service</a></p>
         </div>
-        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem3">
+        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3 d-block d-md-none" id="userfulLinkItem2">
+            <p class="mediumBoldText text-center">Service & Categories</p>
+            <p class="smallText text-center"><a href="{{ route('search', ['categories_filter' => [2]]) }}">Handy Man</a></p>
+            <p class="smallText text-center"><a href="{{ route('search', ['categories_filter' => [5]]) }}">Maid</a></p>
+            <p class="smallText text-center"><a href="{{ route('search', ['categories_filter' => [7]]) }}">AC Service</a></p>
+        </div>
+
+        {{-- -------------- --}}
+        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3 d-none d-md-block" id="userfulLinkItem3">
             <p class="mediumBoldText">Useful Links</p>
             <p class="smallText"><a href="{{ route('home') }}">Homepage</a></p>
             <p class="smallText"><a href="{{ route('team') }}" >About Us</a></p>
             {{-- <p class="smallText"><a href="">Help</a></p> --}}
             <p class="smallText"><a href="#" onclick="$('#get-help-form').show(200);">Contact Us</a></p>
         </div>
-        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3" id="userfulLinkItem4">
+        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3 d-block d-md-none" id="userfulLinkItem3">
+            <p class="mediumBoldText text-center">Useful Links</p>
+            <p class="smallText text-center"><a href="{{ route('home') }}">Homepage</a></p>
+            <p class="smallText text-center"><a href="{{ route('team') }}" >About Us</a></p>
+            {{-- <p class="smallText"><a href="">Help</a></p> --}}
+            <p class="smallText text-center"><a href="#" onclick="$('#get-help-form').show(200);">Contact Us</a></p>
+        </div>
+        {{-- ---------------- --}}
+
+        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3 d-none d-md-block" id="userfulLinkItem4">
             <p class="mediumBoldText">Help & Information</p>
             <p class="smallText"><a href="">FAQ's</a></p>
             <p class="smallText"><a href="">Terms and Condition</a></p>
             <p class="smallText"><a href="">Privacy Policy</a></p>
             <p class="smallText"><a href="">Refund Policy</a></p>
         </div>
+        <div class="userFulLinksItem col-12 col-sm-6 col-lg-3 d-block d-md-none" id="userfulLinkItem4">
+            <p class="mediumBoldText text-center">Help & Information</p>
+            <p class="smallText text-center"><a href="">FAQ's</a></p>
+            <p class="smallText text-center"><a href="">Terms and Condition</a></p>
+            <p class="smallText text-center"><a href="">Privacy Policy</a></p>
+            <p class="smallText text-center"><a href="">Refund Policy</a></p>
+        </div>
+        {{-- -------------- --}}
     </div>
     <div>
         <div id="sep"></div>
