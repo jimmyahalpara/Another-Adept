@@ -26,7 +26,7 @@ class CreateOrganizatinRequest extends FormRequest
         return [
             'name' => ['required', 'max:255', 'min:3'],
             'description' => ['required', 'max:1020', 'min:2'],
-            'identification' => ['required']
+            'identification' => ['required', 'mimes:pdf,jpg,jpeg,png,bmp,gif,svg', 'max:2048'],
         ];
     }
 }

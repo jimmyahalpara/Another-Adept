@@ -19,14 +19,10 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
 
     /**
-     * Show the application dashboard.
+     * Show the application dashboard. This method returns homepage 
+     * view for the application
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -40,6 +36,13 @@ class HomeController extends Controller
         ));
     }
 
+    /**
+     * this methods is used to view all the likes posts for the user. 
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function view_liked(Request $request)
     {
         $num_rows = $request->input('num_rows', 10);
@@ -134,6 +137,10 @@ class HomeController extends Controller
         ));
     }
 
+    /**
+     * this method is called to view all the services ordered by the user. It also shows status of the order, option 
+     * to cancel the order, and if the order is assigned to some provider, then it shows provider's contact details. 
+     */
     public function my_orders(Request $request)
     {
         $user = Auth::user();
@@ -143,6 +150,16 @@ class HomeController extends Controller
             'user'
         ));
     }
+
+    /**
+     * this method is called when users cancels the order. It takes in required parameter service_order_id, which should be numeric. 
+     * If there is an order with that order id from the current user, then that order will be cancelled, with a message to the admin. 
+     * It returns redirect response 
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function cancel_order(Request $request)
     {
@@ -170,6 +187,12 @@ class HomeController extends Controller
         return redirect()->route('home.orders')->with('message', 'Service Cancelled');
     }
 
+    /**
+     * This methods returns my profile view which shows the user's profile information, and also adds option
+     * to update that information.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function view_profile()
     {
         $user = Auth::user();
@@ -184,6 +207,15 @@ class HomeController extends Controller
         ));
     }
 
+
+    /**
+     * This method is called when user updates his profile. It takes in new parameters, and updates the user's profile.
+     * If user updated his email address, then he'll have to reverify that email again. 
+     * 
+     * @param UserEditRequest $request
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     */
     public function edit_profile(UserEditRequest $request)
     {
         $message = 'Profile updated successfully.';
@@ -204,6 +236,11 @@ class HomeController extends Controller
         return redirect()->back()->with('message', $message);
     }
 
+    /**
+     * This method is used to view team page of the website.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function team(){
         return view('home.team');
     }
