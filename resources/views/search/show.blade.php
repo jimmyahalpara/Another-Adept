@@ -57,7 +57,7 @@
                             onclick="order('{{ route('order.place', ['service' => $service->id]) }}')">Order</button>
                     @else
                         <button class="btn btn-outline-secondary w-100"
-                            onclick="order('{{ route('order.place', ['service' => $service->id]) }}', true)">Order</button>
+                            onclick="order('{{ route('order.place', ['service' => $service->id]) }}')">Order</button>
                     @endif
                 </div>
                 <div class="mt-3 show-service-availablity">
