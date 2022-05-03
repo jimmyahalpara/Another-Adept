@@ -5,12 +5,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/homestyle.css') }}">
     <section>
         <!-- Intro -->
-        <div id="introServiceIndex" class="bg-image d-flex justify-content-center align-items-center"
-            style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
+        <div id="introServiceOrders" class="bg-image d-flex justify-content-center align-items-center"
+            style="background-image: url('{{ asset('assets/images/background (5).jpg') }}'); background-position: 0% 50%">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
-                style="background-color: rgba(250, 182, 162, 0.15);">
-                <h1>My Services</h1>
-                <h3>{{ Auth::user()->get_organization()->name }}</h3>
+                style="background-color: rgba(250, 182, 162, 0);">
+                <h1 style="color: white; text-shadow: 0px 0px 10px black">My Services</h1>
+                <h3 style="color: white; text-shadow: 0px 0px 10px black">{{ Auth::user()->get_organization()->name }}</h3>
             </div>
         </div>
     </section>

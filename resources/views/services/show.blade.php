@@ -8,7 +8,7 @@
         <div id="introServiceIndex" class="bg-image d-flex justify-content-center align-items-center"
             style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column"
-                style="background-color: rgba(250, 182, 162, 0.15);">
+                style="background-color: rgba(250, 182, 162, 0);">
                 <h1>{{ $service->name }}</h1>
                 <h3>{{ Auth::user()->get_organization()->name }}</h3>
             </div>
