@@ -301,14 +301,16 @@
                 <div id="loginRight" class="col-md-6 p-4 d-flex justify-content-center align-items-center">
                     <form action="{{ route('search') }}" method="get" id="login-form"
                         class="m-2 d-flex justify-content-center align-items-center flex-column">
+                        <label class="d-inline-block d-md-none">Search Something</label>
                         <div class="login-form-group form-floating d-flex justify-content-center align-items-center">
                             <input id="search" type="search" class="w-100 form-control" name="search_text"
-                                value="{{ old('search') }}" autocomplete="search" placeholder="search Id">
-                            <label for="search">Tell Us what you want.</label>
-                            <button type="submit" class="buttonRounded m-1 p-2 px-4">
-                                Search
-                            </button>
+                                value="{{ old('search') }}" autocomplete="search" placeholder="Tell Us wat you want. ">
+                            <label for="search" class="d-none d-md-inline-block">Tell Us what you want.</label>
+                            
                         </div>
+                        <button type="submit" class="buttonRounded m-1 p-2 px-4">
+                            Search
+                        </button>
                     </form>
                 </div>
 

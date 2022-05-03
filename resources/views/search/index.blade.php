@@ -38,11 +38,12 @@
                 </div>
             </div>
             <div class="col-md-5 row m-0 align-items-center">
-                <div class="col-md-6 col-lg-9 d-flex justify-content-center align-items-center">
+                <div class="col-8 col-md-6 col-lg-9 d-flex justify-content-center align-items-center">
                     <input placeholder="Search .. " type="search" name="search_text" id="query" class="form-control"
                         form="filterForm" value="{{ $search_text }}">
                 </div>
-                <button class="btn btn-primary px-1 col-md-6 col-lg-3" onclick="$('#filterForm').submit()">Search</button>
+                <button class="btn btn-primary px-1 col-4 col-md-6 col-lg-3"
+                    onclick="$('#filterForm').submit()">Search</button>
 
             </div>
         </div>
@@ -85,9 +86,8 @@
                             <select id="state_id" name="state_filter" class="form-control">
                                 <option value="">Select State</option>
                                 @foreach ($states as $state)
-                                    <option value="{{ $state->state }}"
-                                        @if($state -> state == $state_filter) selected @endif
-                                        >{{ $state -> state }}</option>
+                                    <option value="{{ $state->state }}" @if ($state->state == $state_filter) selected @endif>
+                                        {{ $state->state }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -95,14 +95,16 @@
                             <label for="city_id">Select Cities</label><br>
                             <select id="city_id" name="city_filter" class="form-control">
                                 <option value="">Select City</option>
-                                @php 
-                                    $current_state_cities = \App\Models\City::where('state', $state_filter) -> orderBy('name') -> get();
+                                @php
+                                    $current_state_cities = \App\Models\City::where('state', $state_filter)
+                                        ->orderBy('name')
+                                        ->get();
                                 @endphp
-                                @if ($current_state_cities -> count() > 0)
+                                @if ($current_state_cities->count() > 0)
                                     @foreach ($current_state_cities as $city)
-                                        <option value="{{ $city -> id }}"
-                                        @if ($city_filter == $city -> id) selected @endif
-                                            >{{ $city -> name }}</option>
+                                        <option value="{{ $city->id }}"
+                                            @if ($city_filter == $city->id) selected @endif>{{ $city->name }}
+                                        </option>
                                     @endforeach
                                 @endif
                             </select>
@@ -111,10 +113,11 @@
                             <label for="area">Select Areas</label><br>
                             <select id="area_id" class="js-example-basic-multiple" name="areas[]" multiple="multiple">
                                 @php
-                                    $current_city_areas = \App\Models\Area::where('city_id', $city_filter) -> get();
+                                    $current_city_areas = \App\Models\Area::where('city_id', $city_filter)->get();
                                 @endphp
                                 @foreach ($current_city_areas as $area)
-                                    <option value="{{ $area -> id }}" @if (in_array($area->id, $areas)) selected @endif>{{ $area -> name }}</option>
+                                    <option value="{{ $area->id }}" @if (in_array($area->id, $areas)) selected @endif>
+                                        {{ $area->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -381,6 +384,5 @@
                 });
             });
         });
-
     </script>
 @endsection

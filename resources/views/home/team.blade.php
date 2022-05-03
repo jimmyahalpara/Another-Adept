@@ -13,7 +13,7 @@
             </div>
         </div>
     </section>
-    <main class="p-3 px-5 d-flex justify-content-center align-items-center flex-wrap">
+    <main class="p-md-3 px-md-5 d-flex justify-content-center align-items-center flex-wrap">
 
         <div class="team-profile-card">
             <img class="team-profile-image" src="{{ asset('assets/images/avatar_default.png') }}" alt="">

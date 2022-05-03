@@ -4,19 +4,14 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('assets/images/logo.svg') }}" alt="Service Adept" id="site_logo">
-                {{-- <span style="color: #fff;">logist</span> --}}
             </a>
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link"
-                            {{-- href="{{ route('search', ['city_filter' => Auth::user() ? Auth::user()-> area -> city -> id : '']) }}">Services</a> --}}
-                            href="{{ route('search') }}">Services</a>
+                        <a class="nav-link" href="{{ route('search') }}">Services</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('organizations.index') }}">Organizations</a>
@@ -48,7 +43,8 @@
                             @endorganization_role
 
                             @organization_role('provider')
-                            <li><a href="{{ route('order.my.orders') }}" class="dropdown-item">Service Orders</a></li>
+                            <li><a href="{{ route('order.my.orders') }}" class="dropdown-item">Service Orders</a>
+                            </li>
                             @endorganization_role
 
                             @organization_role('admin')
@@ -101,9 +97,12 @@
                 <ul class="navbar-nav d-flex flex-row">
                     @auth
                         <li class="nav-item me-3 me-lg-0">
-                            <a class="nav-link d-flex justify-content-between align-items-center" href="{{ route('home.cart') }}">
+                            <a class="nav-link d-flex justify-content-between align-items-center"
+                                href="{{ route('home.cart') }}">
                                 @php
-                                    $like_count = Auth::user()->services()->count();
+                                    $like_count = Auth::user()
+                                        ->services()
+                                        ->count();
                                 @endphp
                                 @if ($like_count > 0)
                                     <i id="user-like-icon" class="fa-solid fa-heart text-danger me-1"></i>
@@ -178,3 +177,12 @@
     }
 
 </style>
+<script>
+    var collapseElementList = [].slice.call(document.querySelectorAll('.collapse'))
+
+    function toggleNavbar(params) {
+        var collapseList = collapseElementList.map(function(collapseEl) {
+            return new bootstrap.Collapse(collapseEl)
+        })
+    }
+</script>
