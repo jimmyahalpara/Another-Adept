@@ -203,7 +203,7 @@
                         <div class="mt-5 form-floating">
                             <select name="member_id" class="form-control" id="member_id">
                                 @foreach ($members as $member)
-                                    @if ($member->user_state_id != 2)
+                                    @if ($member->user -> user_state_id != 2)
                                         <option value="{{ $member->id }}">
                                             {{ $member->user->area->city->name }}-{{ $member->user->area->name }}
                                             -- {{ $member->user->name }}</option>
