@@ -391,7 +391,7 @@ class OrderController extends Controller
                 $service_order->order_state_id = 1;
             }
         }
-        dump(394)
+        dump(394);
         if ($request->order_state_id == 6) {
             $job = new OrderCompleteUserJob(['order' => $service_order]);
             dispatch($job);
