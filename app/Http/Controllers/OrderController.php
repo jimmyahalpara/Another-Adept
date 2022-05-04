@@ -397,7 +397,7 @@ class OrderController extends Controller
             dispatch($job);
         }
         $service_order->save();
-
+        dd($service_order);
         return redirect()->route('order.organization')->with('message', 'Order State changed');
     }
 
