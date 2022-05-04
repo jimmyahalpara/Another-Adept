@@ -381,12 +381,15 @@ class OrderController extends Controller
         if ($service_order->order_state_id == 3 || $service_order->orde_state_id == 4 || $service_order->order_state_id == 5) {
             return redirect()->route('order.organization')->with('message', 'Cannot change state of the order which is cancelled/rejected or On Hold.');
         }
-        if ($request -> order_state_id != 6 && $service_order -> order_member() -> count() > 0) {
-            $service_order->order_state_id = $request->order_state_id;
-        } else {
-            $service_order -> order_state_id = 1;
+
+        if ($request->order_state_id != 6) {
+            if ($service_order->order_member()->count() > 0) {
+                $service_order->order_state_id = $request->order_state_id;
+            } else {
+                $service_order->order_state_id = 1;
+            }
         }
-        if ($request -> order_state_id == 6){
+        if ($request->order_state_id == 6) {
             $job = new OrderCompleteUserJob(['order' => $service_order]);
             dispatch($job);
         }
