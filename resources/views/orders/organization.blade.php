@@ -10,7 +10,8 @@
             <div class="mask d-flex justify-content-center align-items-center flex-column"
                 style="background-color: rgba(250, 182, 162, 0);">
                 <h1 style="color: white; text-shadow: 0px 0px 10px black">All Orders</h1>
-                <h3 style="color: white; text-shadow: 0px 0px 10px black">{{ Auth::user()->get_organization()->name }}</h3>
+                <h3 style="color: white; text-shadow: 0px 0px 10px black">{{ Auth::user()->get_organization()->name }}
+                </h3>
             </div>
         </div>
     </section>
@@ -103,7 +104,7 @@
                     <td>{{ $order->created_at }}</td>
                     <td>{{ $order->order_state->name }}</td>
                     <td>
-                        @if ($order->order_member && $order -> order_member -> user_organization_membership -> user)
+                        @if ($order->order_member && $order->order_member->user_organization_membership->user)
                             {{ $order->order_member->user_organization_membership->user->name }} /
                             <span class="badge @if ($order->order_member->order_member_state_id == 1) bg-danger @else bg-success @endif">
                                 {{ $order->order_member->order_member_state->name }}
@@ -202,9 +203,11 @@
                         <div class="mt-5 form-floating">
                             <select name="member_id" class="form-control" id="member_id">
                                 @foreach ($members as $member)
-                                    <option value="{{ $member->id }}">
-                                        {{ $member->user->area->city->name }}-{{ $member->user->area->name }}
-                                        -- {{ $member->user->name }}</option>
+                                    @if ($member->user_state_id != 2)
+                                        <option value="{{ $member->id }}">
+                                            {{ $member->user->area->city->name }}-{{ $member->user->area->name }}
+                                            -- {{ $member->user->name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                             <label for="member_id">Select Member</label>
@@ -497,10 +500,10 @@
                         var updated_at_datetime = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
                             date.getFullYear() + ' ' +
                             date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-                        
+
                         // do same for due
                         // console.log(invoice.due);
-                        if (invoice.due != null){
+                        if (invoice.due != null) {
                             var date = new Date(invoice.due);
                             console.log(date);
                             var due = date.getDate() + '/' + (date.getMonth() + 1) + '/' +

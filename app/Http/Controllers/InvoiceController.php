@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 
+/**
+ * Invoice controller is concerned with the methods that are related to the invoice deletion, listing, viewing
+ */
 class InvoiceController extends Controller
 {
     public function __construct()
@@ -81,6 +84,9 @@ class InvoiceController extends Controller
     public function generate_pdf(Invoice $invoice)
     {
 
+        /**
+         * If the invoice belongs to the current user, then the pdf can be generated.
+         */
         if ($invoice -> user_id != Auth::id()){
             return redirect() -> back() -> with('message', 'You are not authorized to view this invoice');
         }

@@ -17,6 +17,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
+/**
+ * This controller is concerned with all the methods that are related to the user
+ */
 class HomeController extends Controller
 {
 

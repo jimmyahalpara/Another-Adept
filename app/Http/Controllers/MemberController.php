@@ -15,15 +15,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Methods in this controller is concerned with creation, updating and deletion of all the 
+ * members on any organizatoin. All these action can only be performed by the admin of the
+ * organizatoin
+ */
 class MemberController extends Controller
 {
 
-
+    /**
+     * ALl the requests should be performed by the admin of the organization
+     * 
+     * @return void
+     */
     public function __construct()
     {
         $this -> middleware('organization.role:admin');
     }
 
+
+    /**
+     * This method check if the user who performs the action has same organiztion id as 
+     * the member he wants to do the action. Basically, this method prevents any admin from 
+     * one organization to make changes to the members of another organization.
+     * 
+     * @param  User $member
+     * 
+     * @return boolean
+     */
     private function checkOrganization(User $member)
     {
         $member_organization = $member->get_organization();
@@ -39,8 +58,10 @@ class MemberController extends Controller
         return true;
     }
     /**
-     * Display a listing of the resource.
+     * Display a listing of the all members.
      *
+     * @param Request $request
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -57,7 +78,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new member.
      *
      * @return \Illuminate\Http\Response
      */
@@ -73,9 +94,9 @@ class MemberController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created member in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UserRegisterRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(UserRegisterRequest $request)
@@ -141,34 +162,13 @@ class MemberController extends Controller
         ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Remove the specified member from storage.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * 
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $member)
     {
@@ -185,7 +185,14 @@ class MemberController extends Controller
         return redirect() -> route('members.index') -> with('message', $member -> name . ' deleted Successfully.');
     }
 
-
+    /**
+     * Update name of the user
+     * 
+     * @param  Request $request
+     * @param  \App\Models\User  $user
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateName(Request $request, User $member)
     {
         if (!$this->checkOrganization($member)) {
@@ -201,6 +208,15 @@ class MemberController extends Controller
         return redirect()->route('members.show', ['member' => $member->id])->with('message', 'Name Updated Successfully');
     }
 
+
+    /**
+     * Update Phone number of the user
+     * 
+     * @param  Request $request
+     * @param  \App\Models\User  $member
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updatePhone(Request $request, User $member)
     {
         if (!$this->checkOrganization($member)) {
@@ -216,6 +232,14 @@ class MemberController extends Controller
         return redirect()->route('members.show', ['member' => $member->id])->with('message', 'Phone Number Updated Successfully');
     }
 
+    /**
+     * Update address of the user
+     * 
+     * @param  Request $request
+     * @param  \App\Models\User  $member
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateAddress(Request $request, User $member)
     {
         if (!$this->checkOrganization($member)) {
@@ -231,6 +255,14 @@ class MemberController extends Controller
         return redirect()->route('members.show', ['member' => $member->id])->with('message', 'Address Updated Successfully');
     }
 
+    /**
+     * Update area of the user 
+     * 
+     * @param  Request $request
+     * @param  \App\Models\User  $member
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateArea(Request $request, User $member)
     {
         if (!$this->checkOrganization($member)) {
@@ -246,6 +278,14 @@ class MemberController extends Controller
         return redirect()->route('members.show', ['member' => $member->id])->with('message', 'Area Updated Successfully');
     }
 
+    /**
+     * Update state of the user
+     * 
+     * @param  Request $request
+     * @param  \App\Models\User  $member
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateUserState(Request $request, User $member)
     {
         $current_user = Auth::user();
