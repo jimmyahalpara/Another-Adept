@@ -65,7 +65,7 @@
                     Following details will be provided to the organization in order to fullfill your service.
                 </small>
                 <div class="m-1">
-                    <button class="buttonRounded px-3 py-2">
+                    <button class="buttonRounded px-3 py-2" onclick="document.location='{{ route('home.profile') }}'">
                         <i class="fa-solid fa-pencil"></i>
                         Edit Details
                     </button>

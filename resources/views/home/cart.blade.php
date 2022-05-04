@@ -8,7 +8,7 @@
         <div id="introServiceSearch" class="bg-image d-flex justify-content-center align-items-center"
             style="background-image: url('{{ asset('assets/images/firstImage.jpg') }}');">
             <div class="mask d-flex justify-content-center align-items-center flex-column" style="">
-                <h1>Liked Posts</h1>
+                <h1>Liked Services</h1>
 
             </div>
         </div>
@@ -164,7 +164,7 @@
                 @else
                     $element = $('#like-button-' + service_id);
                 
-                    if (!confirm('Do You want to delete this service ?')){
+                    if (!confirm('Do You want to remove this service ?')){
                     return;
                     }
                     if ($element.hasClass('fa-regular')){

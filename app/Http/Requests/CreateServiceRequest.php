@@ -29,7 +29,7 @@ class CreateServiceRequest extends FormRequest
             'price' => ['numeric', 'min:0'],
             'price_type_id' => ['required', 'numeric'],
             'service_category_id' => ['required', 'numeric'],
-            'service_image' => ['required', 'image', 'max:2048'],
+            'service_image' => ['required', 'image', 'max:4096'],
             'area' => ['required'],
             'area.*' => ['numeric', 'min:1']
         ];
