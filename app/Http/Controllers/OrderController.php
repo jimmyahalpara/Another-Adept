@@ -390,6 +390,8 @@ class OrderController extends Controller
             } else {
                 $service_order->order_state_id = 1;
             }
+        } else {
+            $service_order -> order_state_id = $request->order_state_id;
         }
         dump(394);
         if ($request->order_state_id == 6) {
