@@ -366,7 +366,6 @@ class OrderController extends Controller
      */
     public function complete(Request $request)
     {
-        dump($request -> all());
         $request->validate([
             'order_state_id' => ['required', 'numeric'],
             'service_order_id' => ['required', 'numeric']
@@ -384,7 +383,6 @@ class OrderController extends Controller
         }
 
         if ($request->order_state_id != 6) {
-            dump(387);
             if ($service_order->order_member()->count() > 0) {
                 $service_order->order_state_id = $request->order_state_id;
             } else {
@@ -393,13 +391,11 @@ class OrderController extends Controller
         } else {
             $service_order -> order_state_id = $request->order_state_id;
         }
-        dump(394);
         if ($request->order_state_id == 6) {
             $job = new OrderCompleteUserJob(['order' => $service_order]);
             dispatch($job);
         }
         $service_order->save();
-        dd($service_order);
         return redirect()->route('order.organization')->with('message', 'Order State changed');
     }
 
