@@ -306,6 +306,15 @@ class MemberController extends Controller
     }
 
 
+    /**
+     * Promote any member of the organization. hierarchy is 
+     *  Admin > Manager > Provider
+     * 
+     * @param  \App\Models\User  $member
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function promoteMember(Request $request, User $member)
     {
         if (!$this->checkOrganization($member)) {
@@ -315,10 +324,12 @@ class MemberController extends Controller
 
         $current_user = Auth::user();
 
+        // prevent admin to promote  himself.
         if ($current_user->id == $member->id) {
             return redirect()->route('members.index')->with('message', 'You Cannot Promote Yourself');
         }
 
+        // prevent further promotion than admin
         $member_role = $member->user_role();
         if ($member_role->id <= 1) {
             return redirect()->route('members.index')->with('message', $member->name .  ' is already an Admin');
@@ -334,17 +345,23 @@ class MemberController extends Controller
         return redirect()->route('members.index')->with('message', $member->name .  ' promoted to ' . $membership_role->organization_role->name);
     }
 
+    /**
+     * Demote any member of the organization. hierarchy is
+     * Admin > Manager > Provider
+     */
     public function demoteMember(Request $request, User $member)
     {
         if (!$this->checkOrganization($member)) {
             return redirect()->route('home')->with('message', 'Unauthorized Action');
         }
 
+        // prevent admin to demote himself. This is a security measure
         $current_user = Auth::user();
         if ($current_user->id == $member->id) {
             return redirect()->route('members.index')->with('message', 'You Cannot Demote Yourself');
         }
 
+        // prevent further demotion than provider
         $member_role = $member->user_role();
         if ($member_role->id >= 3) {
             return redirect()->route('members.index')->with('message', $member->name .  ' is already a Provider');
