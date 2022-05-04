@@ -14,6 +14,10 @@ class StorageController extends Controller
     {
         $this -> middleware('permission:browse_documents');
     }
+
+    /**
+     * Only allow authorized users to get organization document. 
+     */
     public function getDocument(Request $request, String $filename)
     {
         // get current user 

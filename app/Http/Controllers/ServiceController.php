@@ -30,7 +30,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the services.
      *
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +46,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new service.
      *
      * @return \Illuminate\Http\Response
      */
@@ -65,7 +65,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created service in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -114,7 +114,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified service.
      *
      * @param  \App\Models\Service  $service
      * @return \Illuminate\Http\Response
@@ -141,7 +141,7 @@ class ServiceController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified service from storage.
      *
      * @param  \App\Models\Service  $service
      * @return \Illuminate\Http\Response
@@ -185,7 +185,7 @@ class ServiceController extends Controller
 
 
     /**
-     * Function to update name from post request 
+     * Function to update service name from post request 
      */
     public function updateName(Request $request, Service $service)
     {
@@ -355,6 +355,9 @@ class ServiceController extends Controller
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Areas Updated Successfully!');
     }
 
+    /**
+     * Delete single areas from the service. 
+     */
     public function deleteAreaAvailablity(Request $request, Service $service)
     {
         // check if current service has same organiation id as the user making this request.
@@ -378,7 +381,9 @@ class ServiceController extends Controller
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Area Deleted Successfully!');
     }
 
-
+    /**
+     * Delete multiple areas from the service. 
+     */
     public function massDeleteAreaAvailablity(Request $request, Service $service)
     {
         $request->validate([
@@ -400,6 +405,9 @@ class ServiceController extends Controller
         return redirect()->route('services.show', ['service' => $service->id])->with('message', 'Areas Deleted Successfully!');
     }
 
+    /**
+     * Like a service and dislike a service if already liked.
+     */
     public function serviceLikeUnlike(Request $request)
     {
         $request->validate([
@@ -423,6 +431,9 @@ class ServiceController extends Controller
         }
     }
 
+    /**
+     * Rate a service and update the rating if already rating, and write reviews.
+     */
     public function rate(Request $request, Service $service)
     {
         $request->validate([
@@ -447,6 +458,10 @@ class ServiceController extends Controller
         return redirect()->route('search.show', ['service' => $service->id])->with('message', 'Heartly Thanks for your feedback');
     }
 
+    /**
+     * MEthod serves datatable ajax request for getting, sorting, searching and paginate 
+     * areas. 
+     */
     public function getServiceAreaAjax(Request $request, Service $service)
     {
         if (organization_id(true) != $service->organization_id) {

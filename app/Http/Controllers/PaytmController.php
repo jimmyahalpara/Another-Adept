@@ -9,9 +9,22 @@ use Illuminate\Support\Facades\Auth;
 use Anand\LaravelPaytmWallet\Facades\PaytmWallet;
 use App\Jobs\InvoicePaidAdminJob;
 
+/**
+ * This controller has methods to process payment using Paytm Wallet.
+ */
 class PaytmController extends Controller
 {
 
+    /** 
+     * This method is called with user clicks paytm option on any unpaid invoices. 
+     * This method starts the payment process, by taking user information and sending it 
+     * to the paytm gateway. 
+     * 
+     * @param Request $request
+     * @param Invoice $invoice
+     * 
+     * @return void
+     */
     public function pay(Request $request, Invoice $invoice)
     {
         // check if invoice is paid
@@ -59,6 +72,11 @@ class PaytmController extends Controller
         return $pmt->receive();
     }
 
+    /**
+     * This method is executed when paytm callback url is called. Paytm sends all the information about the transaction, 
+     * and this method checks if the transaction was successful or not, if it was, then it changes the state of the invoice
+     * and adds the money in that organization's wallet, and if payment is unsuccessful, then it shows the message to the user.
+     */
     function paymentCallback()
     {
         $transaction = PaytmWallet::with('receive');

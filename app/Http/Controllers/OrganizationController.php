@@ -20,6 +20,13 @@ use Illuminate\Cache\RedisStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
+/**
+ * Organization Controller is concerned with all the actions related to the organization. organizatino listing, searching,
+ * creating the organization, viewing organization details, updating organization details, viewing / updating organization 
+ * payment information, requesting payouts, accepting / rejecting create organization request, accept / rejecting organization 
+ * request. 
+ */
 class OrganizationController extends Controller
 {
 
@@ -31,7 +38,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new organization.
      *
      * @return \Illuminate\Http\Response
      */
@@ -41,9 +48,9 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created organization in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateOrganizationRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateOrganizatinRequest $request)
@@ -72,7 +79,7 @@ class OrganizationController extends Controller
 
 
 
-
+        // save the uploaded file.
         $fileName = time() . '.' . $request->identification->extension();
         $request->identification->move(base_path() . '/private_documents/', $fileName);
 
@@ -86,7 +93,7 @@ class OrganizationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified organization details.
      *
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
@@ -101,6 +108,15 @@ class OrganizationController extends Controller
         ));
     }
 
+
+    /**
+     * Update the organization name
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Organization  $organization
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateName(Request $request, Organization $organization)
     {
         if (organization_id() != $organization->id) {
@@ -117,6 +133,15 @@ class OrganizationController extends Controller
         return redirect()->route('organizations.show', ['organization' => $organization->id])->with('message', 'Organization Name Updated Successfully!');
     }
 
+
+    /**
+     * Update the organization description
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Organization  $organization
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateDescription(Request $request, Organization $organization)
     {
         if (organization_id() != $organization->id) {
@@ -134,6 +159,14 @@ class OrganizationController extends Controller
         return redirect()->route('organizations.show', ['organization' => $organization->id])->with('message', 'Organization Description Update Successfully');
     }
 
+    /**
+     * Update the organization payment information 
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Organization  $organization
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update_organization_payment_information(Request $request, Organization $organization)
     {
         if (organization_id() != $organization->id) {
@@ -157,6 +190,14 @@ class OrganizationController extends Controller
         return redirect()->back()->with('message', 'Payment Details Updated Successfully');
     }
 
+    /**
+     * Create new organization payout request 
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Organization  $organization
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function request_payout(Request $request, Organization $organization)
     {
         if (organization_id() != $organization->id) {
@@ -187,6 +228,16 @@ class OrganizationController extends Controller
     }
 
 
+    /**
+     * This method is used from admin side, and will require necessary permissions, which is being checked by 
+     * the middleware. This method is used to show the form to Accept or Reject the organization request. 
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Organization  $organization
+     * 
+     * it returns a view 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function active_confirmation_form(Request $request, Organization $organization)
     {
         // check if organization state id is already 2 or not 
@@ -209,6 +260,18 @@ class OrganizationController extends Controller
             'document_path'
         ));
     }
+
+    /**
+     * This method is used from admin side and required necessary permission, which is checked by 
+     * the middleare. This method takes in data from the form and updates the organization state 
+     * to active or inactive depending on the data submitted. If user selects to reject the request,
+     * then reason is required.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Organization  $organization
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function active_confirmation(Request $request, Organization $organization)
     {
 
@@ -269,6 +332,14 @@ class OrganizationController extends Controller
         }
     }
 
+    /**
+     * Shows Organization Payout accept or reject form 
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Organization  $organization
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function payout_form(OrganizationPayout $payout)
     {
         // check if payout status is already 1 or not
@@ -285,6 +356,11 @@ class OrganizationController extends Controller
         ));
     }
 
+    /**
+     * Data from the payout request form is submitted to this method. This method will update the organization 
+     * payout request according to the data submitted. If option to reject the request is selected, then 
+     * a reason for the rejection is required. 
+     */
     public function payout_confirm(Request $request, OrganizationPayout $payout)
     {
         // check if payout status is already 1 or not
@@ -324,7 +400,10 @@ class OrganizationController extends Controller
     }
 
 
-
+    /**
+     * Method to view all the organization list. This method is called when user clicks 
+     * organization link on the navbar
+     */
     public function index(Request $request)
     {
         $organizations  = Organization::get();
@@ -335,6 +414,11 @@ class OrganizationController extends Controller
         ));
     }
 
+    /**
+     * View organization details, such has name, description, admin address / contact, and 
+     * services provided by the organization. This page is opened when user clicks on the organization 
+     * in organization listing. 
+     */
     public function details(Request $request, Organization $organization)
     {
         $organization_admins = UserOrganizationMembership::with('user')->where('organization_id', $organization->id)->get();

@@ -21,6 +21,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * This controller is concerned with all the organization orders and all the orders assigned to me. 
+ * Methods in this controller, can change status of order, reject the order, assign the order, generate invoice for the order,
+ * complete the order, view order information, view all the orders listing, view all orders assigned to me, change the state 
+ * of the orders assigned to me. 
+ */
 class OrderController extends Controller
 {
 
@@ -333,7 +339,7 @@ class OrderController extends Controller
 
     /**
      * Change order_member state from complete to incomplete, or vice versa. Order member should be of same organization as
-     * the current user organization .
+     * the current user organization . It is called form service order page.
      * 
      * @param Request $request
      * 
@@ -362,7 +368,11 @@ class OrderController extends Controller
 
 
     /**
-     * Toggle order state between assigned to 
+     * Toggle order state between complete and (assigned/placed), it is called from organization order page.
+     * 
+     * @param Request $request
+     * 
+     * @return redirect
      */
     public function complete(Request $request)
     {
@@ -400,7 +410,14 @@ class OrderController extends Controller
     }
 
 
-
+    /**
+     * View form to generate invoice for the service order 
+     * 
+     * @param Request $request
+     * @param ServiceOrder $service_order
+     * 
+     * @return view
+     */
     public function generate_invoice_form(Request $request, ServiceOrder $service_order)
     {
         if ($service_order->order_state_id != 1 && $service_order->order_state_id != 2) {
@@ -417,7 +434,15 @@ class OrderController extends Controller
         ));
     }
 
-
+    /**
+     * Generate invoice for the service order. It takes in parameters from POST method,
+     * submitted by the form form generate_invoice_form.
+     * 
+     * @param Request $request
+     * @param ServiceOrder $service_order
+     * 
+     * @return redirect
+     */
     public function store_invoice(Request $request, ServiceOrder $service_order)
     {
         // dd($request -> all());

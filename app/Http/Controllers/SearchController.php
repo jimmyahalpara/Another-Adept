@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
+    /**
+     * Method for searching, sorting, and filtering services in services page.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index(Request $request)
     {
         $num_rows = $request->input('num_rows', 10);
@@ -140,7 +147,13 @@ class SearchController extends Controller
         ));
     }
 
-
+    /**
+     * Method to view each service details, its rataings, and available locations.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable 
+     */
     public function show(Service $service)
     {
         $user = Auth::user();
@@ -163,7 +176,14 @@ class SearchController extends Controller
         ));
     }
 
-
+    /**
+     * Gat all the areas where service is provided, and its cities.
+     * This method serves ajax request from datatable. 
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable 
+     */
     public function serviceAreasAjax(Request $request, Service $service)
     {
         try {
