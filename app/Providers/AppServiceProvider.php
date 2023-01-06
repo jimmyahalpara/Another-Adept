@@ -12,6 +12,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use TCG\Voyager\Facades\Voyager;
 
@@ -91,5 +92,7 @@ class AppServiceProvider extends ServiceProvider
         Voyager::addAction(PayoutAction::class);
         Voyager::addAction(ViewThread::class);
         Voyager::addAction(ThreadReplyCount::class);
+
+        Schema::defaultStringLength(191);
     }
 }
